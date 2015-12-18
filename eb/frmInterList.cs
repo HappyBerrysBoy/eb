@@ -725,5 +725,66 @@ namespace eb
             frmConfig frm = new frmConfig();
             frm.ShowDialog();
         }
+
+        private void btnFindPoint_Click(object sender, EventArgs e)
+        {
+            if (spsLog.ActiveRowIndex < 0) return;
+
+            for (int i = spsLog.ActiveRowIndex + 1; i < spsLog.RowCount; i++)
+            {
+                if (spsLog.Cells[i, (int)LOG_COL.DRATE].BackColor == Color.Red)
+                {
+                    lblSTS.Text = "Cell(" + i.ToString() + "," + (((int)LOG_COL.DRATE).ToString()) + ")";
+                    spsLog.ActiveRowIndex = i;
+                    spsLog.ActiveColumnIndex = (int)LOG_COL.DRATE;
+                    spsLog.SetActiveCell(i, (int)LOG_COL.DRATE, false);
+                    break;
+                }
+            }
+        }
+
+        private void spdLog_MouseUp(object sender, MouseEventArgs e)
+        {
+            FarPoint.Win.Spread.Model.CellRange range = spsLog.GetSelection(0);
+            if (range == null) return;
+
+            if (range.Row < 0 || range.Column < 0) return;
+            if (range.ColumnCount > 1) return;
+
+            double sum = 0;
+
+            for (int i = range.Row; i < range.Row + range.RowCount; i++) 
+            {
+                try
+                {
+                    sum += Convert.ToDouble(spsLog.Cells[i, range.Column].Text);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            lblSum.Text = "SUM:" + Convert.ToString(sum);
+            lblSum.Text += ", AVG:" + Convert.ToString(Math.Round(sum / range.RowCount, 2));
+        }
+
+        private void chkBuyOrder()
+        {
+            // 일정기간 매수가 매도를 압도
+            // 체결강도가 너무 낮지 않아야 함
+            // 호가를 2개~3개 정도 뚫어주거나 % 기준으로 어느정도 올랐을 경우
+            // 일정기간 매수량이 일별 평균 거래량의 특정 비율을 넘어서야함
+            // 
+        }
+
+        private void chkSellOrder()
+        {
+            // 구매가격 기준 손절% 이하로 내려 가는 경우
+            // 익절 판매 조건 탐색 필요(일정 기간 기준 고가대비 특정 % 이하로 떨어지는 경우)
+            // 거래량을 동반한 매도총량이 어느정도 기준을 넘어서는 경우
+
+
+        }
     }
 }

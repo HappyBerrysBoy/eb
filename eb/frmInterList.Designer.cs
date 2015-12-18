@@ -35,21 +35,29 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
-            this.btnSave = new System.Windows.Forms.ToolStripButton();
-            this.btnLoadInterestList = new System.Windows.Forms.ToolStripButton();
-            this.btnAdd = new System.Windows.Forms.ToolStripButton();
-            this.btnDel = new System.Windows.Forms.ToolStripButton();
-            this.btnShowLog = new System.Windows.Forms.ToolStripButton();
+            this.btnConfig = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.btnSelectQuery = new System.Windows.Forms.ToolStripButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cmbQueryKind = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.spdInterest = new FarPoint.Win.Spread.FpSpread();
             this.spsInterest = new FarPoint.Win.Spread.SheetView();
+            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.btnLoadInterestList = new System.Windows.Forms.ToolStripButton();
+            this.btnAdd = new System.Windows.Forms.ToolStripButton();
+            this.btnDel = new System.Windows.Forms.ToolStripButton();
             this.spdLog = new FarPoint.Win.Spread.FpSpread();
             this.spsLog = new FarPoint.Win.Spread.SheetView();
-            this.btnConfig = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.btnFindPoint = new System.Windows.Forms.ToolStripButton();
+            this.stsBar = new System.Windows.Forms.StatusStrip();
+            this.lblSTS = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnShowLog = new System.Windows.Forms.ToolStripButton();
+            this.cmbQueryKind = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -57,8 +65,11 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdInterest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).BeginInit();
+            this.toolStrip3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLog)).BeginInit();
+            this.toolStrip2.SuspendLayout();
+            this.stsBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -66,11 +77,6 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnLogin,
             this.btnDoLog,
-            this.btnSave,
-            this.btnLoadInterestList,
-            this.btnAdd,
-            this.btnDel,
-            this.btnShowLog,
             this.btnConfig,
             this.toolStripLabel1,
             this.btnSelectQuery});
@@ -100,55 +106,15 @@
             this.btnDoLog.Text = "Do";
             this.btnDoLog.Click += new System.EventHandler(this.btnDoLog_Click);
             // 
-            // btnSave
+            // btnConfig
             // 
-            this.btnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
-            this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(23, 22);
-            this.btnSave.Text = "Save Interest List";
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnLoadInterestList
-            // 
-            this.btnLoadInterestList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnLoadInterestList.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadInterestList.Image")));
-            this.btnLoadInterestList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLoadInterestList.Name = "btnLoadInterestList";
-            this.btnLoadInterestList.Size = new System.Drawing.Size(23, 22);
-            this.btnLoadInterestList.Text = "Load Interest List";
-            this.btnLoadInterestList.Click += new System.EventHandler(this.btnLoadInterestList_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(23, 22);
-            this.btnAdd.Text = "Add Interest";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // btnDel
-            // 
-            this.btnDel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
-            this.btnDel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDel.Name = "btnDel";
-            this.btnDel.Size = new System.Drawing.Size(23, 22);
-            this.btnDel.Text = "Delete Interest";
-            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
-            // 
-            // btnShowLog
-            // 
-            this.btnShowLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnShowLog.Image = ((System.Drawing.Image)(resources.GetObject("btnShowLog.Image")));
-            this.btnShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnShowLog.Name = "btnShowLog";
-            this.btnShowLog.Size = new System.Drawing.Size(23, 22);
-            this.btnShowLog.Text = "Inquiry Logs";
-            this.btnShowLog.Click += new System.EventHandler(this.btnShowLog_Click);
+            this.btnConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnConfig.Image")));
+            this.btnConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConfig.Name = "btnConfig";
+            this.btnConfig.Size = new System.Drawing.Size(23, 22);
+            this.btnConfig.Text = "Setting Config";
+            this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
             // 
             // toolStripLabel1
             // 
@@ -166,37 +132,24 @@
             this.btnSelectQuery.Text = "Select Query";
             this.btnSelectQuery.Click += new System.EventHandler(this.btnSelectQuery_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(225, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "조회종류";
-            // 
-            // cmbQueryKind
-            // 
-            this.cmbQueryKind.FormattingEnabled = true;
-            this.cmbQueryKind.Location = new System.Drawing.Point(284, 4);
-            this.cmbQueryKind.Name = "cmbQueryKind";
-            this.cmbQueryKind.Size = new System.Drawing.Size(118, 20);
-            this.cmbQueryKind.TabIndex = 5;
-            // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.spdInterest);
+            this.splitContainer1.Panel1.Controls.Add(this.toolStrip3);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
-            this.splitContainer1.Size = new System.Drawing.Size(1230, 539);
+            this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
+            this.splitContainer1.Size = new System.Drawing.Size(1230, 514);
             this.splitContainer1.SplitterDistance = 376;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -206,12 +159,12 @@
             this.spdInterest.BackColor = System.Drawing.SystemColors.Control;
             this.spdInterest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spdInterest.HorizontalScrollBarPolicy = FarPoint.Win.Spread.ScrollBarPolicy.AsNeeded;
-            this.spdInterest.Location = new System.Drawing.Point(0, 0);
+            this.spdInterest.Location = new System.Drawing.Point(0, 25);
             this.spdInterest.Name = "spdInterest";
             this.spdInterest.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdInterest.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsInterest});
-            this.spdInterest.Size = new System.Drawing.Size(376, 539);
+            this.spdInterest.Size = new System.Drawing.Size(376, 489);
             this.spdInterest.TabIndex = 0;
             // 
             // spsInterest
@@ -251,19 +204,64 @@
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdInterest.SetActiveViewport(0, -1, 0);
             // 
+            // toolStrip3
+            // 
+            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnLoadInterestList,
+            this.toolStripSeparator1,
+            this.btnAdd,
+            this.btnDel,
+            this.btnSave});
+            this.toolStrip3.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip3.Name = "toolStrip3";
+            this.toolStrip3.Size = new System.Drawing.Size(376, 25);
+            this.toolStrip3.TabIndex = 1;
+            this.toolStrip3.Text = "toolStrip3";
+            // 
+            // btnLoadInterestList
+            // 
+            this.btnLoadInterestList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLoadInterestList.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadInterestList.Image")));
+            this.btnLoadInterestList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLoadInterestList.Name = "btnLoadInterestList";
+            this.btnLoadInterestList.Size = new System.Drawing.Size(23, 22);
+            this.btnLoadInterestList.Text = "Load Interest List";
+            this.btnLoadInterestList.Click += new System.EventHandler(this.btnLoadInterestList_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
+            this.btnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(23, 22);
+            this.btnAdd.Text = "Add Interest";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnDel
+            // 
+            this.btnDel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
+            this.btnDel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(23, 22);
+            this.btnDel.Text = "Delete Interest";
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
             // spdLog
             // 
             this.spdLog.AccessibleDescription = "";
             this.spdLog.BackColor = System.Drawing.SystemColors.Control;
             this.spdLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spdLog.HorizontalScrollBarPolicy = FarPoint.Win.Spread.ScrollBarPolicy.AsNeeded;
-            this.spdLog.Location = new System.Drawing.Point(0, 0);
+            this.spdLog.Location = new System.Drawing.Point(0, 25);
             this.spdLog.Name = "spdLog";
             this.spdLog.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLog.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLog});
-            this.spdLog.Size = new System.Drawing.Size(850, 539);
+            this.spdLog.Size = new System.Drawing.Size(850, 489);
             this.spdLog.TabIndex = 7;
+            this.spdLog.MouseUp += new System.Windows.Forms.MouseEventHandler(this.spdLog_MouseUp);
             // 
             // spsLog
             // 
@@ -361,38 +359,129 @@
             this.spdLog.SetViewportLeftColumn(0, 0, 7);
             this.spdLog.SetActiveViewport(0, -1, 0);
             // 
-            // btnConfig
+            // toolStrip2
             // 
-            this.btnConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnConfig.Image")));
-            this.btnConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnConfig.Name = "btnConfig";
-            this.btnConfig.Size = new System.Drawing.Size(23, 22);
-            this.btnConfig.Text = "Setting Config";
-            this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnShowLog,
+            this.btnFindPoint});
+            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(850, 25);
+            this.toolStrip2.TabIndex = 8;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // btnFindPoint
+            // 
+            this.btnFindPoint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFindPoint.Image = ((System.Drawing.Image)(resources.GetObject("btnFindPoint.Image")));
+            this.btnFindPoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFindPoint.Name = "btnFindPoint";
+            this.btnFindPoint.Size = new System.Drawing.Size(23, 22);
+            this.btnFindPoint.Text = "Find Point";
+            this.btnFindPoint.Click += new System.EventHandler(this.btnFindPoint_Click);
+            // 
+            // stsBar
+            // 
+            this.stsBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblSTS,
+            this.toolStripStatusLabel1,
+            this.lblSum});
+            this.stsBar.Location = new System.Drawing.Point(0, 542);
+            this.stsBar.Name = "stsBar";
+            this.stsBar.Size = new System.Drawing.Size(1230, 22);
+            this.stsBar.TabIndex = 8;
+            this.stsBar.Text = "statusStrip1";
+            // 
+            // lblSTS
+            // 
+            this.lblSTS.Name = "lblSTS";
+            this.lblSTS.Size = new System.Drawing.Size(89, 17);
+            this.lblSTS.Text = "합계/평균/기타";
+            // 
+            // btnSave
+            // 
+            this.btnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
+            this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(23, 22);
+            this.btnSave.Text = "Save Interest List";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnShowLog
+            // 
+            this.btnShowLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnShowLog.Image = ((System.Drawing.Image)(resources.GetObject("btnShowLog.Image")));
+            this.btnShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowLog.Name = "btnShowLog";
+            this.btnShowLog.Size = new System.Drawing.Size(23, 22);
+            this.btnShowLog.Text = "Inquiry Logs";
+            this.btnShowLog.Click += new System.EventHandler(this.btnShowLog_Click);
+            // 
+            // cmbQueryKind
+            // 
+            this.cmbQueryKind.FormattingEnabled = true;
+            this.cmbQueryKind.Location = new System.Drawing.Point(177, 3);
+            this.cmbQueryKind.Name = "cmbQueryKind";
+            this.cmbQueryKind.Size = new System.Drawing.Size(118, 20);
+            this.cmbQueryKind.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(118, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "조회종류";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(16, 17);
+            this.toolStripStatusLabel1.Text = "|||";
+            // 
+            // lblSum
+            // 
+            this.lblSum.Name = "lblSum";
+            this.lblSum.Size = new System.Drawing.Size(0, 17);
             // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1230, 564);
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.cmbQueryKind);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.stsBar);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "frmInterList";
-            this.Text = "frmInterList";
+            this.Text = "eb Manager";
             this.Load += new System.EventHandler(this.frmInterList_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spdInterest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).EndInit();
+            this.toolStrip3.ResumeLayout(false);
+            this.toolStrip3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLog)).EndInit();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            this.stsBar.ResumeLayout(false);
+            this.stsBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -402,21 +491,29 @@
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnDoLog;
-        private System.Windows.Forms.ToolStripButton btnAdd;
-        private System.Windows.Forms.ToolStripButton btnDel;
         private System.Windows.Forms.ToolStripButton btnLogin;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cmbQueryKind;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private FarPoint.Win.Spread.FpSpread spdInterest;
         private FarPoint.Win.Spread.SheetView spsInterest;
         private FarPoint.Win.Spread.FpSpread spdLog;
         private FarPoint.Win.Spread.SheetView spsLog;
-        private System.Windows.Forms.ToolStripButton btnSave;
-        private System.Windows.Forms.ToolStripButton btnLoadInterestList;
-        private System.Windows.Forms.ToolStripButton btnShowLog;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripButton btnSelectQuery;
         private System.Windows.Forms.ToolStripButton btnConfig;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton btnFindPoint;
+        private System.Windows.Forms.StatusStrip stsBar;
+        private System.Windows.Forms.ToolStripStatusLabel lblSTS;
+        private System.Windows.Forms.ToolStrip toolStrip3;
+        private System.Windows.Forms.ToolStripButton btnAdd;
+        private System.Windows.Forms.ToolStripButton btnDel;
+        private System.Windows.Forms.ToolStripButton btnLoadInterestList;
+        private System.Windows.Forms.ToolStripButton btnSave;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btnShowLog;
+        private System.Windows.Forms.ComboBox cmbQueryKind;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel lblSum;
     }
 }
