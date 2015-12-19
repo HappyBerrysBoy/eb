@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eb.common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace eb
 {
     static class Program
     {
+        public static Constants cont = new Constants();
+
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
@@ -16,7 +19,7 @@ namespace eb
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmInterList());
+            Application.Run(new frmMDIForm());
         }
     }
 }
