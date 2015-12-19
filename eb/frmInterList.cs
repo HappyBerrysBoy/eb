@@ -42,6 +42,8 @@ namespace eb
 
         List<T1305> lstT1305 = new List<T1305>();
 
+        private double ttlbuy = 0;
+
         enum INTER_COL
         {
             GUBUN,
@@ -167,6 +169,7 @@ namespace eb
 
             setRealQueryPI();
             setRealQueryDAK();
+            loadInterestList();
         }
 
         private void setRealQueryPI()
@@ -510,7 +513,6 @@ namespace eb
         private void btnLogin_Click(object sender, EventArgs e)
         {
             frmLogin frm = new frmLogin();
-            frm.Owner = this;
             frm.ShowDialog();
         }
 
@@ -546,10 +548,9 @@ namespace eb
             {
                 sw.Close();
             }
-            
         }
 
-        private void btnLoadInterestList_Click(object sender, EventArgs e)
+        private void loadInterestList()
         {
             StreamReader sr = null;
 
@@ -572,13 +573,20 @@ namespace eb
                         spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.RATE].Text = strs[4];
                     }
                 }
-
-                sr.Close();
             }
             catch (Exception ex)
             {
 
             }
+            finally
+            {
+                sr.Close();
+            }
+        }
+
+        private void btnLoadInterestList_Click(object sender, EventArgs e)
+        {
+            loadInterestList();
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -783,8 +791,6 @@ namespace eb
             // 구매가격 기준 손절% 이하로 내려 가는 경우
             // 익절 판매 조건 탐색 필요(일정 기간 기준 고가대비 특정 % 이하로 떨어지는 경우)
             // 거래량을 동반한 매도총량이 어느정도 기준을 넘어서는 경우
-
-
         }
     }
 }
