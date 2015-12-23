@@ -10,6 +10,7 @@ namespace eb
     static class Program
     {
         public static Constants cont = new Constants();
+        public static bool LoggedIn = false;
 
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.

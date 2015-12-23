@@ -30,6 +30,7 @@ namespace eb
             if (code.Equals("0000"))
             {
                 txtMsg.Text = msg;
+                Program.LoggedIn = true;
                 this.Close();
                 //txtMsg.Text = msg;
                 //frmInterList frm = new frmInterList();

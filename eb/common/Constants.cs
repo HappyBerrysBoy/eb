@@ -28,6 +28,48 @@ namespace eb.common
         private int volumeHistoryCnt = 0;           // 최근 거래량 몇일치 조회 할건지
         private double cutoffPercent = 0;           // 손절 기준 %
         private double profitCutoffPercent = 0;     // 익절 기준 %
+        private double powerLowLimit = 0;           // 체결강도 최저 Limit
+        private double powerHighLimit = 0;          // 체결강도 최대 Limit
+        private int ignoreCheCnt = 0;               // 장시작후 최초 몇 거래 무시조건
+        private int pierceHoCnt = 0;                // 구매조건(몇 호가 뚫으면)
+        private int logTerm = 0;                    // 일정기간(일정 시점) 얼마 동안 로그로 구매 여부 판단할건지 설정
+        private double msmdRate = 0;                // 매도/매수 비율
+
+        public double MsmdRate
+        {
+            get { return msmdRate; }
+            set { msmdRate = value; }
+        }
+
+        public int LogTerm
+        {
+            get { return logTerm; }
+            set { logTerm = value; }
+        }
+
+        public int PierceHoCnt
+        {
+            get { return pierceHoCnt; }
+            set { pierceHoCnt = value; }
+        }
+
+        public int IgnoreCheCnt
+        {
+            get { return ignoreCheCnt; }
+            set { ignoreCheCnt = value; }
+        }
+
+        public double PowerLowLimit
+        {
+            get { return powerLowLimit; }
+            set { powerLowLimit = value; }
+        }
+
+        public double PowerHighLimit
+        {
+            get { return powerHighLimit; }
+            set { powerHighLimit = value; }
+        }
 
         public double CutoffPercent
         {

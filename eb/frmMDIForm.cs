@@ -23,5 +23,11 @@ namespace eb
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            frmLogin frm = new frmLogin();
+            frm.ShowDialog();
+        }
     }
 }

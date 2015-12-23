@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType4 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType5 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType6 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
@@ -43,21 +43,22 @@
             this.spsInterest = new FarPoint.Win.Spread.SheetView();
             this.toolStrip3 = new System.Windows.Forms.ToolStrip();
             this.btnLoadInterestList = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAdd = new System.Windows.Forms.ToolStripButton();
             this.btnDel = new System.Windows.Forms.ToolStripButton();
+            this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.spdLog = new FarPoint.Win.Spread.FpSpread();
             this.spsLog = new FarPoint.Win.Spread.SheetView();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.btnShowLog = new System.Windows.Forms.ToolStripButton();
             this.btnFindPoint = new System.Windows.Forms.ToolStripButton();
+            this.btnSimulation = new System.Windows.Forms.ToolStripButton();
             this.stsBar = new System.Windows.Forms.StatusStrip();
             this.lblSTS = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnShowLog = new System.Windows.Forms.ToolStripButton();
-            this.cmbQueryKind = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSum = new System.Windows.Forms.ToolStripStatusLabel();
+            this.cmbQueryKind = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,7 +83,7 @@
             this.btnSelectQuery});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1230, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1259, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -99,6 +100,7 @@
             // btnDoLog
             // 
             this.btnDoLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDoLog.Enabled = false;
             this.btnDoLog.Image = ((System.Drawing.Image)(resources.GetObject("btnDoLog.Image")));
             this.btnDoLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDoLog.Name = "btnDoLog";
@@ -125,6 +127,7 @@
             // btnSelectQuery
             // 
             this.btnSelectQuery.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSelectQuery.Enabled = false;
             this.btnSelectQuery.Image = ((System.Drawing.Image)(resources.GetObject("btnSelectQuery.Image")));
             this.btnSelectQuery.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSelectQuery.Name = "btnSelectQuery";
@@ -149,8 +152,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
-            this.splitContainer1.Size = new System.Drawing.Size(1230, 514);
-            this.splitContainer1.SplitterDistance = 376;
+            this.splitContainer1.Size = new System.Drawing.Size(1259, 514);
+            this.splitContainer1.SplitterDistance = 384;
             this.splitContainer1.TabIndex = 7;
             // 
             // spdInterest
@@ -164,7 +167,7 @@
             this.spdInterest.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdInterest.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsInterest});
-            this.spdInterest.Size = new System.Drawing.Size(376, 489);
+            this.spdInterest.Size = new System.Drawing.Size(384, 489);
             this.spdInterest.TabIndex = 0;
             // 
             // spsInterest
@@ -190,15 +193,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType4;
+            this.spsInterest.Columns.Get(5).CellType = textCellType1;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType5;
+            this.spsInterest.DefaultStyle.CellType = textCellType2;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType5;
+            this.spsInterest.DefaultStyle.Renderer = textCellType2;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -214,7 +217,7 @@
             this.btnSave});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(376, 25);
+            this.toolStrip3.Size = new System.Drawing.Size(384, 25);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -227,6 +230,11 @@
             this.btnLoadInterestList.Size = new System.Drawing.Size(23, 22);
             this.btnLoadInterestList.Text = "Load Interest List";
             this.btnLoadInterestList.Click += new System.EventHandler(this.btnLoadInterestList_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnAdd
             // 
@@ -248,6 +256,16 @@
             this.btnDel.Text = "Delete Interest";
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
             // 
+            // btnSave
+            // 
+            this.btnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
+            this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(23, 22);
+            this.btnSave.Text = "Save Interest List";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // spdLog
             // 
             this.spdLog.AccessibleDescription = "";
@@ -259,7 +277,7 @@
             this.spdLog.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLog.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLog});
-            this.spdLog.Size = new System.Drawing.Size(850, 489);
+            this.spdLog.Size = new System.Drawing.Size(871, 489);
             this.spdLog.TabIndex = 7;
             this.spdLog.MouseUp += new System.Windows.Forms.MouseEventHandler(this.spdLog_MouseUp);
             // 
@@ -350,10 +368,10 @@
             this.spsLog.Columns.Get(24).Locked = true;
             this.spsLog.Columns.Get(25).Label = "세금";
             this.spsLog.Columns.Get(25).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType6;
+            this.spsLog.DefaultStyle.CellType = textCellType3;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType6;
+            this.spsLog.DefaultStyle.Renderer = textCellType3;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetViewportLeftColumn(0, 0, 7);
@@ -363,12 +381,23 @@
             // 
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowLog,
-            this.btnFindPoint});
+            this.btnFindPoint,
+            this.btnSimulation});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(850, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(871, 25);
             this.toolStrip2.TabIndex = 8;
             this.toolStrip2.Text = "toolStrip2";
+            // 
+            // btnShowLog
+            // 
+            this.btnShowLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnShowLog.Image = ((System.Drawing.Image)(resources.GetObject("btnShowLog.Image")));
+            this.btnShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowLog.Name = "btnShowLog";
+            this.btnShowLog.Size = new System.Drawing.Size(23, 22);
+            this.btnShowLog.Text = "Inquiry Logs";
+            this.btnShowLog.Click += new System.EventHandler(this.btnShowLog_Click);
             // 
             // btnFindPoint
             // 
@@ -380,6 +409,16 @@
             this.btnFindPoint.Text = "Find Point";
             this.btnFindPoint.Click += new System.EventHandler(this.btnFindPoint_Click);
             // 
+            // btnSimulation
+            // 
+            this.btnSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSimulation.Image = ((System.Drawing.Image)(resources.GetObject("btnSimulation.Image")));
+            this.btnSimulation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSimulation.Name = "btnSimulation";
+            this.btnSimulation.Size = new System.Drawing.Size(23, 22);
+            this.btnSimulation.Text = "Simulation";
+            this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
+            // 
             // stsBar
             // 
             this.stsBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -388,7 +427,7 @@
             this.lblSum});
             this.stsBar.Location = new System.Drawing.Point(0, 542);
             this.stsBar.Name = "stsBar";
-            this.stsBar.Size = new System.Drawing.Size(1230, 22);
+            this.stsBar.Size = new System.Drawing.Size(1259, 22);
             this.stsBar.TabIndex = 8;
             this.stsBar.Text = "statusStrip1";
             // 
@@ -398,30 +437,17 @@
             this.lblSTS.Size = new System.Drawing.Size(89, 17);
             this.lblSTS.Text = "합계/평균/기타";
             // 
-            // btnSave
+            // toolStripStatusLabel1
             // 
-            this.btnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
-            this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(23, 22);
-            this.btnSave.Text = "Save Interest List";
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(16, 17);
+            this.toolStripStatusLabel1.Text = "|||";
             // 
-            // toolStripSeparator1
+            // lblSum
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnShowLog
-            // 
-            this.btnShowLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnShowLog.Image = ((System.Drawing.Image)(resources.GetObject("btnShowLog.Image")));
-            this.btnShowLog.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnShowLog.Name = "btnShowLog";
-            this.btnShowLog.Size = new System.Drawing.Size(23, 22);
-            this.btnShowLog.Text = "Inquiry Logs";
-            this.btnShowLog.Click += new System.EventHandler(this.btnShowLog_Click);
+            this.lblSum.Name = "lblSum";
+            this.lblSum.Size = new System.Drawing.Size(35, 17);
+            this.lblSum.Text = "value";
             // 
             // cmbQueryKind
             // 
@@ -440,22 +466,11 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "조회종류";
             // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(16, 17);
-            this.toolStripStatusLabel1.Text = "|||";
-            // 
-            // lblSum
-            // 
-            this.lblSum.Name = "lblSum";
-            this.lblSum.Size = new System.Drawing.Size(0, 17);
-            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1230, 564);
+            this.ClientSize = new System.Drawing.Size(1259, 564);
             this.Controls.Add(this.cmbQueryKind);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.stsBar);
@@ -515,5 +530,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblSum;
+        private System.Windows.Forms.ToolStripButton btnSimulation;
     }
 }
