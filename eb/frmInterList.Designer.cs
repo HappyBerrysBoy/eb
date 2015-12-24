@@ -33,7 +33,6 @@
             FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
             FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -76,7 +75,6 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnLogin,
             this.btnDoLog,
             this.btnConfig,
             this.toolStripLabel1,
@@ -86,16 +84,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(1259, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnLogin.Image = ((System.Drawing.Image)(resources.GetObject("btnLogin.Image")));
-            this.btnLogin.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(47, 22);
-            this.btnLogin.Text = "로그인";
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnDoLog
             // 
@@ -506,7 +494,6 @@
 
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnDoLog;
-        private System.Windows.Forms.ToolStripButton btnLogin;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private FarPoint.Win.Spread.FpSpread spdInterest;
         private FarPoint.Win.Spread.SheetView spsInterest;

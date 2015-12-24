@@ -113,6 +113,7 @@ namespace eb
                         Program.cont.PierceHoCnt = Convert.ToInt32(strs[6]);
                         Program.cont.LogTerm = Convert.ToInt32(strs[7]);
                         Program.cont.MsmdRate = Convert.ToDouble(strs[8]);
+                        Program.cont.LogTermVolumeOver = Convert.ToDouble(strs[9]);
                     }
                 }
 
@@ -372,9 +373,9 @@ namespace eb
         {
             ClsRealChe cls = setRealDataClass(query);
             Item item = (Item)hItemLogs[cls.Shcode];
-            writeLog(cls);
             setItemLog(cls);
             chkBuyOrder(item);
+            writeLog(cls);
         }
 
         private void realdataPI(string szTrCode)
@@ -543,23 +544,13 @@ namespace eb
 
                     setAvgVolume(lstT1305);
 
-
-
                     for (int i = 0; i < spsInterest.RowCount; i++)
                     {
                         if (spsInterest.Cells[i, (int)INTER_COL.AVG_VOL].Text.Trim().Equals(""))
                         {
-                            Thread.Sleep(1100);
+                            Thread.Sleep(1010);
                             setDoQuery("기간별 주가", spsInterest.Cells[i, (int)INTER_COL.CODE].Text);
                             break;
-                            //XA_DATASETLib.XAQuery query = getCurrQuery("기간별 주가");
-                            //query.SetFieldData("t1305InBlock", "shcode", 0, cls.Shcode);
-                            //query.SetFieldData("t1305InBlock", "dwmcode", 0, "1");
-                            //query.SetFieldData("t1305InBlock", "date", 0, " ");
-                            //query.SetFieldData("t1305InBlock", "idx", 0, " ");
-                            //query.SetFieldData("t1305InBlock", "cnt", 0, "1");
-                            
-                            //doQuery(query, false);
                         }
                     }
                 }
@@ -569,7 +560,7 @@ namespace eb
                     query.SetFieldData("t1305InBlock", "idx", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "idx", 0));
                     query.SetFieldData("t1305InBlock", "cnt", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "cnt", 0));
                     query.SetFieldData("t1305InBlock", "date", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "date", 0));
-                    Thread.Sleep(1100);
+                    Thread.Sleep(1010);
                     Console.WriteLine(cls.Shcode + "(" + ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "date", 0) + "):" + cls.Volume);
                     doQuery(query, true);
                 }
@@ -593,7 +584,7 @@ namespace eb
             {
                 if (!spsInterest.Cells[i, (int)INTER_COL.CODE].Text.Equals(shcode)) continue;
                 
-                spsInterest.Cells[i, (int)INTER_COL.AVG_VOL].Text = Math.Round(ttlVolume/(lst.Count-1), 0).ToString();
+                spsInterest.Cells[i, (int)INTER_COL.AVG_VOL].Text = Math.Round(ttlVolume/(lst.Count - 1), 0).ToString();
                 Item item = (Item)hItemLogs[shcode];
                 item.AvgVolumeFewDays = Math.Round(ttlVolume / (lst.Count - 1), 0);
 
@@ -604,11 +595,6 @@ namespace eb
             lstT1305.Clear();
         }
         #endregion
-
-        private void btnLogin_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -797,6 +783,7 @@ namespace eb
         private void btnDoLog_Click(object sender, EventArgs e)
         {
             getRealLog();
+            MessageBox.Show("recording...");
         }
 
         private void getRealLog()
@@ -905,6 +892,8 @@ namespace eb
         {
             ClsRealChe realCls = item.Logs[item.Logs.Count - 1];
 
+            // 설정된 구간(기간, 몇초 정도 로그로 거래량을 판단할건지..) Index를 설정하는 부분
+            setTimeIndex(item);
             // 1분정도 로그보고 졸라 많이 들어오면 Ok
             // 3분정도 로그보고 꾸준히 들어와도 Ok 일단 위아래 둘중에 어떤게 나은지 모니터링 해보자..
             // 일정기간 매수량이 매도량를 압도
@@ -921,7 +910,6 @@ namespace eb
 
         private string chkMsVolumeDueTime(Item item)
         {
-            setTimeIndex(item);
             double msVolume = getDoubleValue(item.Logs[item.ToTimeIdx].Msvolume) - getDoubleValue(item.Logs[item.FromTimeIdx].Msvolume);
             double mdVolume = getDoubleValue(item.Logs[item.ToTimeIdx].Mdvolume) - getDoubleValue(item.Logs[item.FromTimeIdx].Mdvolume);
 
@@ -933,8 +921,14 @@ namespace eb
 
         private string chkOverVolume(Item item)
         {
+            double volume = getDoubleValue(item.Logs[item.ToTimeIdx].Volume) - getDoubleValue(item.Logs[item.FromTimeIdx].Volume);
 
-            return "1";
+            if (item.AvgVolumeFewDays < 1)
+                return "2";
+            else if (item.AvgVolumeFewDays * Program.cont.LogTermVolumeOver < volume)
+                return "1";
+            else
+                return "2";
         }
 
         private void setTimeIndex(Item item)
@@ -1105,36 +1099,19 @@ namespace eb
                             strList.Add(strs[i]);
                         }
 
+                        string drate = strList[(int)LOG_COL.DRATE];
+                        string gubun = strList[(int)LOG_COL.GUBUN];
+
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CODE].Text = strList[(int)LOG_COL.CODE];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHETIME].Text = strList[(int)LOG_COL.CHETIME];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SIGN].Text = strList[(int)LOG_COL.SIGN];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHANGE].Text = strList[(int)LOG_COL.CHANGE];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].Text = strList[(int)LOG_COL.DRATE];
-                        if (currRate == "")
-                        {
-                            currRate = strList[(int)LOG_COL.DRATE];
-                        }
-                        else if (!currRate.Equals(strList[(int)LOG_COL.DRATE]) && !beforeRate.Equals(strList[(int)LOG_COL.DRATE]) && beforeRate != "")
-                        {
-                            beforeRate = currRate;
-                            currRate = strList[(int)LOG_COL.DRATE];
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Red;
-                        }
-                        else if (!currRate.Equals(strList[(int)LOG_COL.DRATE]))
-                        {
-                            beforeRate = currRate;
-                            currRate = strList[(int)LOG_COL.DRATE];
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Orange;
-                        }
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.PRICE].Text = strList[(int)LOG_COL.PRICE];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.OPEN].Text = strList[(int)LOG_COL.OPEN];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.HIGH].Text = strList[(int)LOG_COL.HIGH];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.LOW].Text = strList[(int)LOG_COL.LOW];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].Text = strList[(int)LOG_COL.GUBUN];
-                        if (strList[(int)LOG_COL.GUBUN].Equals("+"))
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.Orange;
-                        else
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CVOLUME].Text = strList[(int)LOG_COL.CVOLUME];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VOLUME].Text = strList[(int)LOG_COL.VOLUME];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VALUE].Text = strList[(int)LOG_COL.VALUE];
@@ -1147,6 +1124,7 @@ namespace eb
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BIDHO].Text = strList[(int)LOG_COL.BIDHO];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.STATUS].Text = strList[(int)LOG_COL.STATUS];
                         spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.JNILVOLUME].Text = strList[(int)LOG_COL.JNILVOLUME];
+
                         if (strList.Count > 22)
                         {
                             spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = strList[(int)LOG_COL.ORDER];
@@ -1154,6 +1132,30 @@ namespace eb
                             spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER_PRICE].Text = strList[(int)LOG_COL.ORDER_PRICE];
                             spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.TAX].Text = strList[(int)LOG_COL.TAX];
                         }
+
+                        if (currRate == "")
+                        {
+                            currRate = drate;
+                        }
+                        else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
+                        {
+                            beforeRate = currRate;
+                            currRate = drate;
+                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Red;
+                        }
+                        else if (!currRate.Equals(drate))
+                        {
+                            beforeRate = currRate;
+                            currRate = drate;
+                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Orange;
+                        }
+
+                        if (gubun.Equals("+"))
+                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.Orange;
+                        else
+                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
+
+                        
                     }
 
                     Application.DoEvents();

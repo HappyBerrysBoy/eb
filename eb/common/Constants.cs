@@ -33,8 +33,15 @@ namespace eb.common
         private int ignoreCheCnt = 0;               // 장시작후 최초 몇 거래 무시조건
         private int pierceHoCnt = 0;                // 구매조건(몇 호가 뚫으면)
         private int logTerm = 0;                    // 일정기간(일정 시점) 얼마 동안 로그로 구매 여부 판단할건지 설정
+        private double logTermVolumeOver = 0;       // 일정기간(일정 시점) 로그의 양이 최근 며칠 전체 평균거래량의 몇% 넘으면 구매할건지 설정
         private double msmdRate = 0;                // 매도/매수 비율
 
+
+        public double LogTermVolumeOver
+        {
+            get { return logTermVolumeOver; }
+            set { logTermVolumeOver = value; }
+        }
         public double MsmdRate
         {
             get { return msmdRate; }

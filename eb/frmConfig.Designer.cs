@@ -49,12 +49,15 @@
             this.txtTermLog = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtMsMdRate = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtAvgVolumeOverRate = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 37);
+            this.label1.Location = new System.Drawing.Point(12, 65);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(167, 23);
             this.label1.TabIndex = 0;
@@ -67,7 +70,7 @@
             this.btnSave});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(244, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(636, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -83,7 +86,7 @@
             // 
             // txtDays
             // 
-            this.txtDays.Location = new System.Drawing.Point(185, 34);
+            this.txtDays.Location = new System.Drawing.Point(185, 62);
             this.txtDays.MaxLength = 3;
             this.txtDays.Name = "txtDays";
             this.txtDays.Size = new System.Drawing.Size(51, 21);
@@ -91,7 +94,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(12, 65);
+            this.label2.Location = new System.Drawing.Point(12, 119);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(167, 12);
             this.label2.TabIndex = 0;
@@ -100,7 +103,7 @@
             // 
             // txtCutoff
             // 
-            this.txtCutoff.Location = new System.Drawing.Point(185, 62);
+            this.txtCutoff.Location = new System.Drawing.Point(185, 116);
             this.txtCutoff.MaxLength = 5;
             this.txtCutoff.Name = "txtCutoff";
             this.txtCutoff.Size = new System.Drawing.Size(51, 21);
@@ -108,7 +111,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 91);
+            this.label3.Location = new System.Drawing.Point(12, 145);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(167, 12);
             this.label3.TabIndex = 0;
@@ -117,7 +120,7 @@
             // 
             // txtProfitCutOff
             // 
-            this.txtProfitCutOff.Location = new System.Drawing.Point(185, 88);
+            this.txtProfitCutOff.Location = new System.Drawing.Point(185, 142);
             this.txtProfitCutOff.MaxLength = 5;
             this.txtProfitCutOff.Name = "txtProfitCutOff";
             this.txtProfitCutOff.Size = new System.Drawing.Size(51, 21);
@@ -125,7 +128,7 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(12, 118);
+            this.label4.Location = new System.Drawing.Point(12, 172);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(167, 12);
             this.label4.TabIndex = 0;
@@ -134,7 +137,7 @@
             // 
             // txtPowerLowLimit
             // 
-            this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 115);
+            this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 169);
             this.txtPowerLowLimit.MaxLength = 5;
             this.txtPowerLowLimit.Name = "txtPowerLowLimit";
             this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
@@ -142,7 +145,7 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(12, 145);
+            this.label5.Location = new System.Drawing.Point(12, 199);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(167, 12);
             this.label5.TabIndex = 0;
@@ -151,7 +154,7 @@
             // 
             // txtPowerHighLimit
             // 
-            this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 142);
+            this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 196);
             this.txtPowerHighLimit.MaxLength = 5;
             this.txtPowerHighLimit.Name = "txtPowerHighLimit";
             this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
@@ -159,7 +162,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(12, 172);
+            this.label6.Location = new System.Drawing.Point(12, 226);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(167, 12);
             this.label6.TabIndex = 0;
@@ -168,7 +171,7 @@
             // 
             // txtIgnoreCheCnt
             // 
-            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(185, 169);
+            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(185, 223);
             this.txtIgnoreCheCnt.MaxLength = 5;
             this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
             this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
@@ -176,7 +179,7 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(12, 199);
+            this.label7.Location = new System.Drawing.Point(12, 253);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(167, 12);
             this.label7.TabIndex = 0;
@@ -185,7 +188,7 @@
             // 
             // txtPierceHoCnt
             // 
-            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 196);
+            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 250);
             this.txtPierceHoCnt.MaxLength = 5;
             this.txtPierceHoCnt.Name = "txtPierceHoCnt";
             this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
@@ -193,7 +196,7 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(12, 226);
+            this.label8.Location = new System.Drawing.Point(12, 280);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(167, 12);
             this.label8.TabIndex = 0;
@@ -202,7 +205,7 @@
             // 
             // txtTermLog
             // 
-            this.txtTermLog.Location = new System.Drawing.Point(185, 223);
+            this.txtTermLog.Location = new System.Drawing.Point(185, 277);
             this.txtTermLog.MaxLength = 5;
             this.txtTermLog.Name = "txtTermLog";
             this.txtTermLog.Size = new System.Drawing.Size(51, 21);
@@ -210,7 +213,7 @@
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(12, 253);
+            this.label9.Location = new System.Drawing.Point(12, 307);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(167, 12);
             this.label9.TabIndex = 0;
@@ -219,17 +222,44 @@
             // 
             // txtMsMdRate
             // 
-            this.txtMsMdRate.Location = new System.Drawing.Point(185, 250);
+            this.txtMsMdRate.Location = new System.Drawing.Point(185, 304);
             this.txtMsMdRate.MaxLength = 5;
             this.txtMsMdRate.Name = "txtMsMdRate";
             this.txtMsMdRate.Size = new System.Drawing.Size(51, 21);
             this.txtMsMdRate.TabIndex = 2;
             // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(12, 92);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(167, 23);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "평균거래량의 몇% 넘겨야";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtAvgVolumeOverRate
+            // 
+            this.txtAvgVolumeOverRate.Location = new System.Drawing.Point(185, 89);
+            this.txtAvgVolumeOverRate.MaxLength = 3;
+            this.txtAvgVolumeOverRate.Name = "txtAvgVolumeOverRate";
+            this.txtAvgVolumeOverRate.Size = new System.Drawing.Size(51, 21);
+            this.txtAvgVolumeOverRate.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label11.Location = new System.Drawing.Point(31, 25);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(167, 23);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "구매관련 설정값";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 287);
+            this.ClientSize = new System.Drawing.Size(636, 355);
             this.Controls.Add(this.txtMsMdRate);
             this.Controls.Add(this.txtTermLog);
             this.Controls.Add(this.txtPierceHoCnt);
@@ -243,11 +273,14 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtCutoff);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtAvgVolumeOverRate);
             this.Controls.Add(this.txtDays);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.label1);
             this.Name = "frmConfig";
             this.Text = "frmConfig";
@@ -281,5 +314,8 @@
         private System.Windows.Forms.TextBox txtTermLog;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtMsMdRate;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtAvgVolumeOverRate;
+        private System.Windows.Forms.Label label11;
     }
 }
