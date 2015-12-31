@@ -19,6 +19,36 @@ namespace eb.common
             else if (sign.Equals("5"))
                 return "▼";
             return "";
-        }   
+        }
+
+        public static int getIntValue(string value)
+        {
+            int result;
+
+            if (int.TryParse(value, out result))
+                return result;
+
+            return 0;
+        }
+
+        public static long getLongValue(string value)
+        {
+            long result;
+
+            if (long.TryParse(value, out result))
+                return result;
+
+            return 0;
+        }
+
+        public static double getDoubleValue(string value)
+        {
+            double result;
+
+            if (double.TryParse(value, out result))
+                return result;
+
+            return 0;
+        }
     }
 }

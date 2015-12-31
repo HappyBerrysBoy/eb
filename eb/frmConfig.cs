@@ -31,13 +31,16 @@ namespace eb
             txtTermLog.Text = Program.cont.LogTerm.ToString();
             txtMsMdRate.Text = Program.cont.MsmdRate.ToString();
             txtAvgVolumeOverRate.Text = Program.cont.LogTermVolumeOver.ToString();
+            txtContinueOrderCnt.Text = Program.cont.OrderSignCnt.ToString();
+            txtContinueSellCnt.Text = Program.cont.SellSignCnt.ToString();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (txtDays.Text.Trim() == "" || txtCutoff.Text.Trim() == "" || txtProfitCutOff.Text.Trim() == ""
                 || txtPowerLowLimit.Text.Trim() == "" || txtPowerHighLimit.Text.Trim() == "" || txtIgnoreCheCnt.Text.Trim() == ""
-                || txtTermLog.Text.Trim() == "" || txtMsMdRate.Text.Trim() == "" || txtAvgVolumeOverRate.Text.Trim() == "")
+                || txtTermLog.Text.Trim() == "" || txtMsMdRate.Text.Trim() == "" || txtAvgVolumeOverRate.Text.Trim() == ""
+                || txtContinueOrderCnt.Text.Trim() == "" || txtContinueSellCnt.Text.Trim() == "")
             {
                 MessageBox.Show("값이 없습니다.");
                 return;
@@ -45,21 +48,23 @@ namespace eb
 
             try
             {
-                Program.cont.VolumeHistoryCnt = Convert.ToInt32(txtDays.Text);
-                Program.cont.CutoffPercent = Convert.ToDouble(txtCutoff.Text);
-                Program.cont.ProfitCutoffPercent = Convert.ToDouble(txtProfitCutOff.Text);
-                Program.cont.PowerLowLimit = Convert.ToDouble(txtPowerLowLimit.Text);
-                Program.cont.PowerHighLimit = Convert.ToDouble(txtPowerHighLimit.Text);
-                Program.cont.IgnoreCheCnt = Convert.ToInt32(txtIgnoreCheCnt.Text);
-                Program.cont.PierceHoCnt = Convert.ToInt32(txtPierceHoCnt.Text);
-                Program.cont.LogTerm = Convert.ToInt32(txtTermLog.Text);
-                Program.cont.MsmdRate = Convert.ToDouble(txtMsMdRate.Text);
-                Program.cont.LogTermVolumeOver = Convert.ToDouble(txtAvgVolumeOverRate.Text);
+                Program.cont.VolumeHistoryCnt = Common.getIntValue(txtDays.Text);
+                Program.cont.CutoffPercent = Common.getDoubleValue(txtCutoff.Text);
+                Program.cont.ProfitCutoffPercent = Common.getDoubleValue(txtProfitCutOff.Text);
+                Program.cont.PowerLowLimit = Common.getDoubleValue(txtPowerLowLimit.Text);
+                Program.cont.PowerHighLimit = Common.getDoubleValue(txtPowerHighLimit.Text);
+                Program.cont.IgnoreCheCnt = Common.getIntValue(txtIgnoreCheCnt.Text);
+                Program.cont.PierceHoCnt = Common.getIntValue(txtPierceHoCnt.Text);
+                Program.cont.LogTerm = Common.getIntValue(txtTermLog.Text);
+                Program.cont.MsmdRate = Common.getDoubleValue(txtMsMdRate.Text);
+                Program.cont.LogTermVolumeOver = Common.getDoubleValue(txtAvgVolumeOverRate.Text);
+                Program.cont.OrderSignCnt = Common.getIntValue(txtContinueOrderCnt.Text);
+                Program.cont.SellSignCnt = Common.getIntValue(txtContinueSellCnt.Text);
 
                 StreamWriter sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
                 sw.WriteLine(txtDays.Text + "/" + txtCutoff.Text + "/" + txtProfitCutOff.Text + "/" + txtPowerLowLimit.Text + "/" + txtPowerHighLimit.Text
                                 + "/" + txtIgnoreCheCnt.Text + "/" + txtPierceHoCnt.Text + "/" + txtTermLog.Text + "/" + txtMsMdRate.Text
-                                + "/" + txtAvgVolumeOverRate.Text);
+                                + "/" + txtAvgVolumeOverRate.Text + "/" + txtContinueOrderCnt.Text + "/" + txtContinueSellCnt.Text);
                 sw.Close();
             }
             catch (Exception ex)

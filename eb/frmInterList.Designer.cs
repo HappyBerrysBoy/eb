@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType7 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType8 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType9 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
@@ -46,6 +46,7 @@
             this.btnAdd = new System.Windows.Forms.ToolStripButton();
             this.btnDel = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
+            this.btnGetAvgVolume = new System.Windows.Forms.ToolStripButton();
             this.spdLog = new FarPoint.Win.Spread.FpSpread();
             this.spsLog = new FarPoint.Win.Spread.SheetView();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
@@ -157,6 +158,7 @@
             this.spsInterest});
             this.spdInterest.Size = new System.Drawing.Size(384, 489);
             this.spdInterest.TabIndex = 0;
+            this.spdInterest.EditModeOff += new System.EventHandler(this.spdInterest_EditModeOff);
             // 
             // spsInterest
             // 
@@ -181,15 +183,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType1;
+            this.spsInterest.Columns.Get(5).CellType = textCellType7;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType2;
+            this.spsInterest.DefaultStyle.CellType = textCellType8;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType2;
+            this.spsInterest.DefaultStyle.Renderer = textCellType8;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -202,7 +204,8 @@
             this.toolStripSeparator1,
             this.btnAdd,
             this.btnDel,
-            this.btnSave});
+            this.btnSave,
+            this.btnGetAvgVolume});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(384, 25);
@@ -254,6 +257,16 @@
             this.btnSave.Text = "Save Interest List";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // btnGetAvgVolume
+            // 
+            this.btnGetAvgVolume.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnGetAvgVolume.Image = ((System.Drawing.Image)(resources.GetObject("btnGetAvgVolume.Image")));
+            this.btnGetAvgVolume.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnGetAvgVolume.Name = "btnGetAvgVolume";
+            this.btnGetAvgVolume.Size = new System.Drawing.Size(23, 22);
+            this.btnGetAvgVolume.Text = "Get Average Volume";
+            this.btnGetAvgVolume.Click += new System.EventHandler(this.btnGetAvgVolume_Click);
+            // 
             // spdLog
             // 
             this.spdLog.AccessibleDescription = "";
@@ -275,7 +288,7 @@
             this.spsLog.SheetName = "Sheet1";
             // Formulas and custom names must be loaded with R1C1 reference style
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.R1C1;
-            this.spsLog.ColumnCount = 26;
+            this.spsLog.ColumnCount = 28;
             this.spsLog.RowCount = 0;
             this.spsLog.ActiveRowIndex = -1;
             this.spsLog.ColumnHeader.Cells.Get(0, 0).Value = "Code";
@@ -300,10 +313,12 @@
             this.spsLog.ColumnHeader.Cells.Get(0, 19).Value = "매수호가";
             this.spsLog.ColumnHeader.Cells.Get(0, 20).Value = "장구분";
             this.spsLog.ColumnHeader.Cells.Get(0, 21).Value = "전일동시간대거래량";
-            this.spsLog.ColumnHeader.Cells.Get(0, 22).Value = "매수/도주문";
-            this.spsLog.ColumnHeader.Cells.Get(0, 23).Value = "수량";
-            this.spsLog.ColumnHeader.Cells.Get(0, 24).Value = "가격";
-            this.spsLog.ColumnHeader.Cells.Get(0, 25).Value = "세금";
+            this.spsLog.ColumnHeader.Cells.Get(0, 22).Value = "Buy Sign";
+            this.spsLog.ColumnHeader.Cells.Get(0, 23).Value = "Sell Sign";
+            this.spsLog.ColumnHeader.Cells.Get(0, 24).Value = "매수/도주문";
+            this.spsLog.ColumnHeader.Cells.Get(0, 25).Value = "수량";
+            this.spsLog.ColumnHeader.Cells.Get(0, 26).Value = "가격";
+            this.spsLog.ColumnHeader.Cells.Get(0, 27).Value = "세금";
             this.spsLog.Columns.Get(0).Label = "Code";
             this.spsLog.Columns.Get(0).Locked = true;
             this.spsLog.Columns.Get(1).Label = "체결시간";
@@ -348,21 +363,20 @@
             this.spsLog.Columns.Get(20).Locked = true;
             this.spsLog.Columns.Get(21).Label = "전일동시간대거래량";
             this.spsLog.Columns.Get(21).Locked = true;
-            this.spsLog.Columns.Get(22).Label = "매수/도주문";
-            this.spsLog.Columns.Get(22).Locked = true;
-            this.spsLog.Columns.Get(23).Label = "수량";
-            this.spsLog.Columns.Get(23).Locked = true;
-            this.spsLog.Columns.Get(24).Label = "가격";
+            this.spsLog.Columns.Get(24).Label = "매수/도주문";
             this.spsLog.Columns.Get(24).Locked = true;
-            this.spsLog.Columns.Get(25).Label = "세금";
+            this.spsLog.Columns.Get(25).Label = "수량";
             this.spsLog.Columns.Get(25).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType3;
+            this.spsLog.Columns.Get(26).Label = "가격";
+            this.spsLog.Columns.Get(26).Locked = true;
+            this.spsLog.Columns.Get(27).Label = "세금";
+            this.spsLog.Columns.Get(27).Locked = true;
+            this.spsLog.DefaultStyle.CellType = textCellType9;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType3;
+            this.spsLog.DefaultStyle.Renderer = textCellType9;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
-            this.spdLog.SetViewportLeftColumn(0, 0, 7);
             this.spdLog.SetActiveViewport(0, -1, 0);
             // 
             // toolStrip2
@@ -440,7 +454,7 @@
             // cmbQueryKind
             // 
             this.cmbQueryKind.FormattingEnabled = true;
-            this.cmbQueryKind.Location = new System.Drawing.Point(177, 3);
+            this.cmbQueryKind.Location = new System.Drawing.Point(125, 3);
             this.cmbQueryKind.Name = "cmbQueryKind";
             this.cmbQueryKind.Size = new System.Drawing.Size(118, 20);
             this.cmbQueryKind.TabIndex = 7;
@@ -448,7 +462,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(118, 6);
+            this.label2.Location = new System.Drawing.Point(66, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 6;
@@ -518,5 +532,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel lblSum;
         private System.Windows.Forms.ToolStripButton btnSimulation;
+        private System.Windows.Forms.ToolStripButton btnGetAvgVolume;
     }
 }

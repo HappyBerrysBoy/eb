@@ -52,6 +52,10 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtAvgVolumeOverRate = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtContinueOrderCnt = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtContinueSellCnt = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,10 +91,10 @@
             // txtDays
             // 
             this.txtDays.Location = new System.Drawing.Point(185, 62);
-            this.txtDays.MaxLength = 3;
+            this.txtDays.MaxLength = 7;
             this.txtDays.Name = "txtDays";
             this.txtDays.Size = new System.Drawing.Size(51, 21);
-            this.txtDays.TabIndex = 2;
+            this.txtDays.TabIndex = 1;
             // 
             // label2
             // 
@@ -104,10 +108,10 @@
             // txtCutoff
             // 
             this.txtCutoff.Location = new System.Drawing.Point(185, 116);
-            this.txtCutoff.MaxLength = 5;
+            this.txtCutoff.MaxLength = 7;
             this.txtCutoff.Name = "txtCutoff";
             this.txtCutoff.Size = new System.Drawing.Size(51, 21);
-            this.txtCutoff.TabIndex = 2;
+            this.txtCutoff.TabIndex = 3;
             // 
             // label3
             // 
@@ -121,10 +125,10 @@
             // txtProfitCutOff
             // 
             this.txtProfitCutOff.Location = new System.Drawing.Point(185, 142);
-            this.txtProfitCutOff.MaxLength = 5;
+            this.txtProfitCutOff.MaxLength = 7;
             this.txtProfitCutOff.Name = "txtProfitCutOff";
             this.txtProfitCutOff.Size = new System.Drawing.Size(51, 21);
-            this.txtProfitCutOff.TabIndex = 2;
+            this.txtProfitCutOff.TabIndex = 4;
             // 
             // label4
             // 
@@ -138,10 +142,10 @@
             // txtPowerLowLimit
             // 
             this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 169);
-            this.txtPowerLowLimit.MaxLength = 5;
+            this.txtPowerLowLimit.MaxLength = 7;
             this.txtPowerLowLimit.Name = "txtPowerLowLimit";
             this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
-            this.txtPowerLowLimit.TabIndex = 2;
+            this.txtPowerLowLimit.TabIndex = 5;
             // 
             // label5
             // 
@@ -155,10 +159,10 @@
             // txtPowerHighLimit
             // 
             this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 196);
-            this.txtPowerHighLimit.MaxLength = 5;
+            this.txtPowerHighLimit.MaxLength = 7;
             this.txtPowerHighLimit.Name = "txtPowerHighLimit";
             this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
-            this.txtPowerHighLimit.TabIndex = 2;
+            this.txtPowerHighLimit.TabIndex = 6;
             // 
             // label6
             // 
@@ -172,10 +176,10 @@
             // txtIgnoreCheCnt
             // 
             this.txtIgnoreCheCnt.Location = new System.Drawing.Point(185, 223);
-            this.txtIgnoreCheCnt.MaxLength = 5;
+            this.txtIgnoreCheCnt.MaxLength = 7;
             this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
             this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtIgnoreCheCnt.TabIndex = 2;
+            this.txtIgnoreCheCnt.TabIndex = 7;
             // 
             // label7
             // 
@@ -189,10 +193,10 @@
             // txtPierceHoCnt
             // 
             this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 250);
-            this.txtPierceHoCnt.MaxLength = 5;
+            this.txtPierceHoCnt.MaxLength = 7;
             this.txtPierceHoCnt.Name = "txtPierceHoCnt";
             this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtPierceHoCnt.TabIndex = 2;
+            this.txtPierceHoCnt.TabIndex = 8;
             // 
             // label8
             // 
@@ -206,10 +210,10 @@
             // txtTermLog
             // 
             this.txtTermLog.Location = new System.Drawing.Point(185, 277);
-            this.txtTermLog.MaxLength = 5;
+            this.txtTermLog.MaxLength = 7;
             this.txtTermLog.Name = "txtTermLog";
             this.txtTermLog.Size = new System.Drawing.Size(51, 21);
-            this.txtTermLog.TabIndex = 2;
+            this.txtTermLog.TabIndex = 9;
             // 
             // label9
             // 
@@ -223,10 +227,10 @@
             // txtMsMdRate
             // 
             this.txtMsMdRate.Location = new System.Drawing.Point(185, 304);
-            this.txtMsMdRate.MaxLength = 5;
+            this.txtMsMdRate.MaxLength = 7;
             this.txtMsMdRate.Name = "txtMsMdRate";
             this.txtMsMdRate.Size = new System.Drawing.Size(51, 21);
-            this.txtMsMdRate.TabIndex = 2;
+            this.txtMsMdRate.TabIndex = 10;
             // 
             // label10
             // 
@@ -240,7 +244,7 @@
             // txtAvgVolumeOverRate
             // 
             this.txtAvgVolumeOverRate.Location = new System.Drawing.Point(185, 89);
-            this.txtAvgVolumeOverRate.MaxLength = 3;
+            this.txtAvgVolumeOverRate.MaxLength = 7;
             this.txtAvgVolumeOverRate.Name = "txtAvgVolumeOverRate";
             this.txtAvgVolumeOverRate.Size = new System.Drawing.Size(51, 21);
             this.txtAvgVolumeOverRate.TabIndex = 2;
@@ -255,14 +259,52 @@
             this.label11.Text = "구매관련 설정값";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label12
+            // 
+            this.label12.Location = new System.Drawing.Point(12, 334);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(167, 12);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "매수신호 연속 몇번";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtContinueOrderCnt
+            // 
+            this.txtContinueOrderCnt.Location = new System.Drawing.Point(185, 331);
+            this.txtContinueOrderCnt.MaxLength = 7;
+            this.txtContinueOrderCnt.Name = "txtContinueOrderCnt";
+            this.txtContinueOrderCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtContinueOrderCnt.TabIndex = 11;
+            // 
+            // label13
+            // 
+            this.label13.Location = new System.Drawing.Point(12, 361);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(167, 12);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "매도신호 연속 몇번";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtContinueSellCnt
+            // 
+            this.txtContinueSellCnt.Location = new System.Drawing.Point(185, 358);
+            this.txtContinueSellCnt.MaxLength = 7;
+            this.txtContinueSellCnt.Name = "txtContinueSellCnt";
+            this.txtContinueSellCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtContinueSellCnt.TabIndex = 12;
+            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(636, 355);
+            this.ClientSize = new System.Drawing.Size(636, 394);
+            this.Controls.Add(this.txtContinueSellCnt);
+            this.Controls.Add(this.txtContinueOrderCnt);
             this.Controls.Add(this.txtMsMdRate);
             this.Controls.Add(this.txtTermLog);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.txtPierceHoCnt);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.txtIgnoreCheCnt);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.txtPowerHighLimit);
@@ -317,5 +359,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtAvgVolumeOverRate;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtContinueOrderCnt;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtContinueSellCnt;
     }
 }

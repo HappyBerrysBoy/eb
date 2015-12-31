@@ -25,6 +25,8 @@ namespace eb.common
         private string CONFIG_FOLDERPATH = "/config/";
         private string CONFIG_FILENAME = "config.ini";
         private string INTERLIST_FILENAME = "interestlist.txt";
+        private double TAX = 0.003;                 // 세금(매도시에만 발생)
+        private double FEE = 0.00015;               // 수수료(매수/매도 모두 발생)
         private int volumeHistoryCnt = 0;           // 최근 거래량 몇일치 조회 할건지
         private double cutoffPercent = 0;           // 손절 기준 %
         private double profitCutoffPercent = 0;     // 익절 기준 %
@@ -35,7 +37,30 @@ namespace eb.common
         private int logTerm = 0;                    // 일정기간(일정 시점) 얼마 동안 로그로 구매 여부 판단할건지 설정
         private double logTermVolumeOver = 0;       // 일정기간(일정 시점) 로그의 양이 최근 며칠 전체 평균거래량의 몇% 넘으면 구매할건지 설정
         private double msmdRate = 0;                // 매도/매수 비율
+        private int orderSignCnt = 0;               // 근접한 매수 신호가 몇번이나 있었는가?
+        private int sellSignCnt = 0;                // 근접한 매도 신호가 몇번이나 있었는가?
 
+        public double getTax
+        {
+            get { return TAX; }
+        }
+
+        public double getFee
+        {
+            get { return FEE; }
+        }
+
+        public int SellSignCnt
+        {
+            get { return sellSignCnt; }
+            set { sellSignCnt = value; }
+        }
+
+        public int OrderSignCnt
+        {
+            get { return orderSignCnt; }
+            set { orderSignCnt = value; }
+        }
 
         public double LogTermVolumeOver
         {

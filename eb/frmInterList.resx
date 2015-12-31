@@ -151,13 +151,13 @@
   <data name="btnSelectQuery.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFpSURBVDhP1Y9LSwJRHEdnV/kl2rhqUZL2UAjdRTAQpmQ+
-        yqmJHpaLQExNndRULKw2LWpTVCpBD5lyEdHe8UlB3yD6Ej1+ecVZiBROuw7cxb3cc+7/Uv+P+P0ByGps
-        pUFE5y2L5Ru79AgRVvk57D2FEc37wKRN7UfIRUeWQbIawk6Vw2xmCrqoGlpO29m4QlH8SwWp6kNLkchk
-        5O0Kh0QlWH95kFN8tMgMb3uzZgxNESIvXc8gUQ4gXvbDnprEANfXKrM582tM8CJZ2YQYIfLilQ2xkh/R
-        ohfT50aouN5mmbB2Yexis2a4H1ew/7yFqOCDg2fgvGMRETwIFz2wnRmg8ag+W2SRBZ6WWdJ6OHNs/Z/x
-        0gZCBTdCghuW0wlogqqvH2UR+pCW6Y/GMH9pRbiwjmDeBfOJHuqAsiZ3/y6LkMjorq42shGm43EM+/vb
-        l0VoTikbiQxB4ep5lzvlHY1jaShrkT/L0qCob6r82IHbdPmAAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFqSURBVDhPYxh6oH3n1P8gDOWSBkAaczcn/89cH0+6ISAN
+        OZuS/vdfbPrfeqLqf8KycOINASnM2pDwv/d84//u8/X/E5dH/HdotfxvX2/PAVXCwLDp6rn/S8/vxjAR
+        pBnk5K5z9f87z9WBbTap1/uDoTlhU8yz6OXBKIaANGesi/vfebb2f/vZmv/xS8P+G9frYmpO3hr5pO1k
+        5f/ecw3/YYaANKevjfnfdqbmf+vpyv+xS0L+G9XroGoGgcKVIZzJGyL/l+3N/j/hUsv/1pNV/7M2JfzP
+        3ZL8v/lkxf+m0xX/YxYH/7cqM/mLoRkG0jb5cEUtC/yfuzUZ7M/2M9X/G0+V/W88WfY/alHQf6s6k384
+        NcOAz0wfrsBZnv9T1kT/bzpV/r/uRMn/yAWB/y1rjYGa5fFrhgGQIe59DkAnh/wPn+//36LGiHjNMOBT
+        b8xl22z+X69I47dKrgo7VJg0YAw0hGzNpAEGBgCKuNht0pZLgAAAAABJRU5ErkJggg==
 </value>
   </data>
   <metadata name="spsInterest.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -165,6 +165,12 @@
   </metadata>
   <metadata name="toolStrip3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>757, 17</value>
+  </metadata>
+  <metadata name="spsLog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>365, 17</value>
+  </metadata>
+  <metadata name="toolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>567, 17</value>
   </metadata>
   <data name="btnLoadInterestList.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -227,11 +233,22 @@
         76hU+w2FWEeH2sj6AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="btnGetAvgVolume.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG9SURBVDhPpZLbKwRRHMfnxR8iD168iFc8UFvyIElEFEku
+        hY2QO7GpRbRk3U1uYzYkogmpRYRWLuuyRdtGSzYekFi+5pzdM2blVr71nXOa3/f7OWdquH9rXNrH6Pwu
+        +NkdDExvose0is6xFbTxEvR9c9B1TaG2XUC5nkdxQy/yqzvgrXo0Ipe/05t3VSu7tMUXwM9u04EgCL+a
+        KL2w0RfQP7VBByRATnTLj2fZT6/Ag2wmBkjOqfYFGEUzHfwVEJ9R6gswjC7TAQmwolq3L29wySbzKzkQ
+        mFSFEKPRz1vnuNbBBRokgd9Myjs2O129dY5r6p5RAExsr37HysTzVhWk3iDSADvlK5Nw3fqxAiAe2LB6
+        IJXNwwqAie0HJ0w0FDlkRrBhCRqjBIvDicXDs48blOj6aFh9IjEJ/MVcQU2nAmBigAP7JRzXLkzK3xxa
+        K0LDm3HqdOHZ7cbBxTUCorPA5ZS1KiW1CUDYPMTq0TmKFvegW7YgqELAtMWGu/tHrNkcHkCGVkcBn0UA
+        RPIvgN7tE/hHxCGsagi2mzs0ihJMW1YPICW3BgmZZYhN1SI6MQ9RcZkIj0mjABL42Vl4B77hoxlxLWlM
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="spsLog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>365, 17</value>
-  </metadata>
-  <metadata name="toolStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>567, 17</value>
   </metadata>
   <data name="btnShowLog.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
