@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType7 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType8 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType9 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
@@ -59,6 +59,7 @@
             this.lblSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.cmbQueryKind = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.chkReal = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -183,15 +184,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType7;
+            this.spsInterest.Columns.Get(5).CellType = textCellType1;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType8;
+            this.spsInterest.DefaultStyle.CellType = textCellType2;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType8;
+            this.spsInterest.DefaultStyle.Renderer = textCellType2;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -371,10 +372,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType9;
+            this.spsLog.DefaultStyle.CellType = textCellType3;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType9;
+            this.spsLog.DefaultStyle.Renderer = textCellType3;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -468,11 +469,22 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "조회종류";
             // 
+            // chkReal
+            // 
+            this.chkReal.AutoSize = true;
+            this.chkReal.Location = new System.Drawing.Point(298, 3);
+            this.chkReal.Name = "chkReal";
+            this.chkReal.Size = new System.Drawing.Size(60, 16);
+            this.chkReal.TabIndex = 9;
+            this.chkReal.Text = "실거래";
+            this.chkReal.UseVisualStyleBackColor = true;
+            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1259, 564);
+            this.Controls.Add(this.chkReal);
             this.Controls.Add(this.cmbQueryKind);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.stsBar);
@@ -533,5 +545,6 @@
         private System.Windows.Forms.ToolStripStatusLabel lblSum;
         private System.Windows.Forms.ToolStripButton btnSimulation;
         private System.Windows.Forms.ToolStripButton btnGetAvgVolume;
+        private System.Windows.Forms.CheckBox chkReal;
     }
 }

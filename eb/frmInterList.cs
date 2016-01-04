@@ -444,7 +444,8 @@ namespace eb
                         if (!isSimulation)
                         {
                             // 실제로 매수 주문 보내는 로직
-                            buyStock(item, cls);
+                            if(chkReal.Checked)
+                                buyStock(item, cls);
                         }
                         else
                         {
@@ -475,7 +476,8 @@ namespace eb
                     if (!isSimulation)
                     {
                         // 실제로 매도 주문 보내는 로직
-                        sellAllStock(cls.Shcode, cls);
+                        if (chkReal.Checked)
+                            sellAllStock(cls.Shcode, cls);
                     }
                     else
                     {
