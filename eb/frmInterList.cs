@@ -41,8 +41,10 @@ namespace eb
         Hashtable hItemLogs = new Hashtable();      // 종목별 Class
 
         StreamWriter file = null;   // log 수집용 stream
-        bool isSimulation = false;
+        bool chkSimulation = false;
         bool isRecording = false;
+        private const string LOG_PATH = "logs";
+        private const string EXTENSION = "txt";
 
         List<T1305> lstT1305 = new List<T1305>();
 
@@ -369,13 +371,27 @@ namespace eb
             lstLog.Add(realCls.Tax);
 
             DateTime dt = DateTime.Now;
-            string filename = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/logs/" + realCls.Shcode + "(" + dt.ToShortDateString() + ").txt";
+            string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + LOG_PATH + "/" + realCls.Shcode + "(" + dt.ToShortDateString() + ")." + EXTENSION;
+            writeLogFile(fileName, lstLog);
+        }
 
-            FileInfo fileInfo = new FileInfo(filename);
-
-            file = new StreamWriter(filename, true);
-            file.WriteLine(getLogFormat(lstLog));
-            file.Close();
+        private void writeLogFile(string fileName, List<string> logData)
+        {
+            try
+            {
+                FileInfo fileInfo = new FileInfo(fileName);
+                file = new StreamWriter(fileName, true);
+                file.WriteLine(getLogFormat(logData));
+            }
+            catch (Exception e)
+            {
+                file = new StreamWriter(fileName, true);
+                file.WriteLine(e.Message);
+            }
+            finally
+            {
+                file.Close();
+            }
         }
 
         private void setItemLog(ClsRealChe realCls)
@@ -432,7 +448,7 @@ namespace eb
                 string canOrder = chkBuyOrder(item);
 
                 cls.BuySign = canOrder;
-                if (isSimulation)
+                if (chkSimulation)
                 {
                     spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BUY_SIGN].Text = canOrder;
                 }
@@ -441,7 +457,7 @@ namespace eb
                 {
                     if (!chkCutOffTime(cls))
                     {
-                        if (!isSimulation)
+                        if (!chkSimulation)
                         {
                             // 실제로 매수 주문 보내는 로직
                             if(chkReal.Checked)
@@ -466,14 +482,14 @@ namespace eb
                 string canSell = chkSellSign(item);
 
                 cls.SellSign = canSell;
-                if (isSimulation)
+                if (chkSimulation)
                 {
                     spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SELL_SIGN].Text = canSell;
                 }
 
                 if (!canSell.Contains("2"))
                 {
-                    if (!isSimulation)
+                    if (!chkSimulation)
                     {
                         // 실제로 매도 주문 보내는 로직
                         if (chkReal.Checked)
@@ -896,71 +912,72 @@ namespace eb
 
         private void btnShowLog_Click(object sender, EventArgs e)
         {
-            string filename = getDialogFile();
-            if (filename == "") return;
+            LoadLogData(false);
+            //string filename = getDialogFile();
+            //if (filename == "") return;
 
-            StreamReader sr = null;
+            //StreamReader sr = null;
 
-            try
-            {
-                sr = new StreamReader(filename);
-                string line;
-                spsLog.RowCount = 0;
-                string currRate = "";
-                string beforeRate = "";
+            //try
+            //{
+            //    sr = new StreamReader(filename);
+            //    string line;
+            //    spsLog.RowCount = 0;
+            //    string currRate = "";
+            //    string beforeRate = "";
 
-                Cursor.Current = Cursors.WaitCursor;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (line.Split('/').Length > 10)
-                    {
-                        spsLog.RowCount++;
-                        string[] strs = line.Split('/');
-                        List<string> strList = new List<string>();
+            //    Cursor.Current = Cursors.WaitCursor;
+            //    while ((line = sr.ReadLine()) != null)
+            //    {
+            //        if (line.Split('/').Length > 10)
+            //        {
+            //            spsLog.RowCount++;
+            //            string[] strs = line.Split('/');
+            //            List<string> strList = new List<string>();
 
-                        for (int i = 0; i < strs.Length; i++)
-                        {
-                            strList.Add(strs[i]);
-                        }
+            //            for (int i = 0; i < strs.Length; i++)
+            //            {
+            //                strList.Add(strs[i]);
+            //            }
 
-                        string drate = strList[(int)LOG_COL.DRATE];
-                        string gubun = strList[(int)LOG_COL.GUBUN];
+            //            string drate = strList[(int)LOG_COL.DRATE];
+            //            string gubun = strList[(int)LOG_COL.GUBUN];
 
-                        setSpread(strList);
+            //            setSpread(strList);
 
-                        if (currRate == "")
-                        {
-                            currRate = drate;
-                        }
-                        else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
-                        {
-                            beforeRate = currRate;
-                            currRate = drate;
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Red;
-                        }
-                        else if (!currRate.Equals(drate))
-                        {
-                            beforeRate = currRate;
-                            currRate = drate;
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Orange;
-                        }
-                        if (gubun.Equals("+"))
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.Orange;
-                        else
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
-                    }
-                }
+            //            if (currRate == "")
+            //            {
+            //                currRate = drate;
+            //            }
+            //            else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
+            //            {
+            //                beforeRate = currRate;
+            //                currRate = drate;
+            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Red;
+            //            }
+            //            else if (!currRate.Equals(drate))
+            //            {
+            //                beforeRate = currRate;
+            //                currRate = drate;
+            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Orange;
+            //            }
+            //            if (gubun.Equals("+"))
+            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.Orange;
+            //            else
+            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
+            //        }
+            //    }
 
-                Cursor.Current = Cursors.Default;
-            }
-            catch (Exception ex)
-            {
+            //    Cursor.Current = Cursors.Default;
+            //}
+            //catch (Exception ex)
+            //{
 
-            }
-            finally
-            {
-                sr.Close();
-            }
+            //}
+            //finally
+            //{
+            //    sr.Close();
+            //}
         }
 
         private void btnDoLog_Click(object sender, EventArgs e)
@@ -1077,6 +1094,9 @@ namespace eb
 
         private string chkBuyOrder(Item item)
         {
+            // 현재 오른 %가 너무 높으면... 사지 말까? 예를들어 20%라든지... 
+            // 3분 5분 이동 평균선상 내려가는 추세라면 사지 말자~?
+
             ClsRealChe realCls = item.Logs[item.Logs.Count - 1];
 
             // 1분정도 로그보고 졸라 많이 들어오면 Ok
@@ -1268,11 +1288,19 @@ namespace eb
                 // 판매 신호가 연속 몇회 이상 날아 오는 경우
                 string sellSignCnt = chkSellSignCnt(item, cutoff);
 
+                // 28% 이상 넘어가면 팔아버리자..
+                string nearByTop = ChkNearByTopPrice(item, "");
+
                 // 거래량을 동반한 매도총량이 어느정도 기준을 넘어서는 경우
                 // 체결강도가 어느정도 이상 떨어진다던지..
 
                 return cutoff + sellSignCnt;
             }
+        }
+
+        private string ChkNearByTopPrice(Item item, string dd)
+        {
+
         }
 
         private string chkSellSignCnt(Item item, string sign)
@@ -1295,7 +1323,7 @@ namespace eb
 
         private bool chkCutOffTime(ClsRealChe cls)
         {
-            if (isSimulation)
+            if (chkSimulation)
             {
                 string hour = cls.Chetime.Substring(0, 2);
                 string minute = cls.Chetime.Substring(2, 2);
@@ -1401,13 +1429,13 @@ namespace eb
             }
         }
 
-        private void btnSimulation_Click(object sender, EventArgs e)
+        private void LoadLogData(bool isSimulations)
         {
             string filename = getDialogFile();
             if (filename == "") return;
 
             StreamReader sr = null;
-            isSimulation = true;
+            chkSimulation = isSimulations;
 
             try
             {
@@ -1458,33 +1486,37 @@ namespace eb
                         else
                             spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
 
-                        if (hItemLogs[strList[(int)LOG_COL.CODE]] == null)
+                        if (chkSimulation)
                         {
-                            if (spsLog.RowCount == 1)
+                            if (hItemLogs[strList[(int)LOG_COL.CODE]] == null)
                             {
-                                MessageBox.Show("선택된 로그의 종목이 종목리스트에 없습니다.");
+                                if (spsLog.RowCount == 1)
+                                {
+                                    MessageBox.Show("선택된 로그의 종목이 종목리스트에 없습니다.");
+                                }
+                                continue;
                             }
-                            continue;
-                        }
 
-                        Item item = ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]);
+                            Item item = ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]);
 
-                        if (spsLog.RowCount != 1)
-                        {
-                            // 최초 1줄은 시장 시작전 동시호가 거래량이라서 통계에서 제외
-                            simulationProcess(strList);
-                        }else
-                        {
-                            double avgVolFewDays = item.AvgVolumeFewDays;
-                            double orderPerRate = item.OrderPerRate;
-                            hItemLogs[strList[(int)LOG_COL.CODE]] = new Item();
-                            ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
-                            ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).OrderPerRate = orderPerRate;
+                            if (spsLog.RowCount != 1)
+                            {
+                                // 최초 1줄은 시장 시작전 동시호가 거래량이라서 통계에서 제외
+                                simulationProcess(strList);
+                            }
+                            else
+                            {
+                                double avgVolFewDays = item.AvgVolumeFewDays;
+                                double orderPerRate = item.OrderPerRate;
+                                hItemLogs[strList[(int)LOG_COL.CODE]] = new Item();
+                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
+                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).OrderPerRate = orderPerRate;
+                            }
                         }
                     }
                 }
 
-                isSimulation = false;
+                chkSimulation = false;
                 Cursor.Current = Cursors.Default;
             }
             catch (Exception ex)
@@ -1495,6 +1527,11 @@ namespace eb
             {
                 sr.Close();
             }
+        }
+
+        private void btnSimulation_Click(object sender, EventArgs e)
+        {
+            LoadLogData(true);
         }
 
         private void btnGetAvgVolume_Click(object sender, EventArgs e)
