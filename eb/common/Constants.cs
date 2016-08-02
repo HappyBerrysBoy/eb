@@ -39,6 +39,20 @@ namespace eb.common
         private double msmdRate = 0;                // 매도/매수 비율
         private int orderSignCnt = 0;               // 근접한 매수 신호가 몇번이나 있었는가?
         private int sellSignCnt = 0;                // 근접한 매도 신호가 몇번이나 있었는가?
+        private int msCutLine = 0;                  // 몇% 이상이면 매수하지 않는다.. ex)20% or 25%
+        private int mdCutLine = 0;                  // 몇% 이상이면 매도해버린다. ex)25% or 27%
+
+        public int MsCutLine
+        {
+            get { return msCutLine; }
+            set { msCutLine = value; }
+        }
+
+        public int MdCutLine
+        {
+            get { return mdCutLine; }
+            set { mdCutLine = value; }
+        }
 
         public double getTax
         {

@@ -56,6 +56,10 @@
             this.txtContinueOrderCnt = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtContinueSellCnt = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtMsCutLine = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtMdCutLine = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -293,6 +297,40 @@
             this.txtContinueSellCnt.Size = new System.Drawing.Size(51, 21);
             this.txtContinueSellCnt.TabIndex = 12;
             // 
+            // label14
+            // 
+            this.label14.Location = new System.Drawing.Point(242, 65);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(167, 23);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "몇% 이상이면 매수안함";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtMsCutLine
+            // 
+            this.txtMsCutLine.Location = new System.Drawing.Point(415, 62);
+            this.txtMsCutLine.MaxLength = 7;
+            this.txtMsCutLine.Name = "txtMsCutLine";
+            this.txtMsCutLine.Size = new System.Drawing.Size(51, 21);
+            this.txtMsCutLine.TabIndex = 1;
+            // 
+            // label15
+            // 
+            this.label15.Location = new System.Drawing.Point(242, 92);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(167, 23);
+            this.label15.TabIndex = 0;
+            this.label15.Text = "몇% 이상이면 매도함";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtMdCutLine
+            // 
+            this.txtMdCutLine.Location = new System.Drawing.Point(415, 89);
+            this.txtMdCutLine.MaxLength = 7;
+            this.txtMdCutLine.Name = "txtMdCutLine";
+            this.txtMdCutLine.Size = new System.Drawing.Size(51, 21);
+            this.txtMdCutLine.TabIndex = 1;
+            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -316,12 +354,16 @@
             this.Controls.Add(this.txtCutoff);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAvgVolumeOverRate);
+            this.Controls.Add(this.txtMdCutLine);
+            this.Controls.Add(this.txtMsCutLine);
             this.Controls.Add(this.txtDays);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label10);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label1);
             this.Name = "frmConfig";
@@ -363,5 +405,9 @@
         private System.Windows.Forms.TextBox txtContinueOrderCnt;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtContinueSellCnt;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtMsCutLine;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtMdCutLine;
     }
 }

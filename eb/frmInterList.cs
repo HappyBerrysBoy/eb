@@ -114,18 +114,20 @@ namespace eb
                     if (line.Split('/').Length > 2)
                     {
                         string[] strs = line.Split('/');
-                        Program.cont.VolumeHistoryCnt = Common.getIntValue(strs[0]);
-                        Program.cont.CutoffPercent = Common.getDoubleValue(strs[1]);
-                        Program.cont.ProfitCutoffPercent = Common.getDoubleValue(strs[2]);
-                        Program.cont.PowerLowLimit = Common.getDoubleValue(strs[3]);
-                        Program.cont.PowerHighLimit = Common.getDoubleValue(strs[4]);
-                        Program.cont.IgnoreCheCnt = Common.getIntValue(strs[5]);
-                        Program.cont.PierceHoCnt = Common.getIntValue(strs[6]);
-                        Program.cont.LogTerm = Common.getIntValue(strs[7]);
-                        Program.cont.MsmdRate = Common.getDoubleValue(strs[8]);
-                        Program.cont.LogTermVolumeOver = Common.getDoubleValue(strs[9]);
-                        Program.cont.OrderSignCnt = Common.getIntValue(strs[10]);
-                        Program.cont.SellSignCnt = Common.getIntValue(strs[11]);
+                        Program.cont.VolumeHistoryCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.VOLUME_HISTORY_CNT]);
+                        Program.cont.CutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.CUT_OFF_PERCENT]);
+                        Program.cont.ProfitCutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.PROFIT_CUT_OFF_PERCENT]);
+                        Program.cont.PowerLowLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_LOW_LIMIT]);
+                        Program.cont.PowerHighLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_HIGH_LIMIT]);
+                        Program.cont.IgnoreCheCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.IGNORE_CHE_CNT]);
+                        Program.cont.PierceHoCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.PIERCE_HO_CNT]);
+                        Program.cont.LogTerm = Common.getIntValue(strs[(int)Common.CONFIG_IDX.LOG_TERM]);
+                        Program.cont.MsmdRate = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.MS_MD_RATE]);
+                        Program.cont.LogTermVolumeOver = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.LOG_TERM_VOLUME_OVER]);
+                        Program.cont.OrderSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.ORDER_SIGN_CNT]);
+                        Program.cont.SellSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.SELL_SIGN_CNT]);
+                        Program.cont.MsCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MS_CUT_LINE]);
+                        Program.cont.MdCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MD_CUT_LINE]);
                     }
                 }
 
@@ -437,76 +439,82 @@ namespace eb
             writeLog(cls);
         }
 
+        private void BuyProcess(Item item, ClsRealChe cls)
+        {
+            if (item.IsPurchased) return;
+
+            string canOrder = chkBuyOrder(item);
+            cls.BuySign = canOrder;
+
+            if (chkSimulation)
+            {
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BUY_SIGN].Text = canOrder;
+            }
+
+            // 2는 구매 요건에 부합되지 않는 경우가 있을 경우 포함됨
+            if (canOrder.Contains("2")) return;
+
+            // 장 마감 근처인 경우 안삼..
+            if (chkCutOffTime(cls)) return;
+            
+            if (!chkSimulation)
+            {
+                // 실제로 매수 주문 보내는 로직
+                if (chkReal.Checked)
+                    buyStock(item, cls);
+            }
+            else
+            {
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = "구매ㄱㄱ";
+                spsLog.Rows[spsLog.RowCount - 1].BackColor = Color.YellowGreen;
+            }
+
+            cls.Order = "매수";
+            item.IsPurchased = true;        // 사게 되면..
+            item.PurchasedRate = Common.getDoubleValue(cls.Drate);
+            item.HighRate = Common.getDoubleValue(cls.Drate);
+        }
+
+        private void SellProcess(Item item, ClsRealChe cls)
+        {
+            if (!item.IsPurchased) return;
+            
+            string canSell = chkSellSign(item);
+            cls.SellSign = canSell;
+
+            if (chkSimulation)
+            {
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SELL_SIGN].Text = canSell;
+            }
+
+            // 2는 매도 요건에 부합되지 않는 경우가 있을 경우 포함됨
+            if (canSell.Contains("2")) return;
+            
+            if (!chkSimulation)
+            {
+                // 실제로 매도 주문 보내는 로직
+                if (chkReal.Checked)
+                    sellAllStock(cls.Shcode, cls);
+            }
+            else
+            {
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = "판매 ㄱㄱ";
+                spsLog.Rows[spsLog.RowCount - 1].BackColor = Color.LightBlue;
+            }
+
+            cls.Order = "매도";
+            item.IsPurchased = false;       // 팔게되면.. 싹다 팔고나면..
+            item.PurchasedRate = 0;
+            item.HighRate = 0;
+        }
+
         private void chkOrderLogic(ClsRealChe cls)
         {
             Item item = (Item)hItemLogs[cls.Shcode];
             setItemLog(cls);
             setTimeIndex(item);
-
-            if (!item.IsPurchased)
-            {
-                string canOrder = chkBuyOrder(item);
-
-                cls.BuySign = canOrder;
-                if (chkSimulation)
-                {
-                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BUY_SIGN].Text = canOrder;
-                }
-                
-                if (!canOrder.Contains("2"))
-                {
-                    if (!chkCutOffTime(cls))
-                    {
-                        if (!chkSimulation)
-                        {
-                            // 실제로 매수 주문 보내는 로직
-                            if(chkReal.Checked)
-                                buyStock(item, cls);
-                        }
-                        else
-                        {
-                            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = "구매ㄱㄱ";
-                            spsLog.Rows[spsLog.RowCount - 1].BackColor = Color.YellowGreen;
-                        }
-
-                        cls.Order = "매수";
-                        item.IsPurchased = true;        // 사게 되면..
-                        item.PurchasedRate = Common.getDoubleValue(cls.Drate);
-                        item.HighRate = Common.getDoubleValue(cls.Drate);
-                    }
-                }
-            }
-
-            if (item.IsPurchased)
-            {
-                string canSell = chkSellSign(item);
-
-                cls.SellSign = canSell;
-                if (chkSimulation)
-                {
-                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SELL_SIGN].Text = canSell;
-                }
-
-                if (!canSell.Contains("2"))
-                {
-                    if (!chkSimulation)
-                    {
-                        // 실제로 매도 주문 보내는 로직
-                        if (chkReal.Checked)
-                            sellAllStock(cls.Shcode, cls);
-                    }
-                    else
-                    {
-                        spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = "판매 ㄱㄱ";
-                        spsLog.Rows[spsLog.RowCount - 1].BackColor = Color.LightBlue;
-                    }
-
-                    cls.Order = "매도";
-                    item.IsPurchased = false;       // 팔게되면.. 싹다 팔고나면..
-                    item.PurchasedRate = 0;
-                    item.HighRate = 0;
-                }
-            }
+            BuyProcess(item, cls);
+            SellProcess(item, cls);
         }
 
         private int calcBuyVolume(Item item, ClsRealChe cls)
@@ -844,7 +852,6 @@ namespace eb
                     string rate = spsInterest.Cells[i, (int)INTER_COL.RATE].Text;
                     sw.WriteLine(gubun + "/" + code + "/" + name + "/" + use + "/" + rate);
                 }
-                sw.Close();
             }
             catch (Exception ex)
             {
@@ -913,71 +920,6 @@ namespace eb
         private void btnShowLog_Click(object sender, EventArgs e)
         {
             LoadLogData(false);
-            //string filename = getDialogFile();
-            //if (filename == "") return;
-
-            //StreamReader sr = null;
-
-            //try
-            //{
-            //    sr = new StreamReader(filename);
-            //    string line;
-            //    spsLog.RowCount = 0;
-            //    string currRate = "";
-            //    string beforeRate = "";
-
-            //    Cursor.Current = Cursors.WaitCursor;
-            //    while ((line = sr.ReadLine()) != null)
-            //    {
-            //        if (line.Split('/').Length > 10)
-            //        {
-            //            spsLog.RowCount++;
-            //            string[] strs = line.Split('/');
-            //            List<string> strList = new List<string>();
-
-            //            for (int i = 0; i < strs.Length; i++)
-            //            {
-            //                strList.Add(strs[i]);
-            //            }
-
-            //            string drate = strList[(int)LOG_COL.DRATE];
-            //            string gubun = strList[(int)LOG_COL.GUBUN];
-
-            //            setSpread(strList);
-
-            //            if (currRate == "")
-            //            {
-            //                currRate = drate;
-            //            }
-            //            else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
-            //            {
-            //                beforeRate = currRate;
-            //                currRate = drate;
-            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Red;
-            //            }
-            //            else if (!currRate.Equals(drate))
-            //            {
-            //                beforeRate = currRate;
-            //                currRate = drate;
-            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Color.Orange;
-            //            }
-            //            if (gubun.Equals("+"))
-            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.Orange;
-            //            else
-            //                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Color.LightBlue;
-            //        }
-            //    }
-
-            //    Cursor.Current = Cursors.Default;
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
-            //finally
-            //{
-            //    sr.Close();
-            //}
         }
 
         private void btnDoLog_Click(object sender, EventArgs e)
@@ -1099,65 +1041,26 @@ namespace eb
 
             ClsRealChe realCls = item.Logs[item.Logs.Count - 1];
 
+            // 너무 높은 %에서는 구매하지 말자.. 20% 이상이라던지..(앞에 조건들 무시하고 안삼..)
+            if (ChkBuyOrder.chkMsCutLine(realCls))
+                return "222";
+
             // 1분정도 로그보고 졸라 많이 들어오면 Ok
             // 3분정도 로그보고 꾸준히 들어와도 Ok 일단 위아래 둘중에 어떤게 나은지 모니터링 해보자..
             // 일정기간 매수량이 매도량를 압도
-            string msVolumeDueTime = chkMsVolumeDueTime(item);
+            string msVolumeDueTime = ChkBuyOrder.chkMsVolumeDueTime(item);
             // 일정기간 거래량이 일별 평균 거래량의 특정 비율을 넘어서야함
-            string overVolume = chkOverVolume(item);
+            string overVolume = ChkBuyOrder.chkOverVolume(item);
             // 호가를 2개~3개 정도 뚫어주거나 % 기준으로 어느정도 올랐을 경우
-            string pierce = pierceUp(item);
+            string pierce = ChkBuyOrder.pierceUp(item);
             // 체결강도가 너무 낮지 않아야 함
-            //string chePower = getChePower(realCls);
+            string chePower = ChkBuyOrder.getChePower(realCls);
             // 체결강도가 0이거나 1000 이상 올라 가는건 최초 동시호가 근처이므로 배제해야 할듯(매도누적체결건수로 해도 될듯.. 순서대로 체결건수만큼 올라감)
-            string initTime = chkInitOrder(realCls);
+            string initTime = ChkBuyOrder.chkInitOrder(realCls);
             // 구매신호가 설정된 값 이상 연속으로 왔는가..
-            string orderSignCnt = chkOrderSignCnt(item, msVolumeDueTime + overVolume + pierce + initTime);
+            string orderSignCnt = ChkBuyOrder.chkOrderSignCnt(item, msVolumeDueTime + overVolume + pierce + initTime);
 
-            return msVolumeDueTime + overVolume + pierce + initTime + orderSignCnt;
-        }
-
-        private string chkOrderSignCnt(Item item, string sign)
-        {
-            if (!sign.Contains("2"))
-            {
-                item.OrderSignCnt++;
-                if (item.OrderSignCnt >= Program.cont.OrderSignCnt)
-                    return "1";
-                else
-                    return "2";
-            }
-            else
-            {
-                if(item.OrderSignCnt > 0)
-                    item.OrderSignCnt--;
-                return "2";
-            }
-        }
-
-        private string chkMsVolumeDueTime(Item item)
-        {
-            double msVolume = Common.getDoubleValue(item.Logs[item.ToTimeIdx].Msvolume) - Common.getDoubleValue(item.Logs[item.FromTimeIdx].Msvolume);
-            double mdVolume = Common.getDoubleValue(item.Logs[item.ToTimeIdx].Mdvolume) - Common.getDoubleValue(item.Logs[item.FromTimeIdx].Mdvolume);
-
-            if (msVolume == 0) return "2";
-
-            if (mdVolume / msVolume < Program.cont.MsmdRate)
-                return "1";
-            else
-                return "2";
-        }
-
-        private string chkOverVolume(Item item)
-        {
-            double volume = Common.getDoubleValue(item.Logs[item.ToTimeIdx].Volume) - Common.getDoubleValue(item.Logs[item.FromTimeIdx].Volume);
-
-            if (item.AvgVolumeFewDays < 1)
-                return "2";
-            else if (item.AvgVolumeFewDays * Program.cont.LogTermVolumeOver < volume)
-                return "1";
-            else
-                return "2";
+            return msVolumeDueTime + overVolume + pierce + chePower + initTime + orderSignCnt;
         }
 
         private void setTimeIndex(Item item)
@@ -1209,66 +1112,6 @@ namespace eb
             return TimeSpan.Parse(time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4, 2));
         }
 
-        private string getChePower(ClsRealChe cls)
-        {
-            double power = Common.getDoubleValue(cls.Cpower);
-
-            if (Program.cont.PowerLowLimit > power)
-                return "2";
-            else
-                return "1";
-        }
-
-        private string pierceUp(Item item)
-        {
-            // 호가 뚫는거 체크를 안하면 무조건 O
-            if (Program.cont.PierceHoCnt < 2) return "1";
-            // 아직 데이터가 충분히 안쌓였으면 X
-            if (Program.cont.PierceHoCnt > item.RateHistory.Count) return "2";
-
-            List<string> hoList = new List<string>();
-
-            for (int i = 0; i < Program.cont.PierceHoCnt; i++)
-            {
-                hoList.Add(item.RateHistory[item.RateHistory.Count - 1 - i]);
-            }
-
-            string beforeHo = hoList[0];
-
-            for (int i = 1; i < hoList.Count; i++)
-            {
-                if (Common.getDoubleValue(beforeHo) > Common.getDoubleValue(hoList[i]))
-                {
-                    beforeHo = hoList[i];
-                }
-                else
-                {
-                    return "2";
-                }
-            }
-
-            return "1";
-        }
-
-        // 체결강도가 0이거나 1000 이상 올라 가는건 최초 동시호가 근처이므로 배제해야 할듯(매도누적체결건수로 해도 될듯.. 순서대로 체결건수만큼 올라감)
-        private string chkInitOrder(ClsRealChe realCls)
-        {
-            double power = Common.getDoubleValue(realCls.Cpower);
-            double mdcnt = Common.getDoubleValue(realCls.Mdchecnt);
-            double mscnt = Common.getDoubleValue(realCls.Mschecnt);
-
-            if (power < Program.cont.PowerLowLimit || power > Program.cont.PowerHighLimit)
-                return "2";
-
-            if (mdcnt < Program.cont.IgnoreCheCnt)
-                return "2";
-
-            if (mscnt < Program.cont.IgnoreCheCnt)
-                return "2";
-
-            return "1";
-        }
-
         private string chkSellSign(Item item)
         {
             ClsRealChe realCls = item.Logs[item.Logs.Count - 1];
@@ -1282,42 +1125,20 @@ namespace eb
             }
             else
             {
+                // 기준 %이상 넘어가면 무조건 팔아버리자..(앞 조건들 무시..)
+                if (ChkSellOrder.chkMdCutLine(realCls))
+                    return "기준이상오름";
+
                 // 구매가격 기준 손절% 또는 최고가 대비 익절% 이하로 내려 가는 경우
-                string cutoff = chkCutOff(item.PurchasedRate, currRate, item.HighRate);
+                string cutoff = ChkSellOrder.chkCutOff(item.PurchasedRate, currRate, item.HighRate);
 
                 // 판매 신호가 연속 몇회 이상 날아 오는 경우
-                string sellSignCnt = chkSellSignCnt(item, cutoff);
-
-                // 28% 이상 넘어가면 팔아버리자..
-                string nearByTop = ChkNearByTopPrice(item, "");
+                string sellSignCnt = ChkSellOrder.chkSellSignCnt(item, cutoff);
 
                 // 거래량을 동반한 매도총량이 어느정도 기준을 넘어서는 경우
                 // 체결강도가 어느정도 이상 떨어진다던지..
 
                 return cutoff + sellSignCnt;
-            }
-        }
-
-        private string ChkNearByTopPrice(Item item, string dd)
-        {
-
-        }
-
-        private string chkSellSignCnt(Item item, string sign)
-        {
-            if (!sign.Contains("2"))
-            {
-                item.SellSignCnt++;
-                if (item.SellSignCnt >= Program.cont.SellSignCnt)
-                    return "1";
-                else
-                    return "2";
-            }
-            else
-            {
-                if (item.SellSignCnt > 0)
-                    item.SellSignCnt--;
-                return "2";
             }
         }
 
@@ -1341,16 +1162,6 @@ namespace eb
                 else
                     return false;
             }
-        }
-
-        private string chkCutOff(double purchasedRate, double currRate, double highRate)
-        {
-            if (purchasedRate - Program.cont.CutoffPercent >= currRate)
-                return "1";
-            else if (highRate - Program.cont.ProfitCutoffPercent >= currRate)
-                return "3";
-            else
-                return "2";
         }
 
         private void simulationProcess(List<string> list)

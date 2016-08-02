@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ChkBuyOrder.cs" />
+    <Compile Include="Classes\ChkSellOrder.cs" />
     <Compile Include="Classes\ClsRealChe.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\T1305.cs" />
