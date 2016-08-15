@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace eb.common
         private string CONFIG_FOLDERPATH = "/config/";
         private string CONFIG_FILENAME = "config.ini";
         private string INTERLIST_FILENAME = "interestlist.txt";
+        private string log_path = "logs";
+        private string extension = "txt";
         private double TAX = 0.003;                 // 세금(매도시에만 발생)
         private double FEE = 0.00015;               // 수수료(매수/매도 모두 발생)
         private int volumeHistoryCnt = 0;           // 최근 거래량 몇일치 조회 할건지
@@ -41,6 +44,64 @@ namespace eb.common
         private int sellSignCnt = 0;                // 근접한 매도 신호가 몇번이나 있었는가?
         private int msCutLine = 0;                  // 몇% 이상이면 매수하지 않는다.. ex)20% or 25%
         private int mdCutLine = 0;                  // 몇% 이상이면 매도해버린다. ex)25% or 27%
+        private double differenceChePower = 0;         // 일정기간(일정 시점) 로그의 기간동안 설정된 체결강도의 %를 넘어 서면 구매할건지 설정
+
+        // colors
+        private Color buyCell = Color.YellowGreen;  // 실제로 매수 했을 Row
+        private Color sellCell = Color.LightBlue;   // 실제로 매도 했을 Row
+        private Color changeRate = Color.Orange;    // 비율이 이전과 다르게 한번 변경된 경우
+        private Color changeRateOver2 = Color.Red;  // 비율이 두번 이상 변경된 경우
+        private Color msSign = Color.Orange;        // 이번 틱이 매수인 경우(+) 기호 색상
+        private Color mdSign = Color.LightBlue;     // 이번 틱이 매도인 경우(-) 기호 색상
+
+        public Color MdSign
+        {
+            get { return mdSign; }
+        }
+
+        public Color MsSign
+        {
+            get { return msSign; }
+        }
+        
+
+        public Color ChangeRateOver2
+        {
+            get { return changeRateOver2; }
+        }
+        
+
+        public Color ChangeRate
+        {
+            get { return changeRate; }
+        }
+        
+
+        public Color SellCell
+        {
+            get { return sellCell; }
+        }
+        
+
+        public Color BuyCell
+        {
+            get { return buyCell; }
+        }
+
+        public string LOG_PATH
+        {
+            get { return log_path; }
+        }
+        public string EXTENSION
+        {
+            get { return extension; }
+        }
+
+        public double DifferenceChePower
+        {
+            get { return differenceChePower; }
+            set { differenceChePower = value; }
+        }
 
         public int MsCutLine
         {

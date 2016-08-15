@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType16 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType17 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType18 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType19 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType20 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
@@ -47,12 +50,15 @@
             this.btnDel = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnGetAvgVolume = new System.Windows.Forms.ToolStripButton();
+            this.spdLongTermSimulation = new FarPoint.Win.Spread.FpSpread();
+            this.spsLongTermSimulation = new FarPoint.Win.Spread.SheetView();
             this.spdLog = new FarPoint.Win.Spread.FpSpread();
             this.spsLog = new FarPoint.Win.Spread.SheetView();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.btnShowLog = new System.Windows.Forms.ToolStripButton();
             this.btnFindPoint = new System.Windows.Forms.ToolStripButton();
             this.btnSimulation = new System.Windows.Forms.ToolStripButton();
+            this.btnLongTermSimulation = new System.Windows.Forms.ToolStripButton();
             this.stsBar = new System.Windows.Forms.StatusStrip();
             this.lblSTS = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -60,6 +66,8 @@
             this.cmbQueryKind = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.chkReal = new System.Windows.Forms.CheckBox();
+            this.tmrRecord = new System.Windows.Forms.Timer(this.components);
+            this.chkAutoRecording = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -68,6 +76,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spdInterest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).BeginInit();
             this.toolStrip3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spsLongTermSimulation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLog)).BeginInit();
             this.toolStrip2.SuspendLayout();
@@ -140,6 +150,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.spdLongTermSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
             this.splitContainer1.Size = new System.Drawing.Size(1259, 514);
@@ -184,15 +195,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType1;
+            this.spsInterest.Columns.Get(5).CellType = textCellType16;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType2;
+            this.spsInterest.DefaultStyle.CellType = textCellType17;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType2;
+            this.spsInterest.DefaultStyle.Renderer = textCellType17;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -267,6 +278,70 @@
             this.btnGetAvgVolume.Size = new System.Drawing.Size(23, 22);
             this.btnGetAvgVolume.Text = "Get Average Volume";
             this.btnGetAvgVolume.Click += new System.EventHandler(this.btnGetAvgVolume_Click);
+            // 
+            // spdLongTermSimulation
+            // 
+            this.spdLongTermSimulation.AccessibleDescription = "";
+            this.spdLongTermSimulation.BackColor = System.Drawing.SystemColors.Control;
+            this.spdLongTermSimulation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spdLongTermSimulation.HorizontalScrollBarPolicy = FarPoint.Win.Spread.ScrollBarPolicy.AsNeeded;
+            this.spdLongTermSimulation.Location = new System.Drawing.Point(0, 25);
+            this.spdLongTermSimulation.Name = "spdLongTermSimulation";
+            this.spdLongTermSimulation.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.spdLongTermSimulation.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
+            this.spsLongTermSimulation});
+            this.spdLongTermSimulation.Size = new System.Drawing.Size(871, 489);
+            this.spdLongTermSimulation.TabIndex = 9;
+            this.spdLongTermSimulation.Visible = false;
+            // 
+            // spsLongTermSimulation
+            // 
+            this.spsLongTermSimulation.Reset();
+            this.spsLongTermSimulation.SheetName = "Sheet1";
+            // Formulas and custom names must be loaded with R1C1 reference style
+            this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.R1C1;
+            this.spsLongTermSimulation.ColumnCount = 10;
+            this.spsLongTermSimulation.RowCount = 0;
+            this.spsLongTermSimulation.ActiveRowIndex = -1;
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 0).Value = "날짜";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 1).Value = "시간";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 2).Value = "매수여부";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 3).Value = "금액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 4).Value = "비율";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 5).Value = "체결강도";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 6).Value = "매도%-매수%";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 7).Value = "매도액-매수액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 8).Value = "이익/손해금액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 9).Value = "누적";
+            this.spsLongTermSimulation.Columns.Get(0).Label = "날짜";
+            this.spsLongTermSimulation.Columns.Get(0).Width = 69F;
+            this.spsLongTermSimulation.Columns.Get(2).Label = "매수여부";
+            this.spsLongTermSimulation.Columns.Get(2).Width = 61F;
+            this.spsLongTermSimulation.Columns.Get(3).Label = "금액";
+            this.spsLongTermSimulation.Columns.Get(3).Width = 70F;
+            this.spsLongTermSimulation.Columns.Get(4).Label = "비율";
+            this.spsLongTermSimulation.Columns.Get(4).Width = 44F;
+            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType18;
+            this.spsLongTermSimulation.Columns.Get(5).Label = "체결강도";
+            this.spsLongTermSimulation.Columns.Get(5).Locked = true;
+            this.spsLongTermSimulation.Columns.Get(5).Width = 55F;
+            this.spsLongTermSimulation.Columns.Get(6).Label = "매도%-매수%";
+            this.spsLongTermSimulation.Columns.Get(6).Width = 86F;
+            this.spsLongTermSimulation.Columns.Get(7).Label = "매도액-매수액";
+            this.spsLongTermSimulation.Columns.Get(7).Width = 88F;
+            this.spsLongTermSimulation.Columns.Get(8).Label = "이익/손해금액";
+            this.spsLongTermSimulation.Columns.Get(8).Width = 97F;
+            this.spsLongTermSimulation.Columns.Get(9).Label = "누적";
+            this.spsLongTermSimulation.Columns.Get(9).Width = 91F;
+            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType19;
+            this.spsLongTermSimulation.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
+            this.spsLongTermSimulation.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
+            this.spsLongTermSimulation.DefaultStyle.Parent = "DataAreaDefault";
+            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType19;
+            this.spsLongTermSimulation.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
+            this.spsLongTermSimulation.RowHeader.Columns.Default.Resizable = false;
+            this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
+            this.spdLongTermSimulation.SetActiveViewport(0, -1, 0);
             // 
             // spdLog
             // 
@@ -372,10 +447,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType3;
+            this.spsLog.DefaultStyle.CellType = textCellType20;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType3;
+            this.spsLog.DefaultStyle.Renderer = textCellType20;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -385,7 +460,8 @@
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowLog,
             this.btnFindPoint,
-            this.btnSimulation});
+            this.btnSimulation,
+            this.btnLongTermSimulation});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(871, 25);
@@ -421,6 +497,16 @@
             this.btnSimulation.Size = new System.Drawing.Size(23, 22);
             this.btnSimulation.Text = "Simulation";
             this.btnSimulation.Click += new System.EventHandler(this.btnSimulation_Click);
+            // 
+            // btnLongTermSimulation
+            // 
+            this.btnLongTermSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLongTermSimulation.Image = global::eb.Properties.Resources.ShipPlan_04;
+            this.btnLongTermSimulation.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLongTermSimulation.Name = "btnLongTermSimulation";
+            this.btnLongTermSimulation.Size = new System.Drawing.Size(23, 22);
+            this.btnLongTermSimulation.Text = "Long Term Simulation";
+            this.btnLongTermSimulation.Click += new System.EventHandler(this.btnLongTermSimulation_Click);
             // 
             // stsBar
             // 
@@ -472,18 +558,35 @@
             // chkReal
             // 
             this.chkReal.AutoSize = true;
-            this.chkReal.Location = new System.Drawing.Point(298, 3);
+            this.chkReal.Location = new System.Drawing.Point(280, 5);
             this.chkReal.Name = "chkReal";
             this.chkReal.Size = new System.Drawing.Size(60, 16);
             this.chkReal.TabIndex = 9;
             this.chkReal.Text = "실거래";
             this.chkReal.UseVisualStyleBackColor = true;
             // 
+            // tmrRecord
+            // 
+            this.tmrRecord.Interval = 300000;
+            this.tmrRecord.Tick += new System.EventHandler(this.tmrRecord_Tick);
+            // 
+            // chkAutoRecording
+            // 
+            this.chkAutoRecording.AutoSize = true;
+            this.chkAutoRecording.Location = new System.Drawing.Point(346, 5);
+            this.chkAutoRecording.Name = "chkAutoRecording";
+            this.chkAutoRecording.Size = new System.Drawing.Size(110, 16);
+            this.chkAutoRecording.TabIndex = 10;
+            this.chkAutoRecording.Text = "Auto Recording";
+            this.chkAutoRecording.UseVisualStyleBackColor = true;
+            this.chkAutoRecording.CheckedChanged += new System.EventHandler(this.chkAutoRecording_CheckedChanged);
+            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1259, 564);
+            this.Controls.Add(this.chkAutoRecording);
             this.Controls.Add(this.chkReal);
             this.Controls.Add(this.cmbQueryKind);
             this.Controls.Add(this.label2);
@@ -505,6 +608,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spsLongTermSimulation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLog)).EndInit();
             this.toolStrip2.ResumeLayout(false);
@@ -546,5 +651,10 @@
         private System.Windows.Forms.ToolStripButton btnSimulation;
         private System.Windows.Forms.ToolStripButton btnGetAvgVolume;
         private System.Windows.Forms.CheckBox chkReal;
+        private System.Windows.Forms.ToolStripButton btnLongTermSimulation;
+        private FarPoint.Win.Spread.FpSpread spdLongTermSimulation;
+        private FarPoint.Win.Spread.SheetView spsLongTermSimulation;
+        private System.Windows.Forms.Timer tmrRecord;
+        private System.Windows.Forms.CheckBox chkAutoRecording;
     }
 }

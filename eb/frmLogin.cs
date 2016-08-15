@@ -31,7 +31,8 @@ namespace eb
             {
                 txtMsg.Text = msg;
                 Program.LoggedIn = true;
-                this.Close();
+                if(!chkAutoLogin.Checked)
+                    this.Close();
                 //txtMsg.Text = msg;
                 //frmInterList frm = new frmInterList();
                 //frm.Owner = this;
@@ -44,6 +45,11 @@ namespace eb
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
+        {
+            DoLogin();
+        }
+
+        private void DoLogin()
         {
             xas.DisconnectServer();
 
@@ -62,6 +68,32 @@ namespace eb
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void tmrLogin_Tick(object sender, EventArgs e)
+        {
+            DateTime time = DateTime.Now;
+
+            if (time.Hour == 8 && time.Minute >= 25 && time.Minute < 30)
+            {
+                DoLogin();
+            }
+        }
+
+        private void btnOnOff_Click(object sender, EventArgs e)
+        {
+            if (chkAutoLogin.Checked)
+            {
+                btnOnOff.Text = "Off";
+                chkAutoLogin.Checked = false;
+                tmrLogin.Enabled = false;
+            }
+            else
+            {
+                btnOnOff.Text = "On";
+                chkAutoLogin.Checked = true;
+                tmrLogin.Enabled = true;
+            }
         }
     }
 }

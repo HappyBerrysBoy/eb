@@ -20,6 +20,7 @@ namespace eb
         private void btnManager_Click(object sender, EventArgs e)
         {
             frmInterList frm = new frmInterList();
+            frm.TopLevel = false;
             frm.MdiParent = this;
             frm.Show();
         }
@@ -27,7 +28,9 @@ namespace eb
         private void btnLogin_Click(object sender, EventArgs e)
         {
             frmLogin frm = new frmLogin();
-            frm.ShowDialog();
+            frm.TopLevel = false;
+            frm.MdiParent = this;
+            frm.Show();
         }
     }
 }

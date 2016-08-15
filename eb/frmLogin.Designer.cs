@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,11 +42,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
             this.txtMsg = new System.Windows.Forms.TextBox();
+            this.tmrLogin = new System.Windows.Forms.Timer(this.components);
+            this.btnOnOff = new System.Windows.Forms.Button();
+            this.chkAutoLogin = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(12, 185);
+            this.btnLogin.Location = new System.Drawing.Point(12, 207);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(87, 23);
             this.btnLogin.TabIndex = 0;
@@ -148,7 +152,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(105, 185);
+            this.btnExit.Location = new System.Drawing.Point(105, 207);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 5;
@@ -164,11 +168,39 @@
             this.txtMsg.Size = new System.Drawing.Size(168, 33);
             this.txtMsg.TabIndex = 6;
             // 
-            // Form1
+            // tmrLogin
+            // 
+            this.tmrLogin.Interval = 300000;
+            this.tmrLogin.Tick += new System.EventHandler(this.tmrLogin_Tick);
+            // 
+            // btnOnOff
+            // 
+            this.btnOnOff.Location = new System.Drawing.Point(105, 181);
+            this.btnOnOff.Name = "btnOnOff";
+            this.btnOnOff.Size = new System.Drawing.Size(75, 23);
+            this.btnOnOff.TabIndex = 8;
+            this.btnOnOff.Text = "Off";
+            this.btnOnOff.UseVisualStyleBackColor = true;
+            this.btnOnOff.Click += new System.EventHandler(this.btnOnOff_Click);
+            // 
+            // chkAutoLogin
+            // 
+            this.chkAutoLogin.AutoSize = true;
+            this.chkAutoLogin.Enabled = false;
+            this.chkAutoLogin.Location = new System.Drawing.Point(14, 185);
+            this.chkAutoLogin.Name = "chkAutoLogin";
+            this.chkAutoLogin.Size = new System.Drawing.Size(84, 16);
+            this.chkAutoLogin.TabIndex = 7;
+            this.chkAutoLogin.Text = "Auto Login";
+            this.chkAutoLogin.UseVisualStyleBackColor = true;
+            // 
+            // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(186, 220);
+            this.ClientSize = new System.Drawing.Size(186, 242);
+            this.Controls.Add(this.btnOnOff);
+            this.Controls.Add(this.chkAutoLogin);
             this.Controls.Add(this.txtMsg);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.label5);
@@ -182,7 +214,7 @@
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.btnLogin);
-            this.Name = "Form1";
+            this.Name = "frmLogin";
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -205,6 +237,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.TextBox txtMsg;
+        private System.Windows.Forms.Timer tmrLogin;
+        private System.Windows.Forms.Button btnOnOff;
+        private System.Windows.Forms.CheckBox chkAutoLogin;
     }
 }
 

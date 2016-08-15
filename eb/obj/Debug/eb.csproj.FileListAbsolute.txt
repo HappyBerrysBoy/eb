@@ -30,3 +30,4 @@ C:\workspace\git_ksc\eb\eb\obj\Debug\eb.csproj.GenerateResource.Cache
 C:\workspace\git_ksc\eb\eb\obj\Debug\eb.exe.licenses
 C:\workspace\git_ksc\eb\eb\obj\Debug\eb.frmConfig.resources
 C:\workspace\git_ksc\eb\eb\obj\Debug\eb.frmMDIForm.resources
+C:\workspace\git_ksc\eb\eb\obj\Debug\eb.frmSimulation.resources

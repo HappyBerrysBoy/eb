@@ -1,8 +1,10 @@
-﻿using System;
+﻿using eb.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace eb.common
 {
@@ -23,7 +25,8 @@ namespace eb.common
             ORDER_SIGN_CNT,
             SELL_SIGN_CNT,
             MS_CUT_LINE,
-            MD_CUT_LINE
+            MD_CUT_LINE,
+            DIFFERENCE_CHEPOWER
         }
 
         public static string getSign(string sign)
@@ -67,6 +70,46 @@ namespace eb.common
                 return result;
 
             return 0;
+        }
+
+        public static bool chkCutOffTime(ClsRealChe cls, bool isSimulation)
+        {
+            if (isSimulation)
+            {
+                string hour = cls.Chetime.Substring(0, 2);
+                string minute = cls.Chetime.Substring(2, 2);
+
+                if (Common.getIntValue(hour) >= 15 && Common.getIntValue(minute) >= 18)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                DateTime time = DateTime.Now;
+                if (time.Hour == 15 && time.Minute > 18)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public static string getDialogFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Program.cont.getApplicationPath + Program.cont.getLogPath;
+            ofd.ShowDialog();
+
+            return ofd.FileName;
+        }
+
+        public static string GetDialogFolder()
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = System.Windows.Forms.Application.StartupPath + @"\logs\";
+            fbd.ShowDialog();
+
+            return fbd.SelectedPath;
         }
     }
 }

@@ -60,6 +60,8 @@
             this.txtMsCutLine = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.txtMdCutLine = new System.Windows.Forms.TextBox();
+            this.txtDifferenceChePower = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -102,7 +104,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(12, 119);
+            this.label2.Location = new System.Drawing.Point(12, 199);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(167, 12);
             this.label2.TabIndex = 0;
@@ -111,7 +113,7 @@
             // 
             // txtCutoff
             // 
-            this.txtCutoff.Location = new System.Drawing.Point(185, 116);
+            this.txtCutoff.Location = new System.Drawing.Point(185, 196);
             this.txtCutoff.MaxLength = 7;
             this.txtCutoff.Name = "txtCutoff";
             this.txtCutoff.Size = new System.Drawing.Size(51, 21);
@@ -119,7 +121,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 145);
+            this.label3.Location = new System.Drawing.Point(12, 225);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(167, 12);
             this.label3.TabIndex = 0;
@@ -128,7 +130,7 @@
             // 
             // txtProfitCutOff
             // 
-            this.txtProfitCutOff.Location = new System.Drawing.Point(185, 142);
+            this.txtProfitCutOff.Location = new System.Drawing.Point(185, 222);
             this.txtProfitCutOff.MaxLength = 7;
             this.txtProfitCutOff.Name = "txtProfitCutOff";
             this.txtProfitCutOff.Size = new System.Drawing.Size(51, 21);
@@ -136,7 +138,7 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(12, 172);
+            this.label4.Location = new System.Drawing.Point(12, 252);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(167, 12);
             this.label4.TabIndex = 0;
@@ -145,7 +147,7 @@
             // 
             // txtPowerLowLimit
             // 
-            this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 169);
+            this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 249);
             this.txtPowerLowLimit.MaxLength = 7;
             this.txtPowerLowLimit.Name = "txtPowerLowLimit";
             this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
@@ -153,7 +155,7 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(12, 199);
+            this.label5.Location = new System.Drawing.Point(12, 279);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(167, 12);
             this.label5.TabIndex = 0;
@@ -162,7 +164,7 @@
             // 
             // txtPowerHighLimit
             // 
-            this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 196);
+            this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 276);
             this.txtPowerHighLimit.MaxLength = 7;
             this.txtPowerHighLimit.Name = "txtPowerHighLimit";
             this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
@@ -170,7 +172,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(12, 226);
+            this.label6.Location = new System.Drawing.Point(242, 119);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(167, 12);
             this.label6.TabIndex = 0;
@@ -179,7 +181,7 @@
             // 
             // txtIgnoreCheCnt
             // 
-            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(185, 223);
+            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(415, 116);
             this.txtIgnoreCheCnt.MaxLength = 7;
             this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
             this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
@@ -187,7 +189,7 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(12, 253);
+            this.label7.Location = new System.Drawing.Point(12, 306);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(167, 12);
             this.label7.TabIndex = 0;
@@ -196,7 +198,7 @@
             // 
             // txtPierceHoCnt
             // 
-            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 250);
+            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 303);
             this.txtPierceHoCnt.MaxLength = 7;
             this.txtPierceHoCnt.Name = "txtPierceHoCnt";
             this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
@@ -204,7 +206,7 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(12, 280);
+            this.label8.Location = new System.Drawing.Point(12, 94);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(167, 12);
             this.label8.TabIndex = 0;
@@ -213,7 +215,7 @@
             // 
             // txtTermLog
             // 
-            this.txtTermLog.Location = new System.Drawing.Point(185, 277);
+            this.txtTermLog.Location = new System.Drawing.Point(185, 89);
             this.txtTermLog.MaxLength = 7;
             this.txtTermLog.Name = "txtTermLog";
             this.txtTermLog.Size = new System.Drawing.Size(51, 21);
@@ -221,7 +223,7 @@
             // 
             // label9
             // 
-            this.label9.Location = new System.Drawing.Point(12, 307);
+            this.label9.Location = new System.Drawing.Point(12, 148);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(167, 12);
             this.label9.TabIndex = 0;
@@ -230,7 +232,7 @@
             // 
             // txtMsMdRate
             // 
-            this.txtMsMdRate.Location = new System.Drawing.Point(185, 304);
+            this.txtMsMdRate.Location = new System.Drawing.Point(185, 143);
             this.txtMsMdRate.MaxLength = 7;
             this.txtMsMdRate.Name = "txtMsMdRate";
             this.txtMsMdRate.Size = new System.Drawing.Size(51, 21);
@@ -238,7 +240,7 @@
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(12, 92);
+            this.label10.Location = new System.Drawing.Point(12, 117);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(167, 23);
             this.label10.TabIndex = 0;
@@ -247,7 +249,7 @@
             // 
             // txtAvgVolumeOverRate
             // 
-            this.txtAvgVolumeOverRate.Location = new System.Drawing.Point(185, 89);
+            this.txtAvgVolumeOverRate.Location = new System.Drawing.Point(185, 116);
             this.txtAvgVolumeOverRate.MaxLength = 7;
             this.txtAvgVolumeOverRate.Name = "txtAvgVolumeOverRate";
             this.txtAvgVolumeOverRate.Size = new System.Drawing.Size(51, 21);
@@ -331,11 +333,30 @@
             this.txtMdCutLine.Size = new System.Drawing.Size(51, 21);
             this.txtMdCutLine.TabIndex = 1;
             // 
+            // txtDifferenceChePower
+            // 
+            this.txtDifferenceChePower.Location = new System.Drawing.Point(185, 170);
+            this.txtDifferenceChePower.MaxLength = 7;
+            this.txtDifferenceChePower.Name = "txtDifferenceChePower";
+            this.txtDifferenceChePower.Size = new System.Drawing.Size(51, 21);
+            this.txtDifferenceChePower.TabIndex = 14;
+            // 
+            // label16
+            // 
+            this.label16.Location = new System.Drawing.Point(12, 171);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(167, 23);
+            this.label16.TabIndex = 13;
+            this.label16.Text = "구매시 체결강도 차이";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(636, 394);
+            this.Controls.Add(this.txtDifferenceChePower);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.txtContinueSellCnt);
             this.Controls.Add(this.txtContinueOrderCnt);
             this.Controls.Add(this.txtMsMdRate);
@@ -409,5 +430,7 @@
         private System.Windows.Forms.TextBox txtMsCutLine;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtMdCutLine;
+        private System.Windows.Forms.TextBox txtDifferenceChePower;
+        private System.Windows.Forms.Label label16;
     }
 }

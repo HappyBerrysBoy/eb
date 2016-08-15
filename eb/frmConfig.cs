@@ -38,6 +38,7 @@ namespace eb
             txtContinueSellCnt.Text = Program.cont.SellSignCnt.ToString();
             txtMsCutLine.Text = Program.cont.MsCutLine.ToString();
             txtMdCutLine.Text = Program.cont.MdCutLine.ToString();
+            txtDifferenceChePower.Text = Program.cont.DifferenceChePower.ToString();
         }
 
         private void SetTextBoxCnt()
@@ -121,6 +122,9 @@ namespace eb
                     case (int)Common.CONFIG_IDX.MD_CUT_LINE:
                         retString += txtMdCutLine.Text;
                         break;
+                    case (int)Common.CONFIG_IDX.DIFFERENCE_CHEPOWER:
+                        retString += txtDifferenceChePower.Text;
+                        break;
                 }
             }
 
@@ -151,6 +155,7 @@ namespace eb
                 Program.cont.SellSignCnt = Common.getIntValue(txtContinueSellCnt.Text);
                 Program.cont.MsCutLine = Common.getIntValue(txtMsCutLine.Text);
                 Program.cont.MdCutLine = Common.getIntValue(txtMdCutLine.Text);
+                Program.cont.DifferenceChePower = Common.getDoubleValue(txtDifferenceChePower.Text);
 
                 StreamWriter sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
                 sw.WriteLine(GetConfigString());
