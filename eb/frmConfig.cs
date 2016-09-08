@@ -39,6 +39,9 @@ namespace eb
             txtMsCutLine.Text = Program.cont.MsCutLine.ToString();
             txtMdCutLine.Text = Program.cont.MdCutLine.ToString();
             txtDifferenceChePower.Text = Program.cont.DifferenceChePower.ToString();
+            txtSatisfyProfit.Text = Program.cont.SatisfyProfit.ToString();
+            txtCutOffHour.Text = Program.cont.CutOffHour.ToString();
+            txtCutOffMin.Text = Program.cont.CutOffMinute.ToString();
         }
 
         private void SetTextBoxCnt()
@@ -125,6 +128,15 @@ namespace eb
                     case (int)Common.CONFIG_IDX.DIFFERENCE_CHEPOWER:
                         retString += txtDifferenceChePower.Text;
                         break;
+                    case (int)Common.CONFIG_IDX.SATISFY_PROFIT:
+                        retString += txtSatisfyProfit.Text;
+                        break;
+                    case (int)Common.CONFIG_IDX.CUT_OFF_HOUR:
+                        retString += txtCutOffHour.Text;
+                        break;
+                    case (int)Common.CONFIG_IDX.CUT_OFF_MIN:
+                        retString += txtCutOffMin.Text;
+                        break;
                 }
             }
 
@@ -133,30 +145,20 @@ namespace eb
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if(ChkNullText())
+            SaveConfig();
+            Common.SetConfig();
+        }
+
+        private void SaveConfig()
+        {
+            if (ChkNullText())
             {
-                MessageBox.Show("값이 없습니다.");
+                MessageBox.Show("값이 없는 항목이 존재합니다.");
                 return;
             }
 
             try
             {
-                Program.cont.VolumeHistoryCnt = Common.getIntValue(txtDays.Text);
-                Program.cont.CutoffPercent = Common.getDoubleValue(txtCutoff.Text);
-                Program.cont.ProfitCutoffPercent = Common.getDoubleValue(txtProfitCutOff.Text);
-                Program.cont.PowerLowLimit = Common.getDoubleValue(txtPowerLowLimit.Text);
-                Program.cont.PowerHighLimit = Common.getDoubleValue(txtPowerHighLimit.Text);
-                Program.cont.IgnoreCheCnt = Common.getIntValue(txtIgnoreCheCnt.Text);
-                Program.cont.PierceHoCnt = Common.getIntValue(txtPierceHoCnt.Text);
-                Program.cont.LogTerm = Common.getIntValue(txtTermLog.Text);
-                Program.cont.MsmdRate = Common.getDoubleValue(txtMsMdRate.Text);
-                Program.cont.LogTermVolumeOver = Common.getDoubleValue(txtAvgVolumeOverRate.Text);
-                Program.cont.OrderSignCnt = Common.getIntValue(txtContinueOrderCnt.Text);
-                Program.cont.SellSignCnt = Common.getIntValue(txtContinueSellCnt.Text);
-                Program.cont.MsCutLine = Common.getIntValue(txtMsCutLine.Text);
-                Program.cont.MdCutLine = Common.getIntValue(txtMdCutLine.Text);
-                Program.cont.DifferenceChePower = Common.getDoubleValue(txtDifferenceChePower.Text);
-
                 StreamWriter sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
                 sw.WriteLine(GetConfigString());
                 sw.Close();

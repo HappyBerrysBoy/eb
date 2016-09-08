@@ -32,8 +32,8 @@ namespace eb.Classes
             // 일정기간 매수량이 매도량를 압도
             string msVolumeDueTime = chkMsVolumeDueTime();
             // 일정기간 거래량이 일별 평균 거래량의 특정 비율을 넘어서야함
-            //string overVolume = chkOverVolume();          // 일정기간 평균 거래량 보다 높은거..
-            string overVolume = ChkChePowerDueTime();       // 하루내에 일정기간동안 체결강도가 설정된 값보다 넘어서는 부분
+            string overVolume = chkOverVolume();          // 일정기간 평균 거래량 보다 높은거..
+            //string overVolume = ChkChePowerDueTime();       // 하루내에 일정기간동안 체결강도가 설정된 값보다 넘어서는 부분
             // 호가를 2개~3개 정도 뚫어주거나 % 기준으로 어느정도 올랐을 경우
             string pierce = pierceUp();
             // 체결강도가 너무 낮지 않아야 함
@@ -56,7 +56,7 @@ namespace eb.Classes
                 return false;
         }
 
-        // Rule 1-1.
+        // Rule 1.
         // 1분정도 로그보고 졸라 많이 들어오면 Ok
         // 3분정도 로그보고 꾸준히 들어와도 Ok 일단 위아래 둘중에 어떤게 나은지 모니터링 해보자..
         // 일정기간 매수량이 매도량를 압도
@@ -73,8 +73,8 @@ namespace eb.Classes
                 return "2";
         }
 
-        // Rule 1-2.
-        // 체결 강도의 급변화를 탐지해서 구매해보는건... 1-1이랑 비교해보자..
+        // Rule 2-1.
+        // 체결 강도의 급변화를 탐지해서 구매해보는건... 2-2이랑 비교해보자..
         private string ChkChePowerDueTime()
         {
             double differenceChePower = Common.getDoubleValue(item.Logs[item.ToTimeIdx].Cpower) - Common.getDoubleValue(item.Logs[item.FromTimeIdx].Cpower);
@@ -85,7 +85,7 @@ namespace eb.Classes
                 return "2";
         }
 
-        // Rule 2.
+        // Rule 2-2.
         // 일정기간 거래량이 일별 평균 거래량의 특정 비율을 넘어서야함
         private string chkOverVolume()
         {
@@ -93,7 +93,7 @@ namespace eb.Classes
 
             if (item.AvgVolumeFewDays < 1)
                 return "2";
-            else if (item.AvgVolumeFewDays * Program.cont.LogTermVolumeOver < volume)
+            else if (item.AvgVolumeFewDays * Program.cont.LogTermVolumeOver / 100 < volume)
                 return "1";
             else
                 return "2";

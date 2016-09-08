@@ -62,6 +62,13 @@
             this.txtMdCutLine = new System.Windows.Forms.TextBox();
             this.txtDifferenceChePower = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtSatisfyProfit = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtCutOffHour = new System.Windows.Forms.TextBox();
+            this.txtCutOffMin = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,7 +145,7 @@
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(12, 252);
+            this.label4.Location = new System.Drawing.Point(242, 147);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(167, 12);
             this.label4.TabIndex = 0;
@@ -147,7 +154,7 @@
             // 
             // txtPowerLowLimit
             // 
-            this.txtPowerLowLimit.Location = new System.Drawing.Point(185, 249);
+            this.txtPowerLowLimit.Location = new System.Drawing.Point(415, 144);
             this.txtPowerLowLimit.MaxLength = 7;
             this.txtPowerLowLimit.Name = "txtPowerLowLimit";
             this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
@@ -155,7 +162,7 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(12, 279);
+            this.label5.Location = new System.Drawing.Point(242, 174);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(167, 12);
             this.label5.TabIndex = 0;
@@ -164,7 +171,7 @@
             // 
             // txtPowerHighLimit
             // 
-            this.txtPowerHighLimit.Location = new System.Drawing.Point(185, 276);
+            this.txtPowerHighLimit.Location = new System.Drawing.Point(415, 171);
             this.txtPowerHighLimit.MaxLength = 7;
             this.txtPowerHighLimit.Name = "txtPowerHighLimit";
             this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
@@ -172,7 +179,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(242, 119);
+            this.label6.Location = new System.Drawing.Point(242, 120);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(167, 12);
             this.label6.TabIndex = 0;
@@ -181,7 +188,7 @@
             // 
             // txtIgnoreCheCnt
             // 
-            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(415, 116);
+            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(415, 117);
             this.txtIgnoreCheCnt.MaxLength = 7;
             this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
             this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
@@ -189,7 +196,7 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(12, 306);
+            this.label7.Location = new System.Drawing.Point(12, 279);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(167, 12);
             this.label7.TabIndex = 0;
@@ -198,7 +205,7 @@
             // 
             // txtPierceHoCnt
             // 
-            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 303);
+            this.txtPierceHoCnt.Location = new System.Drawing.Point(185, 276);
             this.txtPierceHoCnt.MaxLength = 7;
             this.txtPierceHoCnt.Name = "txtPierceHoCnt";
             this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
@@ -267,7 +274,7 @@
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(12, 334);
+            this.label12.Location = new System.Drawing.Point(12, 307);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(167, 12);
             this.label12.TabIndex = 0;
@@ -276,7 +283,7 @@
             // 
             // txtContinueOrderCnt
             // 
-            this.txtContinueOrderCnt.Location = new System.Drawing.Point(185, 331);
+            this.txtContinueOrderCnt.Location = new System.Drawing.Point(185, 304);
             this.txtContinueOrderCnt.MaxLength = 7;
             this.txtContinueOrderCnt.Name = "txtContinueOrderCnt";
             this.txtContinueOrderCnt.Size = new System.Drawing.Size(51, 21);
@@ -284,7 +291,7 @@
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(12, 361);
+            this.label13.Location = new System.Drawing.Point(12, 334);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(167, 12);
             this.label13.TabIndex = 0;
@@ -293,7 +300,7 @@
             // 
             // txtContinueSellCnt
             // 
-            this.txtContinueSellCnt.Location = new System.Drawing.Point(185, 358);
+            this.txtContinueSellCnt.Location = new System.Drawing.Point(185, 331);
             this.txtContinueSellCnt.MaxLength = 7;
             this.txtContinueSellCnt.Name = "txtContinueSellCnt";
             this.txtContinueSellCnt.Size = new System.Drawing.Size(51, 21);
@@ -350,11 +357,73 @@
             this.label16.Text = "구매시 체결강도 차이";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // label17
+            // 
+            this.label17.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label17.Location = new System.Drawing.Point(183, 25);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(389, 23);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "(※ 참고 : 전일 거래량 기준, 1분에 0.25641% 가 이루어 져야함)";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label18
+            // 
+            this.label18.Location = new System.Drawing.Point(12, 252);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(167, 12);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "구매후 몇% 수익이면 매도";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtSatisfyProfit
+            // 
+            this.txtSatisfyProfit.Location = new System.Drawing.Point(185, 249);
+            this.txtSatisfyProfit.MaxLength = 7;
+            this.txtSatisfyProfit.Name = "txtSatisfyProfit";
+            this.txtSatisfyProfit.Size = new System.Drawing.Size(51, 21);
+            this.txtSatisfyProfit.TabIndex = 4;
+            // 
+            // label19
+            // 
+            this.label19.Location = new System.Drawing.Point(242, 201);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(167, 12);
+            this.label19.TabIndex = 0;
+            this.label19.Text = "장마감전 무조건파는 시간";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label20
+            // 
+            this.label20.Location = new System.Drawing.Point(242, 226);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(167, 12);
+            this.label20.TabIndex = 0;
+            this.label20.Text = "장마감전 무조건파는 분";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtCutOffHour
+            // 
+            this.txtCutOffHour.Location = new System.Drawing.Point(415, 196);
+            this.txtCutOffHour.MaxLength = 7;
+            this.txtCutOffHour.Name = "txtCutOffHour";
+            this.txtCutOffHour.Size = new System.Drawing.Size(51, 21);
+            this.txtCutOffHour.TabIndex = 5;
+            // 
+            // txtCutOffMin
+            // 
+            this.txtCutOffMin.Location = new System.Drawing.Point(415, 223);
+            this.txtCutOffMin.MaxLength = 7;
+            this.txtCutOffMin.Name = "txtCutOffMin";
+            this.txtCutOffMin.Size = new System.Drawing.Size(51, 21);
+            this.txtCutOffMin.TabIndex = 6;
+            // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(636, 394);
+            this.ClientSize = new System.Drawing.Size(636, 364);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.txtDifferenceChePower);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.txtContinueSellCnt);
@@ -366,19 +435,25 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.txtIgnoreCheCnt);
             this.Controls.Add(this.label9);
+            this.Controls.Add(this.txtCutOffMin);
             this.Controls.Add(this.txtPowerHighLimit);
             this.Controls.Add(this.label8);
+            this.Controls.Add(this.txtCutOffHour);
             this.Controls.Add(this.txtPowerLowLimit);
             this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtSatisfyProfit);
             this.Controls.Add(this.txtProfitCutOff);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label20);
             this.Controls.Add(this.txtCutoff);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtAvgVolumeOverRate);
             this.Controls.Add(this.txtMdCutLine);
             this.Controls.Add(this.txtMsCutLine);
+            this.Controls.Add(this.label19);
             this.Controls.Add(this.txtDays);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label10);
@@ -432,5 +507,12 @@
         private System.Windows.Forms.TextBox txtMdCutLine;
         private System.Windows.Forms.TextBox txtDifferenceChePower;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox txtSatisfyProfit;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtCutOffHour;
+        private System.Windows.Forms.TextBox txtCutOffMin;
     }
 }

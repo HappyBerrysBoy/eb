@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType16 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType17 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType18 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType19 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType20 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType31 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType32 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType33 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType34 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType35 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
@@ -50,6 +50,19 @@
             this.btnDel = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnGetAvgVolume = new System.Windows.Forms.ToolStripButton();
+            this.pnlSimulationOptions = new System.Windows.Forms.Panel();
+            this.txtLogSimulFrom = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkSimulationOption = new System.Windows.Forms.CheckBox();
             this.spdLongTermSimulation = new FarPoint.Win.Spread.FpSpread();
             this.spsLongTermSimulation = new FarPoint.Win.Spread.SheetView();
             this.spdLog = new FarPoint.Win.Spread.FpSpread();
@@ -57,8 +70,13 @@
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.btnShowLog = new System.Windows.Forms.ToolStripButton();
             this.btnFindPoint = new System.Windows.Forms.ToolStripButton();
+            this.btnExportExcel = new System.Windows.Forms.ToolStripButton();
             this.btnSimulation = new System.Windows.Forms.ToolStripButton();
             this.btnLongTermSimulation = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.txtInputMoney = new System.Windows.Forms.ToolStripTextBox();
+            this.btnSimulationConfig = new System.Windows.Forms.ToolStripButton();
+            this.chkSimulateAllItem = new System.Windows.Forms.CheckBox();
             this.stsBar = new System.Windows.Forms.StatusStrip();
             this.lblSTS = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -68,6 +86,23 @@
             this.chkReal = new System.Windows.Forms.CheckBox();
             this.tmrRecord = new System.Windows.Forms.Timer(this.components);
             this.chkAutoRecording = new System.Windows.Forms.CheckBox();
+            this.txtLogSimulTo = new System.Windows.Forms.TextBox();
+            this.txtLogSimulInter = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulTo = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulInter = new System.Windows.Forms.TextBox();
+            this.txtRateSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtRateSimulTo = new System.Windows.Forms.TextBox();
+            this.txtRateSimulInter = new System.Windows.Forms.TextBox();
+            this.txtCutSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtCutSimulTo = new System.Windows.Forms.TextBox();
+            this.txtCutSimulInter = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulTo = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulInter = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulTo = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulInter = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -76,6 +111,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spdInterest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).BeginInit();
             this.toolStrip3.SuspendLayout();
+            this.pnlSimulationOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLongTermSimulation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).BeginInit();
@@ -93,7 +129,7 @@
             this.btnSelectQuery});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1259, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1406, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -150,11 +186,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.pnlSimulationOptions);
             this.splitContainer1.Panel2.Controls.Add(this.spdLongTermSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
-            this.splitContainer1.Size = new System.Drawing.Size(1259, 514);
-            this.splitContainer1.SplitterDistance = 384;
+            this.splitContainer1.Size = new System.Drawing.Size(1406, 514);
+            this.splitContainer1.SplitterDistance = 376;
             this.splitContainer1.TabIndex = 7;
             // 
             // spdInterest
@@ -168,7 +205,7 @@
             this.spdInterest.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdInterest.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsInterest});
-            this.spdInterest.Size = new System.Drawing.Size(384, 489);
+            this.spdInterest.Size = new System.Drawing.Size(376, 489);
             this.spdInterest.TabIndex = 0;
             this.spdInterest.EditModeOff += new System.EventHandler(this.spdInterest_EditModeOff);
             // 
@@ -195,15 +232,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType16;
+            this.spsInterest.Columns.Get(5).CellType = textCellType31;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType17;
+            this.spsInterest.DefaultStyle.CellType = textCellType32;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType17;
+            this.spsInterest.DefaultStyle.Renderer = textCellType32;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -220,7 +257,7 @@
             this.btnGetAvgVolume});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(384, 25);
+            this.toolStrip3.Size = new System.Drawing.Size(376, 25);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -279,6 +316,152 @@
             this.btnGetAvgVolume.Text = "Get Average Volume";
             this.btnGetAvgVolume.Click += new System.EventHandler(this.btnGetAvgVolume_Click);
             // 
+            // pnlSimulationOptions
+            // 
+            this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtCutSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtCutSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtRateSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtRateSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtCutSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtRateSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtLogSimulInter);
+            this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtLogSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtLogSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.label7);
+            this.pnlSimulationOptions.Controls.Add(this.label5);
+            this.pnlSimulationOptions.Controls.Add(this.label3);
+            this.pnlSimulationOptions.Controls.Add(this.label6);
+            this.pnlSimulationOptions.Controls.Add(this.label4);
+            this.pnlSimulationOptions.Controls.Add(this.label11);
+            this.pnlSimulationOptions.Controls.Add(this.label10);
+            this.pnlSimulationOptions.Controls.Add(this.label9);
+            this.pnlSimulationOptions.Controls.Add(this.label8);
+            this.pnlSimulationOptions.Controls.Add(this.label1);
+            this.pnlSimulationOptions.Controls.Add(this.chkSimulationOption);
+            this.pnlSimulationOptions.Location = new System.Drawing.Point(316, 3);
+            this.pnlSimulationOptions.Name = "pnlSimulationOptions";
+            this.pnlSimulationOptions.Size = new System.Drawing.Size(319, 241);
+            this.pnlSimulationOptions.TabIndex = 10;
+            // 
+            // txtLogSimulFrom
+            // 
+            this.txtLogSimulFrom.Location = new System.Drawing.Point(105, 76);
+            this.txtLogSimulFrom.Name = "txtLogSimulFrom";
+            this.txtLogSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtLogSimulFrom.TabIndex = 14;
+            this.txtLogSimulFrom.Text = "60";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 214);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(75, 12);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "몇%수익매도";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "손절";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 106);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "평균거래";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 187);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 12);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "익절";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 133);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 12);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "매도/매수";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(252, 54);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(45, 12);
+            this.label11.TabIndex = 13;
+            this.label11.Text = "Interval";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(178, 54);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(56, 12);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "To Value";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(100, 55);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(70, 12);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "From Value";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 55);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "내용";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "로그기간";
+            // 
+            // chkSimulationOption
+            // 
+            this.chkSimulationOption.AutoSize = true;
+            this.chkSimulationOption.Checked = true;
+            this.chkSimulationOption.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSimulationOption.Location = new System.Drawing.Point(15, 11);
+            this.chkSimulationOption.Name = "chkSimulationOption";
+            this.chkSimulationOption.Size = new System.Drawing.Size(138, 16);
+            this.chkSimulationOption.TabIndex = 12;
+            this.chkSimulationOption.Text = "Simulate by Options";
+            this.chkSimulationOption.UseVisualStyleBackColor = true;
+            // 
             // spdLongTermSimulation
             // 
             this.spdLongTermSimulation.AccessibleDescription = "";
@@ -290,7 +473,7 @@
             this.spdLongTermSimulation.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLongTermSimulation.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLongTermSimulation});
-            this.spdLongTermSimulation.Size = new System.Drawing.Size(871, 489);
+            this.spdLongTermSimulation.Size = new System.Drawing.Size(1026, 489);
             this.spdLongTermSimulation.TabIndex = 9;
             this.spdLongTermSimulation.Visible = false;
             // 
@@ -300,7 +483,7 @@
             this.spsLongTermSimulation.SheetName = "Sheet1";
             // Formulas and custom names must be loaded with R1C1 reference style
             this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.R1C1;
-            this.spsLongTermSimulation.ColumnCount = 10;
+            this.spsLongTermSimulation.ColumnCount = 15;
             this.spsLongTermSimulation.RowCount = 0;
             this.spsLongTermSimulation.ActiveRowIndex = -1;
             this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 0).Value = "날짜";
@@ -309,10 +492,15 @@
             this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 3).Value = "금액";
             this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 4).Value = "비율";
             this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 5).Value = "체결강도";
-            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 6).Value = "매도%-매수%";
-            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 7).Value = "매도액-매수액";
-            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 8).Value = "이익/손해금액";
-            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 9).Value = "누적";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 6).Value = "매도사유";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 7).Value = "매도%-매수%";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 8).Value = "매도액-매수액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 9).Value = "매수/도량";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 10).Value = "매수/도금액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 11).Value = "수수료";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 12).Value = "예상세금";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 13).Value = "잔액";
+            this.spsLongTermSimulation.ColumnHeader.Cells.Get(0, 14).Value = "이익/손해금액";
             this.spsLongTermSimulation.Columns.Get(0).Label = "날짜";
             this.spsLongTermSimulation.Columns.Get(0).Width = 69F;
             this.spsLongTermSimulation.Columns.Get(2).Label = "매수여부";
@@ -321,23 +509,29 @@
             this.spsLongTermSimulation.Columns.Get(3).Width = 70F;
             this.spsLongTermSimulation.Columns.Get(4).Label = "비율";
             this.spsLongTermSimulation.Columns.Get(4).Width = 44F;
-            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType18;
+            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType33;
             this.spsLongTermSimulation.Columns.Get(5).Label = "체결강도";
             this.spsLongTermSimulation.Columns.Get(5).Locked = true;
             this.spsLongTermSimulation.Columns.Get(5).Width = 55F;
-            this.spsLongTermSimulation.Columns.Get(6).Label = "매도%-매수%";
-            this.spsLongTermSimulation.Columns.Get(6).Width = 86F;
-            this.spsLongTermSimulation.Columns.Get(7).Label = "매도액-매수액";
-            this.spsLongTermSimulation.Columns.Get(7).Width = 88F;
-            this.spsLongTermSimulation.Columns.Get(8).Label = "이익/손해금액";
-            this.spsLongTermSimulation.Columns.Get(8).Width = 97F;
-            this.spsLongTermSimulation.Columns.Get(9).Label = "누적";
-            this.spsLongTermSimulation.Columns.Get(9).Width = 91F;
-            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType19;
+            this.spsLongTermSimulation.Columns.Get(6).Label = "매도사유";
+            this.spsLongTermSimulation.Columns.Get(6).Width = 57F;
+            this.spsLongTermSimulation.Columns.Get(7).Label = "매도%-매수%";
+            this.spsLongTermSimulation.Columns.Get(7).Width = 86F;
+            this.spsLongTermSimulation.Columns.Get(8).Label = "매도액-매수액";
+            this.spsLongTermSimulation.Columns.Get(8).Width = 88F;
+            this.spsLongTermSimulation.Columns.Get(10).Label = "매수/도금액";
+            this.spsLongTermSimulation.Columns.Get(10).Width = 86F;
+            this.spsLongTermSimulation.Columns.Get(11).Label = "수수료";
+            this.spsLongTermSimulation.Columns.Get(11).Width = 48F;
+            this.spsLongTermSimulation.Columns.Get(13).Label = "잔액";
+            this.spsLongTermSimulation.Columns.Get(13).Width = 86F;
+            this.spsLongTermSimulation.Columns.Get(14).Label = "이익/손해금액";
+            this.spsLongTermSimulation.Columns.Get(14).Width = 85F;
+            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType34;
             this.spsLongTermSimulation.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsLongTermSimulation.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLongTermSimulation.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType19;
+            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType34;
             this.spsLongTermSimulation.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsLongTermSimulation.RowHeader.Columns.Default.Resizable = false;
             this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -354,7 +548,7 @@
             this.spdLog.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLog.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLog});
-            this.spdLog.Size = new System.Drawing.Size(871, 489);
+            this.spdLog.Size = new System.Drawing.Size(1026, 489);
             this.spdLog.TabIndex = 7;
             this.spdLog.MouseUp += new System.Windows.Forms.MouseEventHandler(this.spdLog_MouseUp);
             // 
@@ -447,10 +641,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType20;
+            this.spsLog.DefaultStyle.CellType = textCellType35;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType20;
+            this.spsLog.DefaultStyle.Renderer = textCellType35;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -460,11 +654,15 @@
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnShowLog,
             this.btnFindPoint,
+            this.btnExportExcel,
             this.btnSimulation,
-            this.btnLongTermSimulation});
+            this.btnLongTermSimulation,
+            this.toolStripLabel2,
+            this.txtInputMoney,
+            this.btnSimulationConfig});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(871, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(1026, 25);
             this.toolStrip2.TabIndex = 8;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -488,6 +686,16 @@
             this.btnFindPoint.Text = "Find Point";
             this.btnFindPoint.Click += new System.EventHandler(this.btnFindPoint_Click);
             // 
+            // btnExportExcel
+            // 
+            this.btnExportExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnExportExcel.Image = global::eb.Properties.Resources.Spread_02;
+            this.btnExportExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExportExcel.Name = "btnExportExcel";
+            this.btnExportExcel.Size = new System.Drawing.Size(23, 22);
+            this.btnExportExcel.Text = "Export Excel";
+            this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
+            // 
             // btnSimulation
             // 
             this.btnSimulation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -508,6 +716,40 @@
             this.btnLongTermSimulation.Text = "Long Term Simulation";
             this.btnLongTermSimulation.Click += new System.EventHandler(this.btnLongTermSimulation_Click);
             // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(55, 22);
+            this.toolStripLabel2.Text = "투입금액";
+            // 
+            // txtInputMoney
+            // 
+            this.txtInputMoney.Name = "txtInputMoney";
+            this.txtInputMoney.Size = new System.Drawing.Size(100, 25);
+            this.txtInputMoney.Text = "1000000";
+            // 
+            // btnSimulationConfig
+            // 
+            this.btnSimulationConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSimulationConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnSimulationConfig.Image")));
+            this.btnSimulationConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSimulationConfig.Name = "btnSimulationConfig";
+            this.btnSimulationConfig.Size = new System.Drawing.Size(23, 22);
+            this.btnSimulationConfig.Text = "Simulation Config";
+            this.btnSimulationConfig.Click += new System.EventHandler(this.btnSimulationConfig_Click);
+            // 
+            // chkSimulateAllItem
+            // 
+            this.chkSimulateAllItem.AutoSize = true;
+            this.chkSimulateAllItem.Checked = true;
+            this.chkSimulateAllItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSimulateAllItem.Location = new System.Drawing.Point(462, 5);
+            this.chkSimulateAllItem.Name = "chkSimulateAllItem";
+            this.chkSimulateAllItem.Size = new System.Drawing.Size(119, 16);
+            this.chkSimulateAllItem.TabIndex = 11;
+            this.chkSimulateAllItem.Text = "Simulate All Item";
+            this.chkSimulateAllItem.UseVisualStyleBackColor = true;
+            // 
             // stsBar
             // 
             this.stsBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -516,7 +758,7 @@
             this.lblSum});
             this.stsBar.Location = new System.Drawing.Point(0, 542);
             this.stsBar.Name = "stsBar";
-            this.stsBar.Size = new System.Drawing.Size(1259, 22);
+            this.stsBar.Size = new System.Drawing.Size(1406, 22);
             this.stsBar.TabIndex = 8;
             this.stsBar.Text = "statusStrip1";
             // 
@@ -581,11 +823,148 @@
             this.chkAutoRecording.UseVisualStyleBackColor = true;
             this.chkAutoRecording.CheckedChanged += new System.EventHandler(this.chkAutoRecording_CheckedChanged);
             // 
+            // txtLogSimulTo
+            // 
+            this.txtLogSimulTo.Location = new System.Drawing.Point(180, 76);
+            this.txtLogSimulTo.Name = "txtLogSimulTo";
+            this.txtLogSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtLogSimulTo.TabIndex = 14;
+            this.txtLogSimulTo.Text = "301";
+            // 
+            // txtLogSimulInter
+            // 
+            this.txtLogSimulInter.Location = new System.Drawing.Point(247, 75);
+            this.txtLogSimulInter.Name = "txtLogSimulInter";
+            this.txtLogSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtLogSimulInter.TabIndex = 14;
+            this.txtLogSimulInter.Text = "30";
+            // 
+            // txtAvgSimulFrom
+            // 
+            this.txtAvgSimulFrom.Location = new System.Drawing.Point(105, 103);
+            this.txtAvgSimulFrom.Name = "txtAvgSimulFrom";
+            this.txtAvgSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtAvgSimulFrom.TabIndex = 14;
+            this.txtAvgSimulFrom.Text = "1";
+            // 
+            // txtAvgSimulTo
+            // 
+            this.txtAvgSimulTo.Location = new System.Drawing.Point(180, 103);
+            this.txtAvgSimulTo.Name = "txtAvgSimulTo";
+            this.txtAvgSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtAvgSimulTo.TabIndex = 14;
+            this.txtAvgSimulTo.Text = "5.01";
+            // 
+            // txtAvgSimulInter
+            // 
+            this.txtAvgSimulInter.Location = new System.Drawing.Point(247, 102);
+            this.txtAvgSimulInter.Name = "txtAvgSimulInter";
+            this.txtAvgSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtAvgSimulInter.TabIndex = 14;
+            this.txtAvgSimulInter.Text = "0.25";
+            // 
+            // txtRateSimulFrom
+            // 
+            this.txtRateSimulFrom.Location = new System.Drawing.Point(105, 130);
+            this.txtRateSimulFrom.Name = "txtRateSimulFrom";
+            this.txtRateSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtRateSimulFrom.TabIndex = 14;
+            this.txtRateSimulFrom.Text = "0.05";
+            // 
+            // txtRateSimulTo
+            // 
+            this.txtRateSimulTo.Location = new System.Drawing.Point(180, 130);
+            this.txtRateSimulTo.Name = "txtRateSimulTo";
+            this.txtRateSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtRateSimulTo.TabIndex = 14;
+            this.txtRateSimulTo.Text = "0.41";
+            // 
+            // txtRateSimulInter
+            // 
+            this.txtRateSimulInter.Location = new System.Drawing.Point(247, 129);
+            this.txtRateSimulInter.Name = "txtRateSimulInter";
+            this.txtRateSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtRateSimulInter.TabIndex = 14;
+            this.txtRateSimulInter.Text = "0.05";
+            // 
+            // txtCutSimulFrom
+            // 
+            this.txtCutSimulFrom.Location = new System.Drawing.Point(105, 157);
+            this.txtCutSimulFrom.Name = "txtCutSimulFrom";
+            this.txtCutSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtCutSimulFrom.TabIndex = 14;
+            this.txtCutSimulFrom.Text = "0.5";
+            // 
+            // txtCutSimulTo
+            // 
+            this.txtCutSimulTo.Location = new System.Drawing.Point(180, 157);
+            this.txtCutSimulTo.Name = "txtCutSimulTo";
+            this.txtCutSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtCutSimulTo.TabIndex = 14;
+            this.txtCutSimulTo.Text = "2.1";
+            // 
+            // txtCutSimulInter
+            // 
+            this.txtCutSimulInter.Location = new System.Drawing.Point(247, 156);
+            this.txtCutSimulInter.Name = "txtCutSimulInter";
+            this.txtCutSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtCutSimulInter.TabIndex = 14;
+            this.txtCutSimulInter.Text = "0.5";
+            // 
+            // txtProCutSimulFrom
+            // 
+            this.txtProCutSimulFrom.Location = new System.Drawing.Point(105, 184);
+            this.txtProCutSimulFrom.Name = "txtProCutSimulFrom";
+            this.txtProCutSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtProCutSimulFrom.TabIndex = 14;
+            this.txtProCutSimulFrom.Text = "1";
+            // 
+            // txtProCutSimulTo
+            // 
+            this.txtProCutSimulTo.Location = new System.Drawing.Point(180, 184);
+            this.txtProCutSimulTo.Name = "txtProCutSimulTo";
+            this.txtProCutSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtProCutSimulTo.TabIndex = 14;
+            this.txtProCutSimulTo.Text = "3.1";
+            // 
+            // txtProCutSimulInter
+            // 
+            this.txtProCutSimulInter.Location = new System.Drawing.Point(247, 183);
+            this.txtProCutSimulInter.Name = "txtProCutSimulInter";
+            this.txtProCutSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtProCutSimulInter.TabIndex = 14;
+            this.txtProCutSimulInter.Text = "0.5";
+            // 
+            // txtProfitSimulFrom
+            // 
+            this.txtProfitSimulFrom.Location = new System.Drawing.Point(105, 211);
+            this.txtProfitSimulFrom.Name = "txtProfitSimulFrom";
+            this.txtProfitSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtProfitSimulFrom.TabIndex = 14;
+            this.txtProfitSimulFrom.Text = "0";
+            // 
+            // txtProfitSimulTo
+            // 
+            this.txtProfitSimulTo.Location = new System.Drawing.Point(180, 211);
+            this.txtProfitSimulTo.Name = "txtProfitSimulTo";
+            this.txtProfitSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtProfitSimulTo.TabIndex = 14;
+            this.txtProfitSimulTo.Text = "5.1";
+            // 
+            // txtProfitSimulInter
+            // 
+            this.txtProfitSimulInter.Location = new System.Drawing.Point(247, 210);
+            this.txtProfitSimulInter.Name = "txtProfitSimulInter";
+            this.txtProfitSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtProfitSimulInter.TabIndex = 14;
+            this.txtProfitSimulInter.Text = "0.5";
+            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1259, 564);
+            this.ClientSize = new System.Drawing.Size(1406, 564);
+            this.Controls.Add(this.chkSimulateAllItem);
             this.Controls.Add(this.chkAutoRecording);
             this.Controls.Add(this.chkReal);
             this.Controls.Add(this.cmbQueryKind);
@@ -608,6 +987,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            this.pnlSimulationOptions.ResumeLayout(false);
+            this.pnlSimulationOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLongTermSimulation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spdLog)).EndInit();
@@ -656,5 +1037,40 @@
         private FarPoint.Win.Spread.SheetView spsLongTermSimulation;
         private System.Windows.Forms.Timer tmrRecord;
         private System.Windows.Forms.CheckBox chkAutoRecording;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripTextBox txtInputMoney;
+        private System.Windows.Forms.CheckBox chkSimulateAllItem;
+        private System.Windows.Forms.ToolStripButton btnExportExcel;
+        private System.Windows.Forms.Panel pnlSimulationOptions;
+        private System.Windows.Forms.ToolStripButton btnSimulationConfig;
+        private System.Windows.Forms.CheckBox chkSimulationOption;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtLogSimulFrom;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtLogSimulInter;
+        private System.Windows.Forms.TextBox txtLogSimulTo;
+        private System.Windows.Forms.TextBox txtProfitSimulInter;
+        private System.Windows.Forms.TextBox txtProfitSimulTo;
+        private System.Windows.Forms.TextBox txtProCutSimulInter;
+        private System.Windows.Forms.TextBox txtProCutSimulTo;
+        private System.Windows.Forms.TextBox txtCutSimulInter;
+        private System.Windows.Forms.TextBox txtCutSimulTo;
+        private System.Windows.Forms.TextBox txtRateSimulInter;
+        private System.Windows.Forms.TextBox txtProfitSimulFrom;
+        private System.Windows.Forms.TextBox txtRateSimulTo;
+        private System.Windows.Forms.TextBox txtProCutSimulFrom;
+        private System.Windows.Forms.TextBox txtAvgSimulInter;
+        private System.Windows.Forms.TextBox txtCutSimulFrom;
+        private System.Windows.Forms.TextBox txtAvgSimulTo;
+        private System.Windows.Forms.TextBox txtRateSimulFrom;
+        private System.Windows.Forms.TextBox txtAvgSimulFrom;
     }
 }

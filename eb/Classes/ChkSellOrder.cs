@@ -29,9 +29,13 @@ namespace eb.Classes
             }
             else
             {
-                // 기준 %이상 넘어가면 무조건 팔아버리자..(앞 조건들 무시..)
+                // 기준 %이상 오르면 무조건 팔아버리자..(앞 조건들 무시..)
+                if (ChkMdSatisfy(item.PurchasedRate, currRate, item.HighRate))
+                    return "기준%이상오름";
+
+                // 맥스 기준 %이상 넘어가면 무조건 팔아버리자..(앞 조건들 무시..)
                 if (chkMdCutLine(realCls))
-                    return "기준이상오름";
+                    return "MAX기준이상오름";
 
                 // 구매가격 기준 손절% 또는 최고가 대비 익절% 이하로 내려 가는 경우
                 string cutoff = chkCutOff(item.PurchasedRate, currRate, item.HighRate);
@@ -44,6 +48,16 @@ namespace eb.Classes
 
                 return cutoff + sellSignCnt;
             }
+        }
+
+        private bool ChkMdSatisfy(double purchasedRate, double currRate, double highRate)
+        {
+            if (Program.cont.SatisfyProfit == 0) return false;
+
+            if (purchasedRate + Program.cont.SatisfyProfit <= currRate)
+                return true;
+            else
+                return false;
         }
 
         private bool chkMdCutLine(ClsRealChe realCls)

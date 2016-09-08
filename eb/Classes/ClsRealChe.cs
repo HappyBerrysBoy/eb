@@ -40,6 +40,7 @@ namespace eb.Classes
         private string status;          // 장정보
         private string jnilvolume;      // 전일동시간대거래량
         private string shcode;          // 종목코드
+        private string fee;             // 수수료
 
         public ClsRealChe()
         {
@@ -75,6 +76,7 @@ namespace eb.Classes
             status = "";
             jnilvolume = "";
             shcode = "";
+            fee = "";
         }
 
         public string BuySign
@@ -267,6 +269,12 @@ namespace eb.Classes
         {
             get { return shcode; }
             set { shcode = value; }
+        }
+
+        public string Fee
+        {
+            get { return fee; }
+            set { fee = value; }
         }
     }
 }

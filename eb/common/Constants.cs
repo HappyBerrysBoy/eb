@@ -24,6 +24,7 @@ namespace eb.common
         private string LOG_FOLDERPATH = "/logs/";
         private string INTERLIST_FOLDERPATH = "/interlist/";
         private string CONFIG_FOLDERPATH = "/config/";
+        private string SIMULATION_FOLDERPATH = "/simulation/";
         private string CONFIG_FILENAME = "config.ini";
         private string INTERLIST_FILENAME = "interestlist.txt";
         private string log_path = "logs";
@@ -44,7 +45,14 @@ namespace eb.common
         private int sellSignCnt = 0;                // 근접한 매도 신호가 몇번이나 있었는가?
         private int msCutLine = 0;                  // 몇% 이상이면 매수하지 않는다.. ex)20% or 25%
         private int mdCutLine = 0;                  // 몇% 이상이면 매도해버린다. ex)25% or 27%
-        private double differenceChePower = 0;         // 일정기간(일정 시점) 로그의 기간동안 설정된 체결강도의 %를 넘어 서면 구매할건지 설정
+        private double differenceChePower = 0;      // 일정기간(일정 시점) 로그의 기간동안 설정된 체결강도의 %를 넘어 서면 구매할건지 설정
+        private double satisfyProfit = 0;           // 매수 후 여기에 설정된 %만큼 오르면 무조건 매도 해서 수익을 취한다..
+
+        // 마감전 무조건 파는 시간
+        //private int cutOffHour = 15;
+        //private int cutOffMinute = 18;
+        private int cutOffHour = 0;
+        private int cutOffMinute = 0;
 
         // colors
         private Color buyCell = Color.YellowGreen;  // 실제로 매수 했을 Row
@@ -64,25 +72,21 @@ namespace eb.common
             get { return msSign; }
         }
         
-
         public Color ChangeRateOver2
         {
             get { return changeRateOver2; }
         }
         
-
         public Color ChangeRate
         {
             get { return changeRate; }
         }
         
-
         public Color SellCell
         {
             get { return sellCell; }
         }
         
-
         public Color BuyCell
         {
             get { return buyCell; }
@@ -195,6 +199,10 @@ namespace eb.common
             set { volumeHistoryCnt = value; }
         }
 
+        public string getSimulationPath
+        {
+            get { return SIMULATION_FOLDERPATH; }
+        }
         public string getConfigPath
         {
             get { return CONFIG_FOLDERPATH; }
@@ -258,6 +266,23 @@ namespace eb.common
         public string getAccountPass
         {
             get { return ACCOUNT_PASS; }
+        }
+
+        public int CutOffHour
+        {
+            get { return cutOffHour; }
+            set { cutOffHour = value; }
+        }
+        public int CutOffMinute
+        {
+            get { return cutOffMinute; }
+            set { cutOffMinute = value; }
+        }
+
+        public double SatisfyProfit
+        {
+            get { return satisfyProfit; }
+            set { satisfyProfit = value; }
         }
     }
 }

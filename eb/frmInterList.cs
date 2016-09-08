@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -53,6 +54,13 @@ namespace eb
         private long initMoney = 0;                 // 시작시 예수금
         private long money = 0;                     // 현재 예수금
         Hashtable hBuyVolume = new Hashtable();     // 구매시 몇주 구매 했는지 기록
+
+        private long initMoneyForSimulation;        // Long Term Simulation 시 투입 금액
+        private int firstRowIdx = 0;                // Long Term Simulation 시 항목마다 첫 시작 Row
+        private int lasttRowIdx = 0;                // Long Term Simulation 시 항목마다 마지막 Row
+        private long preDayVolume = 0;              // 시뮬레이션 시에 전일자 거래량
+
+        private Color SUBTOTAL_COLOR = Color.LightGreen;
 
         enum INTER_COL
         {
@@ -104,10 +112,15 @@ namespace eb
             PRICE,
             RATE,
             CPOWER,
+            REASON,
             DIFFERENCE_RATE,
             DIFFERENCE_AMOUNT,
-            PROFIT,
-            TOTAL_PROFIT
+            MSMD_VOLUME,
+            MSMD_AMOUNT,
+            FEE,
+            TAX,
+            BALANCE,
+            PROFIT
         }
 
         public frmInterList()
@@ -115,49 +128,9 @@ namespace eb
             InitializeComponent();
         }
 
-        private void setConfig()
-        {
-            StreamReader sr = null;
-
-            try
-            {
-                sr = new StreamReader(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
-                string line;
-
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (line.Split('/').Length > 2)
-                    {
-                        string[] strs = line.Split('/');
-                        Program.cont.VolumeHistoryCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.VOLUME_HISTORY_CNT]);
-                        Program.cont.CutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.CUT_OFF_PERCENT]);
-                        Program.cont.ProfitCutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.PROFIT_CUT_OFF_PERCENT]);
-                        Program.cont.PowerLowLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_LOW_LIMIT]);
-                        Program.cont.PowerHighLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_HIGH_LIMIT]);
-                        Program.cont.IgnoreCheCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.IGNORE_CHE_CNT]);
-                        Program.cont.PierceHoCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.PIERCE_HO_CNT]);
-                        Program.cont.LogTerm = Common.getIntValue(strs[(int)Common.CONFIG_IDX.LOG_TERM]);
-                        Program.cont.MsmdRate = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.MS_MD_RATE]);
-                        Program.cont.LogTermVolumeOver = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.LOG_TERM_VOLUME_OVER]);
-                        Program.cont.OrderSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.ORDER_SIGN_CNT]);
-                        Program.cont.SellSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.SELL_SIGN_CNT]);
-                        Program.cont.MsCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MS_CUT_LINE]);
-                        Program.cont.MdCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MD_CUT_LINE]);
-                        Program.cont.DifferenceChePower = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.DIFFERENCE_CHEPOWER]);
-                    }
-                }
-
-                sr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("설정되지 않은 설정값이 있습니다. 설정 후 다시 시작하여 주십시오.");
-            }
-        }
-
         private void frmInterList_Load(object sender, EventArgs e)
         {
-            setConfig();
+            Common.SetConfig();
 
             kindList.Add("계좌 거래내역");
             kindList.Add("현재가 호가조회");
@@ -397,7 +370,7 @@ namespace eb
         {
             try
             {
-                FileInfo fileInfo = new FileInfo(fileName);
+                //FileInfo fileInfo = new FileInfo(fileName);
                 file = new StreamWriter(fileName, true);
                 file.WriteLine(getLogFormat(logData));
             }
@@ -483,12 +456,7 @@ namespace eb
                 if (chkLongTermSimulation)
                 {
                     spsLongTermSimulation.RowCount++;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = currFileName;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = cls.Chetime;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD].Text = "매수";
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PRICE].Text = cls.Price;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.RATE].Text = cls.Drate;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.CPOWER].Text = cls.Cpower;
+                    WriteSimulationData(item, cls, true);
                 }
                 else
                 {
@@ -501,6 +469,58 @@ namespace eb
             item.IsPurchased = true;        // 사게 되면..
             item.PurchasedRate = Common.getDoubleValue(cls.Drate);
             item.HighRate = Common.getDoubleValue(cls.Drate);
+        }
+
+        private void WriteSimulationData(Item item, ClsRealChe cls, bool isBuy)
+        {
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = currFileName;
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = cls.Chetime;
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PRICE].Text = cls.Price;
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.RATE].Text = cls.Drate;
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.CPOWER].Text = cls.Cpower;
+            spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD].Text = isBuy == true ? "매수" : "매도";
+
+            long price = Convert.ToInt64(cls.Price);
+
+            if (isBuy)
+            {
+                int msVolume = Common.SimpleChkCanBuyVolume(initMoneyForSimulation, price);
+                long msAmount = price * msVolume;
+                long fee = Common.GetFee(price * msVolume);
+                initMoneyForSimulation = initMoneyForSimulation - (msAmount + fee);
+
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = Convert.ToString(msVolume);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text = Convert.ToString(msAmount);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = Convert.ToString(fee);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = Convert.ToString(initMoneyForSimulation);
+
+                item.MsVolume = msVolume;
+                item.Price = Convert.ToInt64(cls.Price);
+            }
+            else
+            {
+                string beforeRate = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.RATE].Text;
+                string beforeAmount = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.PRICE].Text;
+
+                long mdAmount = price * item.MsVolume;
+                long fee = Common.GetFee(price * item.MsVolume);
+                long tax = Common.GetTax(price * item.MsVolume);
+                initMoneyForSimulation = initMoneyForSimulation + mdAmount - fee - tax;
+
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DIFFERENCE_RATE].Text = Convert.ToString(Convert.ToDouble(cls.Drate) - Convert.ToDouble(beforeRate));
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DIFFERENCE_AMOUNT].Text = Convert.ToString(Convert.ToInt32(cls.Price) - Convert.ToInt32(beforeAmount));
+
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.REASON].Text = cls.SellSign;
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = Convert.ToString(item.MsVolume);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text = Convert.ToString(mdAmount);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TAX].Text = Convert.ToString(tax);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = Convert.ToString(fee);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = Convert.ToString(initMoneyForSimulation);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PROFIT].Text = Convert.ToString(Math.Round((double)initMoneyForSimulation / Common.getDoubleValue(txtInputMoney.Text), 3) * 100) + "%";
+
+                item.MsVolume = 0;      // 다 팔았으니 현재 매수된 양을 0으로 설정
+                item.Price = 0;         // 다 팔았으니 단가도 0원으로 설정
+            }
         }
 
         private void SellProcess(Item item, ClsRealChe cls)
@@ -528,18 +548,7 @@ namespace eb
                 if (chkLongTermSimulation)
                 {
                     spsLongTermSimulation.RowCount++;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = currFileName;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = cls.Chetime;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD].Text = "매도";
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PRICE].Text = cls.Price;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.RATE].Text = cls.Drate;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.CPOWER].Text = cls.Cpower;
-                    string beforeRate = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.RATE].Text;
-                    string beforeAmount = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.PRICE].Text;
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DIFFERENCE_RATE].Text = Convert.ToString(Convert.ToDouble(cls.Drate) - Convert.ToDouble(beforeRate));
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DIFFERENCE_AMOUNT].Text = Convert.ToString(Convert.ToInt32(cls.Price) - Convert.ToInt32(beforeAmount));
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PROFIT].Text = CalcProfit();
-                    spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TOTAL_PROFIT].Text = "";
+                    WriteSimulationData(item, cls, false);
                 }
                 else
                 {
@@ -579,31 +588,9 @@ namespace eb
 
         private int calcBuyVolume(Item item, ClsRealChe cls)
         {
-            long price = Common.getLongValue(cls.Price);
-            long moneyPerStock = (long)Math.Ceiling(price * (1 + Program.cont.getFee));
-
-            if (moneyPerStock == 0) return 0;
             long availMoney = initMoney * item.OrderPerRate / 100 < money ? (long)Math.Truncate(initMoney * item.OrderPerRate / 100) : money;
 
-            if (moneyPerStock > availMoney)
-            {
-                // 1주 사는데, 가능한 비용보다 비싼 주식이라면, 전체 금액에서 이 주식을 살수 있는지 체크
-                if (moneyPerStock > money)
-                {
-                    // 살 수 없다면 0
-                    return 0;
-                }
-                else
-                {
-                    // 살 수 있다면 1주만 산다..
-                    return 1;
-                }
-            }
-            else
-            {
-                double cnt = availMoney / moneyPerStock;
-                return (int)cnt;
-            }
+            return Common.ChkCanBuyVolume(money, availMoney, Common.getLongValue(cls.Price), true);
         }
 
         private void buyStock(Item item, ClsRealChe cls)
@@ -616,7 +603,7 @@ namespace eb
 
             cls.OrderVolume = Convert.ToString(volume);
             cls.OrderPrice = cls.Price;
-            cls.Tax = Convert.ToString(Math.Truncate(Common.getDoubleValue(cls.Price) * Program.cont.getFee));
+            cls.Fee = Convert.ToString(Common.GetFee(Convert.ToInt64(cls.Price)));
         }
 
         private void sellAllStock(string shCode, ClsRealChe cls)
@@ -628,7 +615,8 @@ namespace eb
 
             cls.OrderVolume = Convert.ToString(volume);
             cls.OrderPrice = cls.Price;
-            cls.Tax = Convert.ToString(Math.Truncate(Common.getDoubleValue(cls.Price) * (Program.cont.getFee + Program.cont.getTax)));
+            cls.Fee = Convert.ToString(Common.GetFee(Convert.ToInt64(cls.Price)));
+            cls.Tax = Convert.ToString(Common.GetTax(Convert.ToInt64(cls.Price)));
         }
 
         private void doOrder(string shCode, string kind, string volume) 
@@ -884,7 +872,7 @@ namespace eb
                 
                 spsInterest.Cells[i, (int)INTER_COL.AVG_VOL].Text = Math.Round(ttlVolume/(lst.Count - 1), 0).ToString();
                 Item item = (Item)hItemLogs[shcode];
-                item.AvgVolumeFewDays = Math.Round(ttlVolume / (lst.Count - 1), 0);
+                item.AvgVolumeFewDays = (long)Math.Round(ttlVolume / (lst.Count - 1), 0);
 
                 Console.WriteLine(shcode + " Total :" + Math.Round(ttlVolume / (lst.Count - 1), 0).ToString());
                 break;
@@ -1240,6 +1228,7 @@ namespace eb
                 string currRate = "";
                 string beforeRate = "";
                 bool isFirst = true;
+                string shcode = "";
 
                 Cursor.Current = Cursors.WaitCursor;
                 while ((line = sr.ReadLine()) != null)
@@ -1254,6 +1243,7 @@ namespace eb
                             strList.Add(strs[i]);
                         }
 
+                        shcode = strList[(int)LOG_COL.CODE];
                         string drate = strList[(int)LOG_COL.DRATE];
                         string gubun = strList[(int)LOG_COL.GUBUN];
 
@@ -1309,13 +1299,17 @@ namespace eb
                                 double avgVolFewDays = item.AvgVolumeFewDays;
                                 double orderPerRate = item.OrderPerRate;
                                 hItemLogs[strList[(int)LOG_COL.CODE]] = new Item();
-                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
+                                //((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
+                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = preDayVolume;
                                 ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).OrderPerRate = orderPerRate;
                                 isFirst = false;
                             }
                         }
                     }
                 }
+
+                int logLength = ((Item)hItemLogs[shcode]).Logs.Count;
+                preDayVolume = Convert.ToInt32(((ClsRealChe)((Item)hItemLogs[shcode]).Logs[logLength - 1]).Volume);     // 이전날 거래량
 
                 chkSimulation = false;
                 Cursor.Current = Cursors.Default;
@@ -1406,26 +1400,292 @@ namespace eb
             return fileList;
         }
 
+        private void OneItemLongTermSimulation(string folder, string shcode)
+        {
+            List<string> fileList = GetSelectedFileList(folder, shcode);
+            initMoneyForSimulation = Common.getLongValue(txtInputMoney.Text);
+            firstRowIdx = spsLongTermSimulation.RowCount;
+            preDayVolume = 0;       // 최초 파일의 전날은 데이터가 없으므로 거래량은 0으로 설정
+
+            for (int i = 0; i < fileList.Count; i++)
+            {
+                SetCutOffTime(fileList[i]);
+                LoadLogData(true, fileList[i]);
+            }
+
+            hItemLogs[shcode] = new Item();                 // 완료된 항목은 다시 초기화 해서 메모리 해제 시키자
+            lasttRowIdx = spsLongTermSimulation.RowCount;
+        }
+
+        // 시뮬레이션 시에 무조건 파는 시간 설정
+        private void SetCutOffTime(string time)
+        {
+            if (time.Split('(').Length > 1)
+            {
+                try
+                {
+                    if (Convert.ToInt32(time.Split('(')[1].Split(')')[0].Replace("-", "")) > 20160800)
+                    {
+                        Program.cont.CutOffHour = 15;
+                        Program.cont.CutOffMinute = 18;
+                    }
+                    else
+                    {
+                        Program.cont.CutOffHour = 14;
+                        Program.cont.CutOffMinute = 48;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Program.cont.CutOffHour = 14;
+                    Program.cont.CutOffMinute = 48;
+                }
+            }
+        }
+
+        private string GetPercentbyInitMoney(string val)
+        {
+            return Convert.ToString(Math.Round((double)(Convert.ToInt32(val)/Convert.ToDouble(txtInputMoney.Text)*100), 2));
+        }
+
+        // Spread 특정 칼럼 특정 범위만큼 Summary
+        private string GetColumnSummary(int colIdx)
+        {
+            long sum = 0;
+
+            for (int i = firstRowIdx; i < lasttRowIdx; i++)
+            {
+                try
+                {
+                    sum += Convert.ToUInt32(spsLongTermSimulation.Cells[i, colIdx].Text);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return Convert.ToString(sum);
+        }
+
+        private string GetItemName(string code)
+        {
+            for (int i = 0; i < spsInterest.RowCount; i++)
+                if (spsInterest.Cells[i, (int)INTER_COL.CODE].Text == code)
+                    return spsInterest.Cells[i, (int)INTER_COL.NAME].Text;
+
+            return "코드 없음";
+        }
+
         private void btnLongTermSimulation_Click(object sender, EventArgs e)
         {
             if (spsInterest.ActiveRowIndex < 0) return;
-            spsLongTermSimulation.RowCount = 0;
             chkLongTermSimulation = true;
             chkSimulation = true;
             spdLog.Visible = false;
             spdLongTermSimulation.Visible = true;
+            spsLongTermSimulation.RowCount = 0;
 
-            string code = spsInterest.Cells[spsInterest.ActiveRowIndex, (int)INTER_COL.CODE].Text;
+            //ResetItemTable();
+
             string folderPath = Common.GetDialogFolder();
 
-            List<string> fileList = GetSelectedFileList(folderPath, code);
+            // 프로세스 실행시간 측정
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
-            for (int i = 0; i < fileList.Count; i++)
+            if (chkSimulateAllItem.Checked) 
             {
-                LoadLogData(true, fileList[i]);
+                if (chkSimulationOption.Checked)
+                    SimulateOptionLongTerm(folderPath);
+                else
+                    SimulateLongTerm(folderPath);
+            }
+            else
+            {
+                string code = spsInterest.Cells[spsInterest.ActiveRowIndex, (int)INTER_COL.CODE].Text;
+                OneItemLongTermSimulation(folderPath, code);
+                WriteSubTotalSummary(spsInterest.Cells[spsInterest.ActiveRowIndex, (int)INTER_COL.CODE].Text);
             }
 
             chkLongTermSimulation = false;
+            ExportExcel();
+
+            // 프로세스 실행시간 종료
+            sw.Stop();
+            //MessageBox.Show(((sw.ElapsedMilliseconds)/1000).ToString() + "ms");
+        }
+
+        private void SimulateLongTerm(string folderPath)
+        {
+            spsLongTermSimulation.RowCount = 0;
+
+            for (int i = 0; i < spsInterest.RowCount; i++)
+            {
+                string shcode = spsInterest.Cells[i, (int)INTER_COL.CODE].Text;
+                OneItemLongTermSimulation(folderPath, shcode);
+                Application.DoEvents();
+                WriteSubTotalSummary(shcode);
+            }
+
+            WriteTotalResult();
+        }
+
+        private void SimulateOptionLongTerm(string folderPath)
+        {
+            int logFrom = Common.getIntValue(txtLogSimulFrom.Text);
+            int logTo = Common.getIntValue(txtLogSimulTo.Text);
+            int logInter = Common.getIntValue(txtLogSimulInter.Text);
+            double avgFrom = Common.getDoubleValue(txtAvgSimulFrom.Text);
+            double avgTo = Common.getDoubleValue(txtAvgSimulTo.Text);
+            double avgInter = Common.getDoubleValue(txtAvgSimulInter.Text);
+            double rateFrom = Common.getDoubleValue(txtRateSimulFrom.Text);
+            double rateTo = Common.getDoubleValue(txtRateSimulTo.Text);
+            double rateInter = Common.getDoubleValue(txtRateSimulInter.Text);
+            double cutFrom = Common.getDoubleValue(txtCutSimulFrom.Text);
+            double cutTo = Common.getDoubleValue(txtCutSimulTo.Text);
+            double cutInter = Common.getDoubleValue(txtCutSimulInter.Text);
+            double proCutFrom = Common.getDoubleValue(txtProCutSimulFrom.Text);
+            double proCutTo = Common.getDoubleValue(txtProCutSimulTo.Text);
+            double proCutInter = Common.getDoubleValue(txtProCutSimulInter.Text);
+            double profitFrom = Common.getDoubleValue(txtProfitSimulFrom.Text);
+            double profitTo = Common.getDoubleValue(txtProfitSimulTo.Text);
+            double profitInter = Common.getDoubleValue(txtProfitSimulInter.Text);
+
+            string filename = Program.cont.getApplicationPath + Program.cont.getSimulationPath + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + ".txt";
+            StreamWriter sw = null;
+
+            try
+            {
+                for (int log = logFrom; log < logTo; log += logInter)
+                {
+                    Program.cont.LogTerm = log;
+                    for (double avg = avgFrom; avg < avgTo; avg += avgInter)
+                    {
+                        Program.cont.LogTermVolumeOver = avg;
+                        for (double rate = rateFrom; rate < rateTo; rate += rateInter)
+                        {
+                            Program.cont.MsmdRate = rate;
+                            for (double cut = cutFrom; cut < cutTo; cut += cutInter)
+                            {
+                                Program.cont.CutoffPercent = cut;
+                                for (double proCut = proCutFrom; proCut < proCutTo; proCut += proCutInter)
+                                {
+                                    Program.cont.ProfitCutoffPercent = proCut;
+                                    for (double profit = profitFrom; profit < profitTo; profit += profitInter)
+                                    {
+                                        Program.cont.SatisfyProfit = profit;
+                                        SimulateLongTerm(folderPath);
+                                        ExportExcel();
+                                        sw = new StreamWriter(filename, true);
+                                        sw.WriteLine("" + "Log:" + log + ", Avg:" + avg + ", Rate:" + rate + ", CutOff:" + cut + ", Profit CutOff:" + proCut + ", Profit:" + profit + ", Result => Profit:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.BALANCE].Text + ", Tax:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.TAX].Text + ", Fee:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.FEE].Text);
+                                        sw.Close();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                sw.Close();
+            }
+        }
+
+        private void WriteSubTotalSummary(string code)
+        {
+            spsLongTermSimulation.RowCount++;
+            spsLongTermSimulation.Rows[spsLongTermSimulation.RowCount - 1].BackColor = SUBTOTAL_COLOR;
+
+            if (firstRowIdx == lasttRowIdx)
+            {
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code) + " 거래 내역 없음";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = "0";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TAX].Text = "0";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = txtInputMoney.Text;
+            }
+            else
+            {
+                string ttlFee = GetColumnSummary((int)LONG_SIMUL_COL.FEE);
+                string ttlTax = GetColumnSummary((int)LONG_SIMUL_COL.TAX);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code) + "(" + code + ")";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = ttlFee;
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = "(" + GetPercentbyInitMoney(ttlFee) + "%)";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TAX].Text = ttlTax;
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text = "(" + GetPercentbyInitMoney(ttlTax) + "%)";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.BALANCE].Text;
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PROFIT].Text = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.PROFIT].Text;
+            }
+        }
+
+        private void WriteTotalResult()
+        {
+            long ttlCnt = 0;
+            double ttlFeeSum = 0;
+            double ttlTaxSum = 0;
+            double ttlBalanceSum = 0;
+
+            spsLongTermSimulation.Rows.Add(0, 1);   // 첫번째 줄에 전체 결과 추가
+            spsLongTermSimulation.Rows[0].BackColor = Color.Orange;
+
+            // 시뮬레이션 종료 후 전체 종목에 대한 전체 합계..
+            for (int i = 0; i < spsLongTermSimulation.RowCount; i++)
+            {
+                if (spsLongTermSimulation.Rows[i].BackColor != SUBTOTAL_COLOR) continue;
+
+                ttlCnt++;
+                ttlFeeSum += Convert.ToInt32(spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.FEE].Text);
+                ttlTaxSum += Convert.ToInt32(spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.TAX].Text);
+                ttlBalanceSum += Convert.ToInt32(spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.BALANCE].Text);
+            }
+
+            double ttlInputSum = Convert.ToInt32(txtInputMoney.Text) * ttlCnt;
+
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.DATE].Text = "총 " + ttlCnt + "개의 종목 전체 결과";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.FEE].Text = Convert.ToString(Math.Round(ttlFeeSum / ttlInputSum * 100, 2)) + "%";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.TAX].Text = Convert.ToString(Math.Round(ttlTaxSum / ttlInputSum * 100, 2)) + "%";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.BALANCE].Text = Convert.ToString(Math.Round(ttlBalanceSum / ttlInputSum * 100, 2)) + "%";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.PROFIT].Text = "";
+
+            spsLongTermSimulation.Rows.Add(0, 2);   // 첫번째 줄에 전체 결과 추가
+            spsLongTermSimulation.Rows[0].BackColor = Color.Orange;
+            spsLongTermSimulation.Rows[1].BackColor = Color.Orange;
+
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.DATE].Text = "로그기간";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.TIME].Text = "평균거래량";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.MSMD].Text = "매도/매수";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.PRICE].Text = "손절";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.RATE].Text = "익절";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.CPOWER].Text = "몇%수익매도";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.REASON].Text = "몇호가관통";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.DIFFERENCE_RATE].Text = "매수신호연속";
+            spsLongTermSimulation.Cells[0, (int)LONG_SIMUL_COL.DIFFERENCE_AMOUNT].Text = "매도신호연속";
+
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.DATE].Text = Convert.ToString(Program.cont.LogTerm);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.TIME].Text = Convert.ToString(Program.cont.LogTermVolumeOver);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.MSMD].Text = Convert.ToString(Program.cont.MsmdRate);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.PRICE].Text = Convert.ToString(Program.cont.CutoffPercent);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.RATE].Text = Convert.ToString(Program.cont.ProfitCutoffPercent);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.CPOWER].Text = Convert.ToString(Program.cont.SatisfyProfit);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.REASON].Text = Convert.ToString(Program.cont.PierceHoCnt);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.DIFFERENCE_RATE].Text = Convert.ToString(Program.cont.OrderSignCnt);
+            spsLongTermSimulation.Cells[1, (int)LONG_SIMUL_COL.DIFFERENCE_AMOUNT].Text = Convert.ToString(Program.cont.SellSignCnt);
+        }
+
+        // Items를 모두 리셋(메모리 줄임)
+        private void ResetItemTable()
+        {
+            List<string> cols = hItemLogs.Keys.Cast<string>().ToList();
+
+            foreach (string col in cols)
+            {
+                hItemLogs[col] = new Item();
+            }
         }
 
         private void chkAutoRecording_CheckedChanged(object sender, EventArgs e)
@@ -1446,7 +1706,30 @@ namespace eb
 
             if (time.Hour == 8 && time.Minute >= 31 && time.Minute < 36)
             {
+                ResetItemTable();
                 DoRecording();
+            }
+        }
+
+        private void btnExportExcel_Click(object sender, EventArgs e)
+        {
+            ExportExcel();
+        }
+
+        private void ExportExcel()
+        {
+            spdLongTermSimulation.SaveExcel(System.Windows.Forms.Application.StartupPath + "\\" + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + ".xls");
+        }
+
+        private void btnSimulationConfig_Click(object sender, EventArgs e)
+        {
+            if (pnlSimulationOptions.Visible)
+            {
+                pnlSimulationOptions.Visible = false;
+            }
+            else
+            {
+                pnlSimulationOptions.Visible = true;
             }
         }
     }

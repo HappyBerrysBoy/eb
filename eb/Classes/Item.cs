@@ -15,8 +15,10 @@ namespace eb.Classes
         private List<ClsRealChe> logs;      // 종목 거래 로그
         private int fromTimeIdx;            // 매수/매도를 위한 기준시간(from)
         private int toTimeIdx;              // 매수/매도를 위한 기준시간(to)
-        private double avgVolumeFewDays;    // 설정된 일만큼의 평균 거래량
-        private bool isPurchased;           // 구매 되었는가?
+        private long avgVolumeFewDays;      // 설정된 일만큼의 평균 거래량
+        private int msVolume;               // 매수량
+        private long price;                 // 매수시 단가
+        private bool isPurchased;           // 매수 되었는가?
         private double orderPerRate;        // 1회 주문시 주문 비율
         private double totalOrderRate;      // 전체 구매된 %(예수금 대비)
         private double purchasedRate;       // 몇%에서 구매 되었는가
@@ -85,7 +87,7 @@ namespace eb.Classes
             set { isPurchased = value; }
         }
 
-        public double AvgVolumeFewDays
+        public long AvgVolumeFewDays
         {
             get { return avgVolumeFewDays; }
             set { avgVolumeFewDays = value; }
@@ -131,6 +133,18 @@ namespace eb.Classes
         {
             get { return beforeRate; }
             set { beforeRate = value; }
+        }
+
+        public int MsVolume
+        {
+            get { return msVolume; }
+            set { msVolume = value; }
+        }
+
+        public long Price
+        {
+            get { return price; }
+            set { price = value; }
         }
     }
 }
