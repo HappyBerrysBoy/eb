@@ -8,22 +8,15 @@ namespace eb.Classes
 {
     class ClsRealChe
     {
-        private string buySign;         // 매수 싸인
-        private string sellSign;        // 매도 싸인
-        private string order;           // 매수/매도 텍스트
-        private string orderVolume;     // 매수량
-        private string orderPrice;      // 매수금액
-        private string tax;             // 세금
+        public int cnt { get; set; }
+        private string shcode;          // 종목코드
         private string chetime;         // 체결시간
         private string sign;            // 전일대비 +/-/보합 (2:+, 3:보합, 5:-)
         private string change;          // 전일대비 차이금액(절대값임, 전일대비 -100원이라도 100으로 표시됨, 전일대비 100원 올라도 100으로 표시)
         private string drate;           // 등락율(현재 몇오른금액 몇%인지)
         private string price;           // 현재 금액
-        private string opentime;        // 거래시작시간
         private string open;            // 시가
-        private string hightime;        // 고가시간
         private string high;            // 고가
-        private string lowtime;         // 저가시간
         private string low;             // 저가
         private string cgubun;          // 현재 +인지 -인지 +-기호로 표시
         private string cvolume;         // 체결량
@@ -34,12 +27,22 @@ namespace eb.Classes
         private string msvolume;        // 매수량
         private string mschecnt;        // 매수 횟수
         private string cpower;          // 체결강도
-        private string w_avrg;          // 가중평균가
         private string offerho;         // 매도호가
         private string bidho;           // 매수호가
         private string status;          // 장정보
         private string jnilvolume;      // 전일동시간대거래량
-        private string shcode;          // 종목코드
+        private string buySign;         // 매수 싸인
+        private string sellSign;        // 매도 싸인
+        private string order;           // 매수/매도 텍스트
+        private string orderVolume;     // 매수량
+        private string orderPrice;      // 매수금액
+        private string tax;             // 세금
+        
+        private string opentime;        // 거래시작시간
+        private string hightime;        // 고가시간
+        private string lowtime;         // 저가시간
+        private string w_avrg;          // 가중평균가
+        
         private string fee;             // 수수료
 
         public ClsRealChe()

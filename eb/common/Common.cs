@@ -216,5 +216,30 @@ namespace eb.common
             return (int)cnt;
         }
 
+        // 시뮬레이션 시에 무조건 파는 시간 설정
+        public static void SetCutOffTime(string time)
+        {
+            if (time.Split('(').Length > 1)
+            {
+                try
+                {
+                    if (Convert.ToInt32(time.Split('(')[1].Split(')')[0].Replace("-", "")) > 20160800)
+                    {
+                        Program.cont.CutOffHour = 15;
+                        Program.cont.CutOffMinute = 18;
+                    }
+                    else
+                    {
+                        Program.cont.CutOffHour = 14;
+                        Program.cont.CutOffMinute = 48;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Program.cont.CutOffHour = 14;
+                    Program.cont.CutOffMinute = 48;
+                }
+            }
+        }
     }
 }

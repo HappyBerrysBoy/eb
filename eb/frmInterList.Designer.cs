@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType31 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType32 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType33 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType34 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType35 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType4 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType5 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
@@ -50,7 +50,32 @@
             this.btnDel = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnGetAvgVolume = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.pnlSimulationOptions = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtProfitSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulInter = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulTo = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulInter = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulTo = new System.Windows.Forms.TextBox();
+            this.txtCutSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtCutSimulInter = new System.Windows.Forms.TextBox();
+            this.txtCutSimulTo = new System.Windows.Forms.TextBox();
+            this.txtRateSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtRateSimulInter = new System.Windows.Forms.TextBox();
+            this.txtProfitSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtRateSimulTo = new System.Windows.Forms.TextBox();
+            this.txtProCutSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulInter = new System.Windows.Forms.TextBox();
+            this.txtCutSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulTo = new System.Windows.Forms.TextBox();
+            this.txtRateSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtLogSimulCurr = new System.Windows.Forms.TextBox();
+            this.txtLogSimulInter = new System.Windows.Forms.TextBox();
+            this.txtAvgSimulFrom = new System.Windows.Forms.TextBox();
+            this.txtLogSimulTo = new System.Windows.Forms.TextBox();
             this.txtLogSimulFrom = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -86,23 +111,8 @@
             this.chkReal = new System.Windows.Forms.CheckBox();
             this.tmrRecord = new System.Windows.Forms.Timer(this.components);
             this.chkAutoRecording = new System.Windows.Forms.CheckBox();
-            this.txtLogSimulTo = new System.Windows.Forms.TextBox();
-            this.txtLogSimulInter = new System.Windows.Forms.TextBox();
-            this.txtAvgSimulFrom = new System.Windows.Forms.TextBox();
-            this.txtAvgSimulTo = new System.Windows.Forms.TextBox();
-            this.txtAvgSimulInter = new System.Windows.Forms.TextBox();
-            this.txtRateSimulFrom = new System.Windows.Forms.TextBox();
-            this.txtRateSimulTo = new System.Windows.Forms.TextBox();
-            this.txtRateSimulInter = new System.Windows.Forms.TextBox();
-            this.txtCutSimulFrom = new System.Windows.Forms.TextBox();
-            this.txtCutSimulTo = new System.Windows.Forms.TextBox();
-            this.txtCutSimulInter = new System.Windows.Forms.TextBox();
-            this.txtProCutSimulFrom = new System.Windows.Forms.TextBox();
-            this.txtProCutSimulTo = new System.Windows.Forms.TextBox();
-            this.txtProCutSimulInter = new System.Windows.Forms.TextBox();
-            this.txtProfitSimulFrom = new System.Windows.Forms.TextBox();
-            this.txtProfitSimulTo = new System.Windows.Forms.TextBox();
-            this.txtProfitSimulInter = new System.Windows.Forms.TextBox();
+            this.chkSimulateMemory = new System.Windows.Forms.CheckBox();
+            this.chkExportExcel = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -232,15 +242,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType31;
+            this.spsInterest.Columns.Get(5).CellType = textCellType1;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType32;
+            this.spsInterest.DefaultStyle.CellType = textCellType2;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType32;
+            this.spsInterest.DefaultStyle.Renderer = textCellType2;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -254,7 +264,8 @@
             this.btnAdd,
             this.btnDel,
             this.btnSave,
-            this.btnGetAvgVolume});
+            this.btnGetAvgVolume,
+            this.toolStripButton1});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
             this.toolStrip3.Size = new System.Drawing.Size(376, 25);
@@ -316,22 +327,39 @@
             this.btnGetAvgVolume.Text = "Get Average Volume";
             this.btnGetAvgVolume.Click += new System.EventHandler(this.btnGetAvgVolume_Click);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "Log 합성";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // pnlSimulationOptions
             // 
+            this.pnlSimulationOptions.Controls.Add(this.label12);
+            this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtCutSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtCutSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtCutSimulTo);
+            this.pnlSimulationOptions.Controls.Add(this.txtRateSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtRateSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtProfitSimulFrom);
             this.pnlSimulationOptions.Controls.Add(this.txtRateSimulTo);
             this.pnlSimulationOptions.Controls.Add(this.txtProCutSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtCutSimulFrom);
             this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulTo);
             this.pnlSimulationOptions.Controls.Add(this.txtRateSimulFrom);
+            this.pnlSimulationOptions.Controls.Add(this.txtLogSimulCurr);
             this.pnlSimulationOptions.Controls.Add(this.txtLogSimulInter);
             this.pnlSimulationOptions.Controls.Add(this.txtAvgSimulFrom);
             this.pnlSimulationOptions.Controls.Add(this.txtLogSimulTo);
@@ -349,8 +377,201 @@
             this.pnlSimulationOptions.Controls.Add(this.chkSimulationOption);
             this.pnlSimulationOptions.Location = new System.Drawing.Point(316, 3);
             this.pnlSimulationOptions.Name = "pnlSimulationOptions";
-            this.pnlSimulationOptions.Size = new System.Drawing.Size(319, 241);
+            this.pnlSimulationOptions.Size = new System.Drawing.Size(410, 241);
             this.pnlSimulationOptions.TabIndex = 10;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(324, 55);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(46, 12);
+            this.label12.TabIndex = 15;
+            this.label12.Text = "Current";
+            // 
+            // txtProfitSimulCurr
+            // 
+            this.txtProfitSimulCurr.Location = new System.Drawing.Point(313, 210);
+            this.txtProfitSimulCurr.Name = "txtProfitSimulCurr";
+            this.txtProfitSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtProfitSimulCurr.TabIndex = 14;
+            this.txtProfitSimulCurr.Text = "0";
+            // 
+            // txtProfitSimulInter
+            // 
+            this.txtProfitSimulInter.Location = new System.Drawing.Point(247, 210);
+            this.txtProfitSimulInter.Name = "txtProfitSimulInter";
+            this.txtProfitSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtProfitSimulInter.TabIndex = 14;
+            this.txtProfitSimulInter.Text = "1";
+            // 
+            // txtProfitSimulTo
+            // 
+            this.txtProfitSimulTo.Location = new System.Drawing.Point(180, 211);
+            this.txtProfitSimulTo.Name = "txtProfitSimulTo";
+            this.txtProfitSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtProfitSimulTo.TabIndex = 14;
+            this.txtProfitSimulTo.Text = "5.1";
+            // 
+            // txtProCutSimulCurr
+            // 
+            this.txtProCutSimulCurr.Location = new System.Drawing.Point(313, 183);
+            this.txtProCutSimulCurr.Name = "txtProCutSimulCurr";
+            this.txtProCutSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtProCutSimulCurr.TabIndex = 14;
+            this.txtProCutSimulCurr.Text = "0";
+            // 
+            // txtProCutSimulInter
+            // 
+            this.txtProCutSimulInter.Location = new System.Drawing.Point(247, 183);
+            this.txtProCutSimulInter.Name = "txtProCutSimulInter";
+            this.txtProCutSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtProCutSimulInter.TabIndex = 14;
+            this.txtProCutSimulInter.Text = "1";
+            // 
+            // txtProCutSimulTo
+            // 
+            this.txtProCutSimulTo.Location = new System.Drawing.Point(180, 184);
+            this.txtProCutSimulTo.Name = "txtProCutSimulTo";
+            this.txtProCutSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtProCutSimulTo.TabIndex = 14;
+            this.txtProCutSimulTo.Text = "3.1";
+            // 
+            // txtCutSimulCurr
+            // 
+            this.txtCutSimulCurr.Location = new System.Drawing.Point(313, 156);
+            this.txtCutSimulCurr.Name = "txtCutSimulCurr";
+            this.txtCutSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtCutSimulCurr.TabIndex = 14;
+            this.txtCutSimulCurr.Text = "0";
+            // 
+            // txtCutSimulInter
+            // 
+            this.txtCutSimulInter.Location = new System.Drawing.Point(247, 156);
+            this.txtCutSimulInter.Name = "txtCutSimulInter";
+            this.txtCutSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtCutSimulInter.TabIndex = 14;
+            this.txtCutSimulInter.Text = "0.5";
+            // 
+            // txtCutSimulTo
+            // 
+            this.txtCutSimulTo.Location = new System.Drawing.Point(180, 157);
+            this.txtCutSimulTo.Name = "txtCutSimulTo";
+            this.txtCutSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtCutSimulTo.TabIndex = 14;
+            this.txtCutSimulTo.Text = "2.1";
+            // 
+            // txtRateSimulCurr
+            // 
+            this.txtRateSimulCurr.Location = new System.Drawing.Point(313, 129);
+            this.txtRateSimulCurr.Name = "txtRateSimulCurr";
+            this.txtRateSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtRateSimulCurr.TabIndex = 14;
+            this.txtRateSimulCurr.Text = "0";
+            // 
+            // txtRateSimulInter
+            // 
+            this.txtRateSimulInter.Location = new System.Drawing.Point(247, 129);
+            this.txtRateSimulInter.Name = "txtRateSimulInter";
+            this.txtRateSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtRateSimulInter.TabIndex = 14;
+            this.txtRateSimulInter.Text = "0.1";
+            // 
+            // txtProfitSimulFrom
+            // 
+            this.txtProfitSimulFrom.Location = new System.Drawing.Point(105, 211);
+            this.txtProfitSimulFrom.Name = "txtProfitSimulFrom";
+            this.txtProfitSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtProfitSimulFrom.TabIndex = 14;
+            this.txtProfitSimulFrom.Text = "0";
+            // 
+            // txtRateSimulTo
+            // 
+            this.txtRateSimulTo.Location = new System.Drawing.Point(180, 130);
+            this.txtRateSimulTo.Name = "txtRateSimulTo";
+            this.txtRateSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtRateSimulTo.TabIndex = 14;
+            this.txtRateSimulTo.Text = "0.41";
+            // 
+            // txtProCutSimulFrom
+            // 
+            this.txtProCutSimulFrom.Location = new System.Drawing.Point(105, 184);
+            this.txtProCutSimulFrom.Name = "txtProCutSimulFrom";
+            this.txtProCutSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtProCutSimulFrom.TabIndex = 14;
+            this.txtProCutSimulFrom.Text = "1";
+            // 
+            // txtAvgSimulCurr
+            // 
+            this.txtAvgSimulCurr.Location = new System.Drawing.Point(313, 102);
+            this.txtAvgSimulCurr.Name = "txtAvgSimulCurr";
+            this.txtAvgSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtAvgSimulCurr.TabIndex = 14;
+            this.txtAvgSimulCurr.Text = "0";
+            // 
+            // txtAvgSimulInter
+            // 
+            this.txtAvgSimulInter.Location = new System.Drawing.Point(247, 102);
+            this.txtAvgSimulInter.Name = "txtAvgSimulInter";
+            this.txtAvgSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtAvgSimulInter.TabIndex = 14;
+            this.txtAvgSimulInter.Text = "0.5";
+            // 
+            // txtCutSimulFrom
+            // 
+            this.txtCutSimulFrom.Location = new System.Drawing.Point(105, 157);
+            this.txtCutSimulFrom.Name = "txtCutSimulFrom";
+            this.txtCutSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtCutSimulFrom.TabIndex = 14;
+            this.txtCutSimulFrom.Text = "0.5";
+            // 
+            // txtAvgSimulTo
+            // 
+            this.txtAvgSimulTo.Location = new System.Drawing.Point(180, 103);
+            this.txtAvgSimulTo.Name = "txtAvgSimulTo";
+            this.txtAvgSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtAvgSimulTo.TabIndex = 14;
+            this.txtAvgSimulTo.Text = "4.01";
+            // 
+            // txtRateSimulFrom
+            // 
+            this.txtRateSimulFrom.Location = new System.Drawing.Point(105, 130);
+            this.txtRateSimulFrom.Name = "txtRateSimulFrom";
+            this.txtRateSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtRateSimulFrom.TabIndex = 14;
+            this.txtRateSimulFrom.Text = "0.1";
+            // 
+            // txtLogSimulCurr
+            // 
+            this.txtLogSimulCurr.Location = new System.Drawing.Point(313, 75);
+            this.txtLogSimulCurr.Name = "txtLogSimulCurr";
+            this.txtLogSimulCurr.Size = new System.Drawing.Size(60, 21);
+            this.txtLogSimulCurr.TabIndex = 14;
+            this.txtLogSimulCurr.Text = "0";
+            // 
+            // txtLogSimulInter
+            // 
+            this.txtLogSimulInter.Location = new System.Drawing.Point(247, 75);
+            this.txtLogSimulInter.Name = "txtLogSimulInter";
+            this.txtLogSimulInter.Size = new System.Drawing.Size(60, 21);
+            this.txtLogSimulInter.TabIndex = 14;
+            this.txtLogSimulInter.Text = "60";
+            // 
+            // txtAvgSimulFrom
+            // 
+            this.txtAvgSimulFrom.Location = new System.Drawing.Point(105, 103);
+            this.txtAvgSimulFrom.Name = "txtAvgSimulFrom";
+            this.txtAvgSimulFrom.Size = new System.Drawing.Size(68, 21);
+            this.txtAvgSimulFrom.TabIndex = 14;
+            this.txtAvgSimulFrom.Text = "1";
+            // 
+            // txtLogSimulTo
+            // 
+            this.txtLogSimulTo.Location = new System.Drawing.Point(180, 76);
+            this.txtLogSimulTo.Name = "txtLogSimulTo";
+            this.txtLogSimulTo.Size = new System.Drawing.Size(61, 21);
+            this.txtLogSimulTo.TabIndex = 14;
+            this.txtLogSimulTo.Text = "181";
             // 
             // txtLogSimulFrom
             // 
@@ -509,7 +730,7 @@
             this.spsLongTermSimulation.Columns.Get(3).Width = 70F;
             this.spsLongTermSimulation.Columns.Get(4).Label = "비율";
             this.spsLongTermSimulation.Columns.Get(4).Width = 44F;
-            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType33;
+            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType3;
             this.spsLongTermSimulation.Columns.Get(5).Label = "체결강도";
             this.spsLongTermSimulation.Columns.Get(5).Locked = true;
             this.spsLongTermSimulation.Columns.Get(5).Width = 55F;
@@ -527,11 +748,11 @@
             this.spsLongTermSimulation.Columns.Get(13).Width = 86F;
             this.spsLongTermSimulation.Columns.Get(14).Label = "이익/손해금액";
             this.spsLongTermSimulation.Columns.Get(14).Width = 85F;
-            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType34;
+            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType4;
             this.spsLongTermSimulation.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsLongTermSimulation.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLongTermSimulation.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType34;
+            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType4;
             this.spsLongTermSimulation.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsLongTermSimulation.RowHeader.Columns.Default.Resizable = false;
             this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -641,10 +862,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType35;
+            this.spsLog.DefaultStyle.CellType = textCellType5;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType35;
+            this.spsLog.DefaultStyle.Renderer = textCellType5;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -823,147 +1044,37 @@
             this.chkAutoRecording.UseVisualStyleBackColor = true;
             this.chkAutoRecording.CheckedChanged += new System.EventHandler(this.chkAutoRecording_CheckedChanged);
             // 
-            // txtLogSimulTo
+            // chkSimulateMemory
             // 
-            this.txtLogSimulTo.Location = new System.Drawing.Point(180, 76);
-            this.txtLogSimulTo.Name = "txtLogSimulTo";
-            this.txtLogSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtLogSimulTo.TabIndex = 14;
-            this.txtLogSimulTo.Text = "301";
+            this.chkSimulateMemory.AutoSize = true;
+            this.chkSimulateMemory.Checked = true;
+            this.chkSimulateMemory.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSimulateMemory.Location = new System.Drawing.Point(587, 5);
+            this.chkSimulateMemory.Name = "chkSimulateMemory";
+            this.chkSimulateMemory.Size = new System.Drawing.Size(138, 16);
+            this.chkSimulateMemory.TabIndex = 12;
+            this.chkSimulateMemory.Text = "Simulate in Memory";
+            this.chkSimulateMemory.UseVisualStyleBackColor = true;
             // 
-            // txtLogSimulInter
+            // chkExportExcel
             // 
-            this.txtLogSimulInter.Location = new System.Drawing.Point(247, 75);
-            this.txtLogSimulInter.Name = "txtLogSimulInter";
-            this.txtLogSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtLogSimulInter.TabIndex = 14;
-            this.txtLogSimulInter.Text = "30";
-            // 
-            // txtAvgSimulFrom
-            // 
-            this.txtAvgSimulFrom.Location = new System.Drawing.Point(105, 103);
-            this.txtAvgSimulFrom.Name = "txtAvgSimulFrom";
-            this.txtAvgSimulFrom.Size = new System.Drawing.Size(68, 21);
-            this.txtAvgSimulFrom.TabIndex = 14;
-            this.txtAvgSimulFrom.Text = "1";
-            // 
-            // txtAvgSimulTo
-            // 
-            this.txtAvgSimulTo.Location = new System.Drawing.Point(180, 103);
-            this.txtAvgSimulTo.Name = "txtAvgSimulTo";
-            this.txtAvgSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtAvgSimulTo.TabIndex = 14;
-            this.txtAvgSimulTo.Text = "5.01";
-            // 
-            // txtAvgSimulInter
-            // 
-            this.txtAvgSimulInter.Location = new System.Drawing.Point(247, 102);
-            this.txtAvgSimulInter.Name = "txtAvgSimulInter";
-            this.txtAvgSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtAvgSimulInter.TabIndex = 14;
-            this.txtAvgSimulInter.Text = "0.25";
-            // 
-            // txtRateSimulFrom
-            // 
-            this.txtRateSimulFrom.Location = new System.Drawing.Point(105, 130);
-            this.txtRateSimulFrom.Name = "txtRateSimulFrom";
-            this.txtRateSimulFrom.Size = new System.Drawing.Size(68, 21);
-            this.txtRateSimulFrom.TabIndex = 14;
-            this.txtRateSimulFrom.Text = "0.05";
-            // 
-            // txtRateSimulTo
-            // 
-            this.txtRateSimulTo.Location = new System.Drawing.Point(180, 130);
-            this.txtRateSimulTo.Name = "txtRateSimulTo";
-            this.txtRateSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtRateSimulTo.TabIndex = 14;
-            this.txtRateSimulTo.Text = "0.41";
-            // 
-            // txtRateSimulInter
-            // 
-            this.txtRateSimulInter.Location = new System.Drawing.Point(247, 129);
-            this.txtRateSimulInter.Name = "txtRateSimulInter";
-            this.txtRateSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtRateSimulInter.TabIndex = 14;
-            this.txtRateSimulInter.Text = "0.05";
-            // 
-            // txtCutSimulFrom
-            // 
-            this.txtCutSimulFrom.Location = new System.Drawing.Point(105, 157);
-            this.txtCutSimulFrom.Name = "txtCutSimulFrom";
-            this.txtCutSimulFrom.Size = new System.Drawing.Size(68, 21);
-            this.txtCutSimulFrom.TabIndex = 14;
-            this.txtCutSimulFrom.Text = "0.5";
-            // 
-            // txtCutSimulTo
-            // 
-            this.txtCutSimulTo.Location = new System.Drawing.Point(180, 157);
-            this.txtCutSimulTo.Name = "txtCutSimulTo";
-            this.txtCutSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtCutSimulTo.TabIndex = 14;
-            this.txtCutSimulTo.Text = "2.1";
-            // 
-            // txtCutSimulInter
-            // 
-            this.txtCutSimulInter.Location = new System.Drawing.Point(247, 156);
-            this.txtCutSimulInter.Name = "txtCutSimulInter";
-            this.txtCutSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtCutSimulInter.TabIndex = 14;
-            this.txtCutSimulInter.Text = "0.5";
-            // 
-            // txtProCutSimulFrom
-            // 
-            this.txtProCutSimulFrom.Location = new System.Drawing.Point(105, 184);
-            this.txtProCutSimulFrom.Name = "txtProCutSimulFrom";
-            this.txtProCutSimulFrom.Size = new System.Drawing.Size(68, 21);
-            this.txtProCutSimulFrom.TabIndex = 14;
-            this.txtProCutSimulFrom.Text = "1";
-            // 
-            // txtProCutSimulTo
-            // 
-            this.txtProCutSimulTo.Location = new System.Drawing.Point(180, 184);
-            this.txtProCutSimulTo.Name = "txtProCutSimulTo";
-            this.txtProCutSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtProCutSimulTo.TabIndex = 14;
-            this.txtProCutSimulTo.Text = "3.1";
-            // 
-            // txtProCutSimulInter
-            // 
-            this.txtProCutSimulInter.Location = new System.Drawing.Point(247, 183);
-            this.txtProCutSimulInter.Name = "txtProCutSimulInter";
-            this.txtProCutSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtProCutSimulInter.TabIndex = 14;
-            this.txtProCutSimulInter.Text = "0.5";
-            // 
-            // txtProfitSimulFrom
-            // 
-            this.txtProfitSimulFrom.Location = new System.Drawing.Point(105, 211);
-            this.txtProfitSimulFrom.Name = "txtProfitSimulFrom";
-            this.txtProfitSimulFrom.Size = new System.Drawing.Size(68, 21);
-            this.txtProfitSimulFrom.TabIndex = 14;
-            this.txtProfitSimulFrom.Text = "0";
-            // 
-            // txtProfitSimulTo
-            // 
-            this.txtProfitSimulTo.Location = new System.Drawing.Point(180, 211);
-            this.txtProfitSimulTo.Name = "txtProfitSimulTo";
-            this.txtProfitSimulTo.Size = new System.Drawing.Size(61, 21);
-            this.txtProfitSimulTo.TabIndex = 14;
-            this.txtProfitSimulTo.Text = "5.1";
-            // 
-            // txtProfitSimulInter
-            // 
-            this.txtProfitSimulInter.Location = new System.Drawing.Point(247, 210);
-            this.txtProfitSimulInter.Name = "txtProfitSimulInter";
-            this.txtProfitSimulInter.Size = new System.Drawing.Size(60, 21);
-            this.txtProfitSimulInter.TabIndex = 14;
-            this.txtProfitSimulInter.Text = "0.5";
+            this.chkExportExcel.AutoSize = true;
+            this.chkExportExcel.Checked = true;
+            this.chkExportExcel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkExportExcel.Location = new System.Drawing.Point(728, 6);
+            this.chkExportExcel.Name = "chkExportExcel";
+            this.chkExportExcel.Size = new System.Drawing.Size(150, 16);
+            this.chkExportExcel.TabIndex = 12;
+            this.chkExportExcel.Text = "결과를엑셀로저장할래?";
+            this.chkExportExcel.UseVisualStyleBackColor = true;
             // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1406, 564);
+            this.Controls.Add(this.chkExportExcel);
+            this.Controls.Add(this.chkSimulateMemory);
             this.Controls.Add(this.chkSimulateAllItem);
             this.Controls.Add(this.chkAutoRecording);
             this.Controls.Add(this.chkReal);
@@ -1072,5 +1183,15 @@
         private System.Windows.Forms.TextBox txtAvgSimulTo;
         private System.Windows.Forms.TextBox txtRateSimulFrom;
         private System.Windows.Forms.TextBox txtAvgSimulFrom;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtProfitSimulCurr;
+        private System.Windows.Forms.TextBox txtProCutSimulCurr;
+        private System.Windows.Forms.TextBox txtCutSimulCurr;
+        private System.Windows.Forms.TextBox txtRateSimulCurr;
+        private System.Windows.Forms.TextBox txtAvgSimulCurr;
+        private System.Windows.Forms.TextBox txtLogSimulCurr;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.CheckBox chkSimulateMemory;
+        private System.Windows.Forms.CheckBox chkExportExcel;
     }
 }

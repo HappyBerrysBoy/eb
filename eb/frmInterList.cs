@@ -18,25 +18,23 @@ namespace eb
 {
     public partial class frmInterList : Form
     {
-        XA_DATASETLib.XAQuery cdpcq04700Query;  // 계좌 거래내역
-        XA_DATASETLib.XAQuery t1101Query;       // 현재가 호가 조회
-        XA_DATASETLib.XAQuery t1102Query;       // 현재가 시세 조회
-        XA_DATASETLib.XAQuery t1301Query;       // 시간대별 체결 조회 1초당 2건
-        XA_DATASETLib.XAQuery t1302Query;       // 주식분별 주가 조회 1초당 1건
-        XA_DATASETLib.XAQuery t1310Query;       // 주식당일전일분틱조회 1초당 2건
-        XA_DATASETLib.XAQuery t1305Query;       // 기간별 주가
-        XA_DATASETLib.XAQuery cspat00600Query;  // 정상주문
-        XA_DATASETLib.XAQuery cspat00700Query;  // 정정주문
-        XA_DATASETLib.XAQuery cspat00800Query;  // 취소주문
-        XA_DATASETLib.XAQuery currQuery;        // 현재 Query를 받아서 처리
-        XA_DATASETLib.XAQuery cspaq12200Query;        // 계좌 예수금/주문가능금액 등
+        private class LogMemoryClass{
+            public string shcode { get; set; }
+            public List<string> fileNameList { get; set; }
+            public ArrayList logData { get; set; }
 
-        XA_DATASETLib.XAReal queryRealPI;         // 코스피 실시간 시세
-        XA_DATASETLib.XAReal queryRealDAK;         // 코스닥 실시간 시세
+            public LogMemoryClass()
+            {
+                shcode = "";
+                fileNameList = new List<string>();
+                logData = new ArrayList();
+            }
+        }
 
-        List<string> kindList = new List<string>();
+        ArrayList logMemory = new ArrayList();
 
-        Hashtable hQueryKind = new Hashtable();
+        List<string> kindList = new List<string>();     // Query 종류들..
+        Hashtable hQueryKind = new Hashtable();         // Query
         Hashtable hKindKeyMap = new Hashtable();
         Hashtable hContinueMap = new Hashtable();
         Hashtable hItemLogs = new Hashtable();      // 종목별 Class
@@ -49,6 +47,7 @@ namespace eb
         private bool assignOnlyOneItem = false;
         
         private List<T1305> lstT1305 = new List<T1305>();
+        private List<T8430> lstT8430 = new List<T8430>();
 
         private double ttlbuy = 0;                  // 예수금 사용%
         private long initMoney = 0;                 // 시작시 예수금
@@ -61,6 +60,23 @@ namespace eb
         private long preDayVolume = 0;              // 시뮬레이션 시에 전일자 거래량
 
         private Color SUBTOTAL_COLOR = Color.LightGreen;
+
+        XA_DATASETLib.XAQuery cdpcq04700Query;      // 계좌 거래내역
+        XA_DATASETLib.XAQuery t1101Query;           // 현재가 호가 조회
+        XA_DATASETLib.XAQuery t1102Query;           // 현재가 시세 조회
+        XA_DATASETLib.XAQuery t1301Query;           // 시간대별 체결 조회 1초당 2건
+        XA_DATASETLib.XAQuery t1302Query;           // 주식분별 주가 조회 1초당 1건
+        XA_DATASETLib.XAQuery t1310Query;           // 주식당일전일분틱조회 1초당 2건
+        XA_DATASETLib.XAQuery t1305Query;           // 기간별 주가
+        XA_DATASETLib.XAQuery t8430Query;           // 주식종목조회
+        XA_DATASETLib.XAQuery cspat00600Query;      // 정상주문
+        XA_DATASETLib.XAQuery cspat00700Query;      // 정정주문
+        XA_DATASETLib.XAQuery cspat00800Query;      // 취소주문
+        XA_DATASETLib.XAQuery currQuery;            // 현재 Query를 받아서 처리
+        XA_DATASETLib.XAQuery cspaq12200Query;      // 계좌 예수금/주문가능금액 등
+
+        XA_DATASETLib.XAReal queryRealPI;         // 코스피 실시간 시세
+        XA_DATASETLib.XAReal queryRealDAK;         // 코스닥 실시간 시세
 
         enum INTER_COL
         {
@@ -142,6 +158,7 @@ namespace eb
             kindList.Add("현물 취소주문");
             kindList.Add("기간별 주가");
             kindList.Add("계좌조회");
+            kindList.Add("주식종목조회");
 
             hQueryKind.Add("계좌 거래내역", "CDPCQ04700");
             hQueryKind.Add("현재가 호가조회", "t1101");
@@ -153,6 +170,7 @@ namespace eb
             hQueryKind.Add("현물 정정주문", "CSPAT00700");
             hQueryKind.Add("현물 취소주문", "CSPAT00800");
             hQueryKind.Add("계좌조회", "CSPAQ12200");
+            hQueryKind.Add("주식종목조회", "t8430");
 
             hContinueMap.Add("계좌 거래내역", false);
             hContinueMap.Add("현재가 호가조회", false);
@@ -164,6 +182,7 @@ namespace eb
             hContinueMap.Add("현물 정정주문", false);
             hContinueMap.Add("현물 취소주문", false);
             hContinueMap.Add("계좌조회", false);
+            hContinueMap.Add("주식종목조회", false);
 
             hKindKeyMap.Add("CDPCQ04700", cdpcq04700Query);
             hKindKeyMap.Add("t1101", t1101Query);
@@ -171,6 +190,7 @@ namespace eb
             hKindKeyMap.Add("t1301", t1301Query);
             hKindKeyMap.Add("t1302", t1302Query);
             hKindKeyMap.Add("t1305", t1305Query);
+            hKindKeyMap.Add("t8430", t8430Query);
             hKindKeyMap.Add("CSPAT00600", cspat00600Query);
             hKindKeyMap.Add("CSPAT00700", cspat00700Query);
             hKindKeyMap.Add("CSPAT00800", cspat00800Query);
@@ -263,6 +283,9 @@ namespace eb
                     query.SetFieldData("CSPAQ12200InBlock1", "AcntNo", 0, Program.cont.getAccount);
                     query.SetFieldData("CSPAQ12200InBlock1", "Pwd", 0, Program.cont.getAccountPass);
                     query.SetFieldData("CSPAQ12200InBlock1", "BalCreTp", 0, "0");
+                    break;
+                case "주식종목조회":
+                    query.SetFieldData("t8430InBlock", "gubun", 0, "0");
                     break;
             }
         }
@@ -674,6 +697,10 @@ namespace eb
                     query.ReceiveData += cspaq12200Query_ReceiveData;
                     query.ReceiveMessage += cspaq12200Query_ReceiveMessage;
                     break;
+                case "주식종목조회":
+                    query.ReceiveData += t8430Query_ReceiveData;
+                    query.ReceiveMessage += t8430Query_ReceiveMessage;
+                    break;
             }
         }
 
@@ -850,6 +877,44 @@ namespace eb
                     doQuery(query, true);
                 }
             }
+        }
+
+        private void t8430Query_ReceiveMessage(bool bIsSystemError, string nMessageCode, string szMessage)
+        {
+            Console.WriteLine(bIsSystemError);
+            Console.WriteLine(nMessageCode);
+            Console.WriteLine(szMessage);
+        }
+
+        private void t8430Query_ReceiveData(string szTrCode)
+        {
+            Console.WriteLine(szTrCode);
+            T8430 cls = new T8430();
+
+            cls.hname = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "hname", 0);
+            cls.shcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "shcode", 0);
+            cls.expcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "expcode", 0);
+            cls.etfgubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "etfgubun", 0);
+            cls.uplmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "uplmtprice", 0);
+            cls.dnlmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "dnlmtprice", 0);
+            cls.jnilclose = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "jnilclose", 0);
+            cls.memedan = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "memedan", 0);
+            cls.recprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "recprice", 0);
+            cls.gubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "gubun", 0);
+            int a = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetAccountListCount();
+            string aa = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetAccountList(0);
+            string block = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetBlockData("hname");
+            int bs = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetBlockSize("hname");
+            string cc = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldChartRealData("t8430OutBlock", "hname");
+            string resdata = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetResData();
+            string trcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetTrCode();
+            int ccc = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetTRCountRequest("hname");
+            lstT8430.Add(cls);
+
+            spsInterest.RowCount++;
+            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.GUBUN].Text = cls.gubun == "1" ? "P" : "Q";
+            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.CODE].Text = cls.shcode;
+            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.NAME].Text = cls.hname;
         }
 
         private void setAvgVolume(List<T1305> lst)
@@ -1134,89 +1199,106 @@ namespace eb
             return TimeSpan.Parse(time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4, 2));
         }
 
-        private void simulationProcess(List<string> list)
+        private void simulationProcess(ClsRealChe list)
         {
-            ClsRealChe cls = setRealDataClass(list);
-            chkOrderLogic(cls);
+            chkOrderLogic(list);
         }
 
-        private ClsRealChe setRealDataClass(List<string> list)
+        private void setSpread(ClsRealChe strList)
         {
-            ClsRealChe cls = new ClsRealChe();
-            cls.Shcode = list[(int)LOG_COL.CODE];
-            cls.Chetime = list[(int)LOG_COL.CHETIME];
-            cls.Sign = list[(int)LOG_COL.SIGN];
-            cls.Change = list[(int)LOG_COL.CHANGE];
-            cls.Drate = list[(int)LOG_COL.DRATE];
-            cls.Price = list[(int)LOG_COL.PRICE];
-            cls.Open = list[(int)LOG_COL.OPEN];
-            cls.High = list[(int)LOG_COL.HIGH];
-            cls.Low = list[(int)LOG_COL.LOW];
-            cls.Cgubun = list[(int)LOG_COL.GUBUN];
-            cls.Cvolume = list[(int)LOG_COL.CVOLUME];
-            cls.Volume = list[(int)LOG_COL.VOLUME];
-            cls.Value = list[(int)LOG_COL.VALUE];
-            cls.Mdvolume = list[(int)LOG_COL.MDVOLUME];
-            cls.Mdchecnt = list[(int)LOG_COL.MDCHECNT];
-            cls.Msvolume = list[(int)LOG_COL.MSVOLUME];
-            cls.Mschecnt = list[(int)LOG_COL.MSCHECNT];
-            cls.Cpower = list[(int)LOG_COL.CPOWER];
-            cls.Offerho = list[(int)LOG_COL.OFFERHO];
-            cls.Bidho = list[(int)LOG_COL.BIDHO];
-            cls.Status = list[(int)LOG_COL.STATUS];
-            cls.Jnilvolume = list[(int)LOG_COL.JNILVOLUME];
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CODE].Text = strList.Shcode;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHETIME].Text = strList.Chetime;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SIGN].Text = strList.Sign;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHANGE].Text = strList.Change;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].Text = strList.Drate;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.PRICE].Text = strList.Price;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.OPEN].Text = strList.Open;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.HIGH].Text = strList.High;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.LOW].Text = strList.Low;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].Text = strList.Cgubun;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CVOLUME].Text = strList.Cvolume;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VOLUME].Text = strList.Volume;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VALUE].Text = strList.Value;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MDVOLUME].Text = strList.Mdvolume;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MDCHECNT].Text = strList.Mdchecnt;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MSVOLUME].Text = strList.Msvolume;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MSCHECNT].Text = strList.Mschecnt;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CPOWER].Text = strList.Cpower;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.OFFERHO].Text = strList.Offerho;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BIDHO].Text = strList.Bidho;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.STATUS].Text = strList.Status;
+            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.JNILVOLUME].Text = strList.Jnilvolume;
 
-            return cls;
-        }
-
-        private void setSpread(List<string> strList)
-        {
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CODE].Text = strList[(int)LOG_COL.CODE];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHETIME].Text = strList[(int)LOG_COL.CHETIME];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SIGN].Text = strList[(int)LOG_COL.SIGN];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CHANGE].Text = strList[(int)LOG_COL.CHANGE];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].Text = strList[(int)LOG_COL.DRATE];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.PRICE].Text = strList[(int)LOG_COL.PRICE];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.OPEN].Text = strList[(int)LOG_COL.OPEN];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.HIGH].Text = strList[(int)LOG_COL.HIGH];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.LOW].Text = strList[(int)LOG_COL.LOW];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].Text = strList[(int)LOG_COL.GUBUN];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CVOLUME].Text = strList[(int)LOG_COL.CVOLUME];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VOLUME].Text = strList[(int)LOG_COL.VOLUME];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.VALUE].Text = strList[(int)LOG_COL.VALUE];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MDVOLUME].Text = strList[(int)LOG_COL.MDVOLUME];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MDCHECNT].Text = strList[(int)LOG_COL.MDCHECNT];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MSVOLUME].Text = strList[(int)LOG_COL.MSVOLUME];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.MSCHECNT].Text = strList[(int)LOG_COL.MSCHECNT];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.CPOWER].Text = strList[(int)LOG_COL.CPOWER];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.OFFERHO].Text = strList[(int)LOG_COL.OFFERHO];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BIDHO].Text = strList[(int)LOG_COL.BIDHO];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.STATUS].Text = strList[(int)LOG_COL.STATUS];
-            spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.JNILVOLUME].Text = strList[(int)LOG_COL.JNILVOLUME];
-
-            if (strList.Count > 22)
+            if (strList.cnt > 22)
             {
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BUY_SIGN].Text = strList[(int)LOG_COL.BUY_SIGN];
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SELL_SIGN].Text = strList[(int)LOG_COL.SELL_SIGN];
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = strList[(int)LOG_COL.ORDER];
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER_VOLUME].Text = strList[(int)LOG_COL.ORDER_VOLUME];
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER_PRICE].Text = strList[(int)LOG_COL.ORDER_PRICE];
-                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.TAX].Text = strList[(int)LOG_COL.TAX];
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.BUY_SIGN].Text = strList.BuySign;
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.SELL_SIGN].Text = strList.SellSign;
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER].Text = strList.Order;
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER_VOLUME].Text = strList.OrderVolume;
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.ORDER_PRICE].Text = strList.OrderPrice;
+                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.TAX].Text = strList.Tax;
             }
         }
 
         private void LoadLogData(bool isSimulations)
         {
             string filename = Common.getDialogFile();
-            LoadLogData(isSimulations, filename);
+            List<ClsRealChe> lstData = LoadLogData(filename);
+            simulateLogData(isSimulations, lstData);
         }
 
-        private void LoadLogData(bool isSimulations, string filename)
+        private ClsRealChe SetClsRealChe(string[] strs)
         {
-            if (filename == "") return;
+            ClsRealChe data = new ClsRealChe();
+            data.cnt = strs.Length;
+
+            for (int i = 0; i < strs.Length; i++)
+            {
+                //strList.Add(strs[i]);
+                switch (i)
+                {
+                    case (int)LOG_COL.CODE: data.Shcode = strs[i]; break;
+                    case (int)LOG_COL.CHETIME: data.Chetime = strs[i]; break;
+                    case (int)LOG_COL.SIGN: data.Sign = strs[i]; break;
+                    case (int)LOG_COL.CHANGE: data.Change = strs[i]; break;
+                    case (int)LOG_COL.DRATE: data.Drate = strs[i]; break;
+                    case (int)LOG_COL.PRICE: data.Price = strs[i]; break;
+                    case (int)LOG_COL.OPEN: data.Open = strs[i]; break;
+                    case (int)LOG_COL.HIGH: data.High = strs[i]; break;
+                    case (int)LOG_COL.LOW: data.Low = strs[i]; break;
+                    case (int)LOG_COL.GUBUN: data.Cgubun = strs[i]; break;
+                    case (int)LOG_COL.CVOLUME: data.Cvolume = strs[i]; break;
+                    case (int)LOG_COL.VOLUME: data.Volume = strs[i]; break;
+                    case (int)LOG_COL.VALUE: data.Value = strs[i]; break;
+                    case (int)LOG_COL.MDVOLUME: data.Mdvolume = strs[i]; break;
+                    case (int)LOG_COL.MDCHECNT: data.Mdchecnt = strs[i]; break;
+                    case (int)LOG_COL.MSVOLUME: data.Msvolume = strs[i]; break;
+                    case (int)LOG_COL.MSCHECNT: data.Mschecnt = strs[i]; break;
+                    case (int)LOG_COL.CPOWER: data.Cpower = strs[i]; break;
+                    case (int)LOG_COL.OFFERHO: data.Offerho = strs[i]; break;
+                    case (int)LOG_COL.BIDHO: data.Bidho = strs[i]; break;
+                    case (int)LOG_COL.STATUS: data.Status = strs[i]; break;
+                    case (int)LOG_COL.JNILVOLUME: data.Jnilvolume = strs[i]; break;
+                    case (int)LOG_COL.BUY_SIGN: data.BuySign = strs[i]; break;
+                    case (int)LOG_COL.SELL_SIGN: data.SellSign = strs[i]; break;
+                    case (int)LOG_COL.ORDER: data.Order = strs[i]; break;
+                    case (int)LOG_COL.ORDER_VOLUME: data.OrderVolume = strs[i]; break;
+                    case (int)LOG_COL.ORDER_PRICE: data.OrderPrice = strs[i]; break;
+                    case (int)LOG_COL.TAX: data.Tax = strs[i]; break;
+                }
+            }
+
+            return data;
+        }
+
+        // 하나의 파일 데이터를 List<ClsRealChe> 형태로 옮겨담는다.
+        private List<ClsRealChe> LoadLogData(string filename)
+        {
+            if (filename == "") return new List<ClsRealChe>();
+
+            List<ClsRealChe> lstData = new List<ClsRealChe>();
 
             StreamReader sr = null;
-            chkSimulation = isSimulations;
 
             try
             {
@@ -1224,88 +1306,49 @@ namespace eb
 
                 sr = new StreamReader(filename);
                 string line;
-                spsLog.RowCount = 0;
-                string currRate = "";
-                string beforeRate = "";
-                bool isFirst = true;
-                string shcode = "";
-
+                
                 Cursor.Current = Cursors.WaitCursor;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (line.Split('/').Length > 10)
                     {
                         string[] strs = line.Split('/');
-                        List<string> strList = new List<string>();
-
-                        for (int i = 0; i < strs.Length; i++)
-                        {
-                            strList.Add(strs[i]);
-                        }
-
-                        shcode = strList[(int)LOG_COL.CODE];
-                        string drate = strList[(int)LOG_COL.DRATE];
-                        string gubun = strList[(int)LOG_COL.GUBUN];
-
-                        if (!chkLongTermSimulation)
-                        {
-                            spsLog.RowCount++;
-
-                            setSpread(strList);
-
-                            if (currRate == "")
-                            {
-                                currRate = drate;
-                            }
-                            else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
-                            {
-                                beforeRate = currRate;
-                                currRate = drate;
-                                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Program.cont.ChangeRateOver2;
-                            }
-                            else if (!currRate.Equals(drate))
-                            {
-                                beforeRate = currRate;
-                                currRate = drate;
-                                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Program.cont.ChangeRate;
-                            }
-
-                            if (gubun.Equals("+"))
-                                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Program.cont.MsSign;
-                            else
-                                spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Program.cont.MdSign;
-                        }
-
-                        if (chkSimulation)
-                        {
-                            if (hItemLogs[strList[(int)LOG_COL.CODE]] == null)
-                            {
-                                if (spsLog.RowCount == 1)
-                                {
-                                    MessageBox.Show("선택된 로그의 종목이 종목리스트에 없습니다.");
-                                }
-                                continue;
-                            }
-
-                            Item item = ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]);
-
-                            if (!isFirst)
-                            {
-                                // 최초 1줄은 시장 시작전 동시호가 거래량이라서 통계에서 제외
-                                simulationProcess(strList);
-                            }
-                            else
-                            {
-                                double avgVolFewDays = item.AvgVolumeFewDays;
-                                double orderPerRate = item.OrderPerRate;
-                                hItemLogs[strList[(int)LOG_COL.CODE]] = new Item();
-                                //((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
-                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = preDayVolume;
-                                ((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).OrderPerRate = orderPerRate;
-                                isFirst = false;
-                            }
-                        }
+                        lstData.Add(SetClsRealChe(strs));
                     }
+                }
+
+                return lstData;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                sr.Close();
+            }
+
+            return lstData;
+        }
+
+        // 파일데이터 로드된 List를 이용하여 실제 시뮬레이션
+        private void simulateLogData(bool isSimulations, List<ClsRealChe> lstData)
+        {
+            chkSimulation = isSimulations;
+
+            try
+            {
+                spsLog.RowCount = 0;
+                bool isFirst = true;
+                string shcode = "";
+
+                Cursor.Current = Cursors.WaitCursor;
+                foreach (ClsRealChe data in lstData)
+                {
+                    shcode = data.Shcode;
+                    doSimulation(data.Shcode, data, isFirst);
+
+                    isFirst = false;
                 }
 
                 int logLength = ((Item)hItemLogs[shcode]).Logs.Count;
@@ -1318,9 +1361,72 @@ namespace eb
             {
 
             }
-            finally
+        }
+
+        private void doSimulation(string shcode, ClsRealChe strList, bool isFirst)
+        {
+            string currRate = "";
+            string beforeRate = "";
+
+            string drate = strList.Drate;
+
+            if (!chkLongTermSimulation)
             {
-                sr.Close();
+                spsLog.RowCount++;
+
+                setSpread(strList);
+
+                if (currRate == "")
+                {
+                    currRate = drate;
+                }
+                else if (!currRate.Equals(drate) && !beforeRate.Equals(drate) && beforeRate != "")
+                {
+                    beforeRate = currRate;
+                    currRate = drate;
+                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Program.cont.ChangeRateOver2;
+                }
+                else if (!currRate.Equals(drate))
+                {
+                    beforeRate = currRate;
+                    currRate = drate;
+                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.DRATE].BackColor = Program.cont.ChangeRate;
+                }
+
+                if (strList.Cgubun.Equals("+"))
+                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Program.cont.MsSign;
+                else
+                    spsLog.Cells[spsLog.RowCount - 1, (int)LOG_COL.GUBUN].BackColor = Program.cont.MdSign;
+            }
+
+            if (chkSimulation)
+            {
+                if (hItemLogs[strList.Shcode] == null)
+                {
+                    if (spsLog.RowCount == 1)
+                    {
+                        MessageBox.Show("선택된 로그의 종목이 종목리스트에 없습니다.");
+                    }
+                    //continue;
+                    return;
+                }
+
+                Item item = ((Item)hItemLogs[strList.Shcode]);
+
+                if (!isFirst)
+                {
+                    // 최초 1줄은 시장 시작전 동시호가 거래량이라서 통계에서 제외
+                    simulationProcess(strList);
+                }
+                else
+                {
+                    double avgVolFewDays = item.AvgVolumeFewDays;
+                    double orderPerRate = item.OrderPerRate;
+                    hItemLogs[strList.Shcode] = new Item();         // 최초기 때문에 초기화...
+                    //((Item)hItemLogs[strList[(int)LOG_COL.CODE]]).AvgVolumeFewDays = avgVolFewDays;
+                    ((Item)hItemLogs[strList.Shcode]).AvgVolumeFewDays = preDayVolume;
+                    ((Item)hItemLogs[strList.Shcode]).OrderPerRate = orderPerRate;
+                }
             }
         }
 
@@ -1402,45 +1508,42 @@ namespace eb
 
         private void OneItemLongTermSimulation(string folder, string shcode)
         {
-            List<string> fileList = GetSelectedFileList(folder, shcode);
             initMoneyForSimulation = Common.getLongValue(txtInputMoney.Text);
             firstRowIdx = spsLongTermSimulation.RowCount;
             preDayVolume = 0;       // 최초 파일의 전날은 데이터가 없으므로 거래량은 0으로 설정
 
-            for (int i = 0; i < fileList.Count; i++)
+            // memory로 도는 경우에는 메모리에 저장된 값들을 가져오고 아닌경우 파일을 그때그때 읽어서 처리
+            if (chkSimulateMemory.Checked)
             {
-                SetCutOffTime(fileList[i]);
-                LoadLogData(true, fileList[i]);
+                for (int i = 0; i < logMemory.Count; i++)
+                {
+                    LogMemoryClass cls = (LogMemoryClass)logMemory[i];
+                    if (shcode != cls.shcode) continue;
+
+                    for (int j = 0; j < cls.fileNameList.Count; j++)
+                    {
+                        currFileName = cls.fileNameList[j];
+                        Common.SetCutOffTime(cls.fileNameList[j]);
+                        simulateLogData(true, (List<ClsRealChe>)cls.logData[j]);
+                    }
+
+                    break;
+                }
+            }
+            else
+            {
+                List<string> fileList = GetSelectedFileList(folder, shcode);
+
+                for (int i = 0; i < fileList.Count; i++)
+                {
+                    Common.SetCutOffTime(fileList[i]);
+                    List<ClsRealChe> dataList = LoadLogData(fileList[i]);
+                    simulateLogData(true, dataList);
+                }
             }
 
             hItemLogs[shcode] = new Item();                 // 완료된 항목은 다시 초기화 해서 메모리 해제 시키자
             lasttRowIdx = spsLongTermSimulation.RowCount;
-        }
-
-        // 시뮬레이션 시에 무조건 파는 시간 설정
-        private void SetCutOffTime(string time)
-        {
-            if (time.Split('(').Length > 1)
-            {
-                try
-                {
-                    if (Convert.ToInt32(time.Split('(')[1].Split(')')[0].Replace("-", "")) > 20160800)
-                    {
-                        Program.cont.CutOffHour = 15;
-                        Program.cont.CutOffMinute = 18;
-                    }
-                    else
-                    {
-                        Program.cont.CutOffHour = 14;
-                        Program.cont.CutOffMinute = 48;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Program.cont.CutOffHour = 14;
-                    Program.cont.CutOffMinute = 48;
-                }
-            }
         }
 
         private string GetPercentbyInitMoney(string val)
@@ -1477,6 +1580,34 @@ namespace eb
             return "코드 없음";
         }
 
+        // 모든 종목, 모든 로그를 메모리에 다 담는 함수
+        private void SetAllItemLoadMemory(string folderPath)
+        {
+            for (int i = 0; i < spsInterest.RowCount; i++)
+            {
+                logMemory.Add(SetItemLoadMemory(folderPath, spsInterest.Cells[i, (int)INTER_COL.CODE].Text));
+            }
+        }
+
+        // 한종목, 모든 로그를 메모리에 다 담는 함수
+        private LogMemoryClass SetItemLoadMemory(string folderPath, string shcode)
+        {
+            LogMemoryClass fileLog = new LogMemoryClass();
+            fileLog.shcode = shcode;
+
+            List<string> fileList = GetSelectedFileList(folderPath, shcode);
+
+            for (int fileIdx = 0; fileIdx < fileList.Count; fileIdx++)
+            {
+                List<ClsRealChe> dataList = LoadLogData(fileList[fileIdx]);
+                // LogMemoryClass 클래스에 filename과, logdata를 같은 index로 담는다.
+                fileLog.fileNameList.Add(fileList[fileIdx]);
+                fileLog.logData.Add(dataList);
+            }
+            
+            return fileLog;
+        }
+
         private void btnLongTermSimulation_Click(object sender, EventArgs e)
         {
             if (spsInterest.ActiveRowIndex < 0) return;
@@ -1496,6 +1627,13 @@ namespace eb
 
             if (chkSimulateAllItem.Checked) 
             {
+                // Memory로 시뮬레이션 하려는 경우, 
+                // 모든 로그파일의 데이터를 logMemory에 LogMemoryClass형식으로 다 담는다.
+                if (chkSimulateMemory.Checked)
+                {
+                    SetAllItemLoadMemory(folderPath);
+                }
+
                 if (chkSimulationOption.Checked)
                     SimulateOptionLongTerm(folderPath);
                 else
@@ -1509,7 +1647,10 @@ namespace eb
             }
 
             chkLongTermSimulation = false;
-            ExportExcel();
+            if (chkExportExcel.Checked)
+            {
+                ExportExcel("");
+            }
 
             // 프로세스 실행시간 종료
             sw.Stop();
@@ -1523,6 +1664,7 @@ namespace eb
             for (int i = 0; i < spsInterest.RowCount; i++)
             {
                 string shcode = spsInterest.Cells[i, (int)INTER_COL.CODE].Text;
+
                 OneItemLongTermSimulation(folderPath, shcode);
                 Application.DoEvents();
                 WriteSubTotalSummary(shcode);
@@ -1553,38 +1695,99 @@ namespace eb
             double profitInter = Common.getDoubleValue(txtProfitSimulInter.Text);
 
             string filename = Program.cont.getApplicationPath + Program.cont.getSimulationPath + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + ".txt";
+            string filenameSummary = Program.cont.getApplicationPath + Program.cont.getSimulationPath + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + "_summary.txt";
             StreamWriter sw = null;
 
-            try
+            // 로그 Interval(60초부터..)
+            for (int log = logFrom; log < logTo; log += logInter)
             {
-                for (int log = logFrom; log < logTo; log += logInter)
+                Program.cont.LogTerm = log;
+                txtLogSimulCurr.Text = Convert.ToString(Program.cont.LogTerm);
+
+                // 전일 기준 거래량이 몇% 될때..
+                for (double avg = avgFrom; avg < avgTo; avg += avgInter)
                 {
-                    Program.cont.LogTerm = log;
-                    for (double avg = avgFrom; avg < avgTo; avg += avgInter)
+                    Program.cont.LogTermVolumeOver = avg;
+                    txtAvgSimulCurr.Text = Convert.ToString(Program.cont.LogTermVolumeOver);
+
+                    // 매수/매도 비율, 매수가 매도보다 얼마나 많은가..
+                    for (double rate = rateFrom; rate < rateTo; rate += rateInter)
                     {
-                        Program.cont.LogTermVolumeOver = avg;
-                        for (double rate = rateFrom; rate < rateTo; rate += rateInter)
+                        Program.cont.MsmdRate = rate;
+                        txtRateSimulCurr.Text = Convert.ToString(Program.cont.MsmdRate);
+
+                        // 손절기준
+                        for (double cut = cutFrom; cut < cutTo; cut += cutInter)
                         {
-                            Program.cont.MsmdRate = rate;
-                            for (double cut = cutFrom; cut < cutTo; cut += cutInter)
+                            Program.cont.CutoffPercent = cut;
+                            txtCutSimulCurr.Text = Convert.ToString(Program.cont.CutoffPercent);
+
+                            // 익절기준
+                            for (double proCut = proCutFrom; proCut < proCutTo; proCut += proCutInter)
                             {
-                                Program.cont.CutoffPercent = cut;
-                                for (double proCut = proCutFrom; proCut < proCutTo; proCut += proCutInter)
+                                Program.cont.ProfitCutoffPercent = proCut;
+                                txtProCutSimulCurr.Text = Convert.ToString(Program.cont.ProfitCutoffPercent);
+
+                                // 몇%일때 무조건 수익 내도록 하는 로직
+                                for (double profit = profitFrom; profit < profitTo; profit += profitInter)
                                 {
-                                    Program.cont.ProfitCutoffPercent = proCut;
-                                    for (double profit = profitFrom; profit < profitTo; profit += profitInter)
+                                    Program.cont.SatisfyProfit = profit;
+                                    txtProfitSimulCurr.Text = Convert.ToString(Program.cont.SatisfyProfit);
+                                    SimulateLongTerm(folderPath);
+                                    string condition = "" + log + "_" + avg + "_" + rate + "_" + cut + "_" + proCut + "_" + profit;
+                                    if (chkExportExcel.Checked)
                                     {
-                                        Program.cont.SatisfyProfit = profit;
-                                        SimulateLongTerm(folderPath);
-                                        ExportExcel();
+                                        ExportExcel(condition);
+                                    }
+                                    string ttlSummaryStr = ("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.BALANCE].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.TAX].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.FEE].Text).Replace("%", "");
+                                    WriteSummaryList(filenameSummary, ttlSummaryStr);
+                                    try
+                                    {
                                         sw = new StreamWriter(filename, true);
-                                        sw.WriteLine("" + "Log:" + log + ", Avg:" + avg + ", Rate:" + rate + ", CutOff:" + cut + ", Profit CutOff:" + proCut + ", Profit:" + profit + ", Result => Profit:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.BALANCE].Text + ", Tax:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.TAX].Text + ", Fee:" + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.FEE].Text);
+                                        sw.WriteLine(ttlSummaryStr);
+                                        //sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        sw = new StreamWriter(filename, true);
+                                        sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + "로그 기록 실패");
+                                    }
+                                    finally
+                                    {
                                         sw.Close();
                                     }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+
+        // 종목별 거래 완료된 결과만 따로 저장
+        private void WriteSummaryList(string filename, string summaryData)
+        {
+            StreamWriter sw = null;
+
+            try
+            {
+                sw = new StreamWriter(filename, true);
+                sw.WriteLine(summaryData);
+
+                for (int i = 0; i < spsLongTermSimulation.RowCount; i++)
+                {
+                    if (spsLongTermSimulation.Rows[i].BackColor != SUBTOTAL_COLOR) continue;
+
+                    string str = "";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.DATE].Text + " ";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.TIME].Text + " ";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text + " ";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text + " ";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.BALANCE].Text + " ";
+                    str += spsLongTermSimulation.Cells[i, (int)LONG_SIMUL_COL.PROFIT].Text;
+                    str = str.Replace("%", "");
+                    
+                    sw.WriteLine(str);
                 }
             }
             catch (Exception e)
@@ -1604,7 +1807,8 @@ namespace eb
 
             if (firstRowIdx == lasttRowIdx)
             {
-                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code) + " 거래 내역 없음";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = "거래 내역 없음";
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = "0";
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TAX].Text = "0";
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = txtInputMoney.Text;
@@ -1613,11 +1817,12 @@ namespace eb
             {
                 string ttlFee = GetColumnSummary((int)LONG_SIMUL_COL.FEE);
                 string ttlTax = GetColumnSummary((int)LONG_SIMUL_COL.TAX);
-                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code) + "(" + code + ")";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = GetItemName(code);
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = code;
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.FEE].Text = ttlFee;
-                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = "(" + GetPercentbyInitMoney(ttlFee) + "%)";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = GetPercentbyInitMoney(ttlFee) + "%";
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TAX].Text = ttlTax;
-                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text = "(" + GetPercentbyInitMoney(ttlTax) + "%)";
+                spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_AMOUNT].Text = GetPercentbyInitMoney(ttlTax) + "%";
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.BALANCE].Text = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.BALANCE].Text;
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.PROFIT].Text = spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 2, (int)LONG_SIMUL_COL.PROFIT].Text;
             }
@@ -1713,12 +1918,12 @@ namespace eb
 
         private void btnExportExcel_Click(object sender, EventArgs e)
         {
-            ExportExcel();
+            ExportExcel("");
         }
 
-        private void ExportExcel()
+        private void ExportExcel(string name)
         {
-            spdLongTermSimulation.SaveExcel(System.Windows.Forms.Application.StartupPath + "\\" + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + ".xls");
+            spdLongTermSimulation.SaveExcel(System.Windows.Forms.Application.StartupPath + "\\" + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + "(" + name + ").xls");
         }
 
         private void btnSimulationConfig_Click(object sender, EventArgs e)
@@ -1730,6 +1935,66 @@ namespace eb
             else
             {
                 pnlSimulationOptions.Visible = true;
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            string summary = Common.getDialogFile();
+            string itemlist = Common.getDialogFile();
+
+            StreamReader srSummary = null;
+            StreamReader itemSummary = null;
+            int itemLength = 74;
+            StreamWriter sw = null;
+
+            try
+            {
+                sw = new StreamWriter("summary_test.txt", true);
+
+                srSummary = new StreamReader(summary);
+
+                string srLine;
+                string itemLine;
+                int idx = 0;
+
+                while ((srLine = srSummary.ReadLine()) != null)
+                {
+                    if (srLine.Split(' ').Length > 8)
+                    {
+                        string[] strs = srLine.Split(' ');
+                        List<string> strList = new List<string>();
+
+                        for (int i = 0; i < strs.Length; i++)
+                        {
+                            strList.Add(strs[i]);
+                        }
+
+                        itemSummary = new StreamReader(itemlist);
+
+                        int idx2 = -1;
+
+                        while ((itemLine = itemSummary.ReadLine()) != null)
+                        {
+                            if (++idx2 < idx * itemLength) continue;
+                            if (idx2 >= (idx + 1) * itemLength - 1) break;
+                            sw.WriteLine(srLine + " ==> " + itemLine.Replace("%", ""));
+                        }
+
+                        itemSummary.Close();
+                    }
+
+                    idx++;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                srSummary.Close();
+                sw.Close();
             }
         }
     }

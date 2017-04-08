@@ -55,8 +55,14 @@
     <Compile Include="Classes\ChkBuyOrder.cs" />
     <Compile Include="Classes\ChkSellOrder.cs" />
     <Compile Include="Classes\ClsRealChe.cs" />
+    <Compile Include="Classes\DataMap.cs" />
     <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\Query.cs" />
+    <Compile Include="Classes\RealQuery.cs" />
     <Compile Include="Classes\T1305.cs" />
+    <Compile Include="Classes\T8430.cs" />
+    <Compile Include="Classes\XAQuerys.cs" />
+    <Compile Include="Classes\XAReals.cs" />
     <Compile Include="common\Constants.cs" />
     <Compile Include="common\Common.cs" />
     <Compile Include="frmConfig.cs">
