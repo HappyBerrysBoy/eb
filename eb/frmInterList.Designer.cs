@@ -113,6 +113,7 @@
             this.chkAutoRecording = new System.Windows.Forms.CheckBox();
             this.chkSimulateMemory = new System.Windows.Forms.CheckBox();
             this.chkExportExcel = new System.Windows.Forms.CheckBox();
+            this.chkAvgVolume = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -1068,11 +1069,22 @@
             this.chkExportExcel.Text = "결과를엑셀로저장할래?";
             this.chkExportExcel.UseVisualStyleBackColor = true;
             // 
+            // chkAvgVolume
+            // 
+            this.chkAvgVolume.AutoSize = true;
+            this.chkAvgVolume.Location = new System.Drawing.Point(878, 5);
+            this.chkAvgVolume.Name = "chkAvgVolume";
+            this.chkAvgVolume.Size = new System.Drawing.Size(218, 16);
+            this.chkAvgVolume.TabIndex = 13;
+            this.chkAvgVolume.Text = "로그쌓을때 평균거래량 가져올꺼임?";
+            this.chkAvgVolume.UseVisualStyleBackColor = true;
+            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1406, 564);
+            this.Controls.Add(this.chkAvgVolume);
             this.Controls.Add(this.chkExportExcel);
             this.Controls.Add(this.chkSimulateMemory);
             this.Controls.Add(this.chkSimulateAllItem);
@@ -1193,5 +1205,6 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.CheckBox chkSimulateMemory;
         private System.Windows.Forms.CheckBox chkExportExcel;
+        private System.Windows.Forms.CheckBox chkAvgVolume;
     }
 }

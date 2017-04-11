@@ -890,31 +890,41 @@ namespace eb
         {
             Console.WriteLine(szTrCode);
             T8430 cls = new T8430();
+            int cnt = 5000;
 
-            cls.hname = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "hname", 0);
-            cls.shcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "shcode", 0);
-            cls.expcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "expcode", 0);
-            cls.etfgubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "etfgubun", 0);
-            cls.uplmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "uplmtprice", 0);
-            cls.dnlmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "dnlmtprice", 0);
-            cls.jnilclose = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "jnilclose", 0);
-            cls.memedan = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "memedan", 0);
-            cls.recprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "recprice", 0);
-            cls.gubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "gubun", 0);
-            int a = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetAccountListCount();
-            string aa = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetAccountList(0);
-            string block = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetBlockData("hname");
-            int bs = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetBlockSize("hname");
-            string cc = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldChartRealData("t8430OutBlock", "hname");
-            string resdata = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetResData();
-            string trcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetTrCode();
-            int ccc = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetTRCountRequest("hname");
-            lstT8430.Add(cls);
+            try
+            {
+                for (int i = 0; i < cnt; i++)
+                {
+                    string shcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "shcode", i);
+                    string etfgubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "etfgubun", i);
 
-            spsInterest.RowCount++;
-            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.GUBUN].Text = cls.gubun == "1" ? "P" : "Q";
-            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.CODE].Text = cls.shcode;
-            spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.NAME].Text = cls.hname;
+                    if (shcode.Length < 1) break;
+                    if (etfgubun == "1") continue;      // ETF는 뭐... 펀드 같은계좌 같네??
+                    cls.shcode = shcode;
+                    cls.etfgubun = etfgubun;
+                    cls.hname = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "hname", i);
+                    cls.expcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "expcode", i);
+                    cls.uplmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "uplmtprice", i);
+                    cls.dnlmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "dnlmtprice", i);
+                    cls.jnilclose = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "jnilclose", i);
+                    cls.memedan = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "memedan", i);
+                    cls.recprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "recprice", i);
+                    cls.gubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "gubun", i);
+                    lstT8430.Add(cls);
+
+                    spsInterest.RowCount++;
+                    spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.GUBUN].Text = cls.gubun == "1" ? "P" : "Q";
+                    spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.CODE].Text = cls.shcode;
+                    spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.NAME].Text = cls.hname;
+                    spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.USE].Text = "Y";
+                    spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.RATE].Text = "20";
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("더는 없구먼..");
+            }
         }
 
         private void setAvgVolume(List<T1305> lst)
@@ -1044,7 +1054,10 @@ namespace eb
             btnFindPoint.Enabled = false;
             btnSimulation.Enabled = false;
             getRealLog();
-            getAvgVolume();
+            if (chkAvgVolume.Checked)
+            {
+                getAvgVolume();
+            }
             if(!chkAutoRecording.Checked)
                 MessageBox.Show("recording...");
         }
@@ -1063,9 +1076,15 @@ namespace eb
         private void btnSelectQuery_Click(object sender, EventArgs e)
         {
             if (cmbQueryKind.Text.Equals("")) return;
-            if (spsInterest.ActiveRowIndex < 0) return;
+            //if (spsInterest.ActiveRowIndex < 0) return;
 
-            setDoQuery(cmbQueryKind.Text, spsInterest.Cells[spsInterest.ActiveRowIndex, (int)INTER_COL.CODE].Text);
+            string shcode = "";
+            if(spsInterest.ActiveRowIndex > -1)
+            {
+                shcode = spsInterest.Cells[spsInterest.ActiveRowIndex, (int)INTER_COL.CODE].Text;
+            }
+                
+            setDoQuery(cmbQueryKind.Text, shcode);
         }
 
         private void setDoQuery(string kind, string shcode)
@@ -1073,6 +1092,7 @@ namespace eb
             XA_DATASETLib.XAQuery query = getCurrQuery(kind);
             setQueryFieldData(kind, query, shcode);
             doQuery(query, false);
+            //doQuery(query, true);
         }
 
         private void doQuery(XA_DATASETLib.XAQuery query, bool seq)
