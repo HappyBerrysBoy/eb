@@ -205,13 +205,7 @@ namespace eb
             setRealQueryDAK();
             loadInterestList();
 
-            for (int i = 0; i < spsInterest.RowCount; i++)
-            {
-                Item item = new Item();
-                item.OrderPerRate = Common.getDoubleValue(spsInterest.Cells[i, (int)INTER_COL.RATE].Text);
-                hItemLogs.Add(spsInterest.Cells[i, (int)INTER_COL.CODE].Text, item);
-                hBuyVolume.Add(spsInterest.Cells[i, (int)INTER_COL.CODE].Text, 0);
-            }
+            SetItemList();
 
             if (Program.LoggedIn)
             {
@@ -221,6 +215,20 @@ namespace eb
 
             // 예수금 설정
             setMoney();
+        }
+
+        private void SetItemList()
+        {
+            hItemLogs = new Hashtable();
+            hBuyVolume = new Hashtable();
+
+            for (int i = 0; i < spsInterest.RowCount; i++)
+            {
+                Item item = new Item();
+                item.OrderPerRate = Common.getDoubleValue(spsInterest.Cells[i, (int)INTER_COL.RATE].Text);
+                hItemLogs.Add(spsInterest.Cells[i, (int)INTER_COL.CODE].Text, item);
+                hBuyVolume.Add(spsInterest.Cells[i, (int)INTER_COL.CODE].Text, 0);
+            }
         }
 
         private void setMoney()
@@ -1044,6 +1052,7 @@ namespace eb
 
         private void btnDoLog_Click(object sender, EventArgs e)
         {
+            SetItemList();
             DoRecording();
         }
 
