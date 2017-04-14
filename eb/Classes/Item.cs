@@ -26,6 +26,9 @@ namespace eb.Classes
         private int orderSignCnt;           // 근접한 매수 신호 횟수(설정된 값 이상으로 신호가 오면 매수한다.)
         private int sellSignCnt;            // 근접한 매도 신호 횟수(설정된 값 이상으로 신호가 오면 매도한다.)
 
+        public int fromRemoveIdx { get; set; }     // 메모리 확보를 위하여.. Log삭제시 from이 되는 index
+        public int toRemoveIdx { get; set; }       // 메모리 확보를 위하여.. Log삭제시 to가 되는 index
+
         public Item()
         {
             code = "";
@@ -43,6 +46,8 @@ namespace eb.Classes
             highRate = 0;
             orderSignCnt = 0;
             sellSignCnt = 0;
+            fromRemoveIdx = 0;
+            toRemoveIdx = 0;
         }
 
         public int SellSignCnt

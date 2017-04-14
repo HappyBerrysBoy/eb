@@ -10,6 +10,7 @@ namespace eb.common
 {
     class Constants
     {
+        private string INI_SECTION = "OPTIONS";
         private string SESSION = "XA_Session.XASession";
         private string QUERY = "XA_DataSet.XAQuery";
         private string REAL_QUERY = "XA_DataSet.XAReal";
@@ -47,6 +48,9 @@ namespace eb.common
         private int mdCutLine = 0;                  // 몇% 이상이면 매도해버린다. ex)25% or 27%
         private double differenceChePower = 0;      // 일정기간(일정 시점) 로그의 기간동안 설정된 체결강도의 %를 넘어 서면 구매할건지 설정
         private double satisfyProfit = 0;           // 매수 후 여기에 설정된 %만큼 오르면 무조건 매도 해서 수익을 취한다..
+
+        public int AllCodePageNum { get; set; }     // 전체 종목 조회 할 경우에, 현재 실행된 프로그램은 몇번째 프로그램인가
+        public int AllCodeTtlPage { get; set; }     // 전체 종목 조회 할 경우에, 전체 종목을 몇개의 프로그램으로 나눌 것인가..
 
         // 마감전 무조건 파는 시간
         //private int cutOffHour = 15;
@@ -226,6 +230,10 @@ namespace eb.common
         public string getInterlistFilename
         {
             get { return INTERLIST_FILENAME; }
+        }
+        public string getINISection
+        {
+            get { return INI_SECTION; }
         }
         public string getSession
         {

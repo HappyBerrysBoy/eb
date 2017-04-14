@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,64 +12,79 @@ namespace eb.common
 {
     static class Common
     {
-        public enum CONFIG_IDX
-        {
-            VOLUME_HISTORY_CNT,
-            CUT_OFF_PERCENT,
-            PROFIT_CUT_OFF_PERCENT,
-            POWER_LOW_LIMIT,
-            POWER_HIGH_LIMIT,
-            IGNORE_CHE_CNT,
-            PIERCE_HO_CNT,
-            LOG_TERM,
-            MS_MD_RATE,
-            LOG_TERM_VOLUME_OVER,
-            ORDER_SIGN_CNT,
-            SELL_SIGN_CNT,
-            MS_CUT_LINE,
-            MD_CUT_LINE,
-            DIFFERENCE_CHEPOWER,
-            SATISFY_PROFIT,
-            CUT_OFF_HOUR,
-            CUT_OFF_MIN
-        }
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+
+        // config.ini 설정 내용들..
+        //VOLUME_HISTORY_CNT,
+        //CUT_OFF_PERCENT,
+        //PROFIT_CUT_OFF_PERCENT,
+        //POWER_LOW_LIMIT,
+        //POWER_HIGH_LIMIT,
+        //IGNORE_CHE_CNT,
+        //PIERCE_HO_CNT,
+        //LOG_TERM,
+        //MS_MD_RATE,
+        //LOG_TERM_VOLUME_OVER,
+        //ORDER_SIGN_CNT,
+        //SELL_SIGN_CNT,
+        //MS_CUT_LINE,
+        //MD_CUT_LINE,
+        //DIFFERENCE_CHEPOWER,
+        //SATISFY_PROFIT,
+        //CUT_OFF_HOUR,
+        //CUT_OFF_MIN,
+        //ALL_CODE_PAGE_NUM,
+        //ALL_CODE_TTL_PAGE
 
         public static void SetConfig()
         {
-            StreamReader sr = null;
-
             try
             {
-                sr = new StreamReader(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
-                string line;
+                string filename = Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName;
+                string section = Program.cont.getINISection;
 
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (line.Split('/').Length > 2)
-                    {
-                        string[] strs = line.Split('/');
-                        Program.cont.VolumeHistoryCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.VOLUME_HISTORY_CNT]);
-                        Program.cont.CutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.CUT_OFF_PERCENT]);
-                        Program.cont.ProfitCutoffPercent = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.PROFIT_CUT_OFF_PERCENT]);
-                        Program.cont.PowerLowLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_LOW_LIMIT]);
-                        Program.cont.PowerHighLimit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.POWER_HIGH_LIMIT]);
-                        Program.cont.IgnoreCheCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.IGNORE_CHE_CNT]);
-                        Program.cont.PierceHoCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.PIERCE_HO_CNT]);
-                        Program.cont.LogTerm = Common.getIntValue(strs[(int)Common.CONFIG_IDX.LOG_TERM]);
-                        Program.cont.MsmdRate = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.MS_MD_RATE]);
-                        Program.cont.LogTermVolumeOver = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.LOG_TERM_VOLUME_OVER]);
-                        Program.cont.OrderSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.ORDER_SIGN_CNT]);
-                        Program.cont.SellSignCnt = Common.getIntValue(strs[(int)Common.CONFIG_IDX.SELL_SIGN_CNT]);
-                        Program.cont.MsCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MS_CUT_LINE]);
-                        Program.cont.MdCutLine = Common.getIntValue(strs[(int)Common.CONFIG_IDX.MD_CUT_LINE]);
-                        Program.cont.DifferenceChePower = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.DIFFERENCE_CHEPOWER]);
-                        Program.cont.SatisfyProfit = Common.getDoubleValue(strs[(int)Common.CONFIG_IDX.SATISFY_PROFIT]);
-                        Program.cont.CutOffHour = Common.getIntValue(strs[(int)Common.CONFIG_IDX.CUT_OFF_HOUR]);
-                        Program.cont.CutOffMinute = Common.getIntValue(strs[(int)Common.CONFIG_IDX.CUT_OFF_MIN]);
-                    }
-                }
-
-                sr.Close();
+                StringBuilder temp = new StringBuilder(255);
+                GetPrivateProfileString(section, "VOLUME_HISTORY_CNT", "", temp, 255, filename);
+                Program.cont.VolumeHistoryCnt = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "CUT_OFF_PERCENT", "", temp, 255, filename);
+                Program.cont.CutoffPercent = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "PROFIT_CUT_OFF_PERCENT", "", temp, 255, filename);
+                Program.cont.ProfitCutoffPercent = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "POWER_LOW_LIMIT", "", temp, 255, filename);
+                Program.cont.PowerLowLimit = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "POWER_HIGH_LIMIT", "", temp, 255, filename);
+                Program.cont.PowerHighLimit = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "IGNORE_CHE_CNT", "", temp, 255, filename);
+                Program.cont.IgnoreCheCnt = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "PIERCE_HO_CNT", "", temp, 255, filename);
+                Program.cont.PierceHoCnt = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "LOG_TERM", "", temp, 255, filename);
+                Program.cont.LogTerm = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "MS_MD_RATE", "", temp, 255, filename);
+                Program.cont.MsmdRate = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "LOG_TERM_VOLUME_OVER", "", temp, 255, filename);
+                Program.cont.LogTermVolumeOver = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "ORDER_SIGN_CNT", "", temp, 255, filename);
+                Program.cont.OrderSignCnt = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "SELL_SIGN_CNT", "", temp, 255, filename);
+                Program.cont.SellSignCnt = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "MS_CUT_LINE", "", temp, 255, filename);
+                Program.cont.MsCutLine = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "MD_CUT_LINE", "", temp, 255, filename);
+                Program.cont.MdCutLine = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "DIFFERENCE_CHEPOWER", "", temp, 255, filename);
+                Program.cont.DifferenceChePower = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "SATISFY_PROFIT", "", temp, 255, filename);
+                Program.cont.SatisfyProfit = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "CUT_OFF_HOUR", "", temp, 255, filename);
+                Program.cont.CutOffHour = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "CUT_OFF_MIN", "", temp, 255, filename);
+                Program.cont.CutOffMinute = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "ALL_CODE_PAGE_NUM", "", temp, 255, filename);
+                Program.cont.AllCodePageNum = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "ALL_CODE_TTL_PAGE", "", temp, 255, filename);
+                Program.cont.AllCodeTtlPage = Common.getIntValue(temp.ToString());
             }
             catch (Exception ex)
             {
@@ -223,6 +239,7 @@ namespace eb.common
             {
                 try
                 {
+                    // 2016년 8월 이전에는 3시가 장 종료, 이후는 3시 30분이 장 종료
                     if (Convert.ToInt32(time.Split('(')[1].Split(')')[0].Replace("-", "")) > 20160800)
                     {
                         Program.cont.CutOffHour = 15;

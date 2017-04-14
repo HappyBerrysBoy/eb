@@ -57,6 +57,7 @@
     <Compile Include="Classes\ClsRealChe.cs" />
     <Compile Include="Classes\DataMap.cs" />
     <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\LogMemoryClass.cs" />
     <Compile Include="Classes\Query.cs" />
     <Compile Include="Classes\RealQuery.cs" />
     <Compile Include="Classes\T1305.cs" />

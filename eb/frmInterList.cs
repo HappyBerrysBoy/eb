@@ -13,43 +13,27 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XA_DATASETLib;
 
 namespace eb
 {
     public partial class frmInterList : Form
     {
-        private class LogMemoryClass{
-            public string shcode { get; set; }
-            public List<string> fileNameList { get; set; }
-            public ArrayList logData { get; set; }
-
-            public LogMemoryClass()
-            {
-                shcode = "";
-                fileNameList = new List<string>();
-                logData = new ArrayList();
-            }
-        }
-
         ArrayList logMemory = new ArrayList();
 
         List<string> kindList = new List<string>();     // Query 종류들..
         Hashtable hQueryKind = new Hashtable();         // Query
-        Hashtable hKindKeyMap = new Hashtable();
-        Hashtable hContinueMap = new Hashtable();
         Hashtable hItemLogs = new Hashtable();      // 종목별 Class
 
+        private bool isRecording = false;   // 로그 수집중인가?
         private StreamWriter file = null;   // log 수집용 stream
         private bool chkSimulation = false;
         private bool chkLongTermSimulation = false;
         private string currFileName = "";
-        private bool isRecording = false;
         private bool assignOnlyOneItem = false;
-        
-        private List<T1305> lstT1305 = new List<T1305>();
-        private List<T8430> lstT8430 = new List<T8430>();
 
-        private double ttlbuy = 0;                  // 예수금 사용%
+        private List<T1305> lstT1305 = new List<T1305>();
+
         private long initMoney = 0;                 // 시작시 예수금
         private long money = 0;                     // 현재 예수금
         Hashtable hBuyVolume = new Hashtable();     // 구매시 몇주 구매 했는지 기록
@@ -61,22 +45,16 @@ namespace eb
 
         private Color SUBTOTAL_COLOR = Color.LightGreen;
 
-        XA_DATASETLib.XAQuery cdpcq04700Query;      // 계좌 거래내역
-        XA_DATASETLib.XAQuery t1101Query;           // 현재가 호가 조회
-        XA_DATASETLib.XAQuery t1102Query;           // 현재가 시세 조회
-        XA_DATASETLib.XAQuery t1301Query;           // 시간대별 체결 조회 1초당 2건
-        XA_DATASETLib.XAQuery t1302Query;           // 주식분별 주가 조회 1초당 1건
-        XA_DATASETLib.XAQuery t1310Query;           // 주식당일전일분틱조회 1초당 2건
-        XA_DATASETLib.XAQuery t1305Query;           // 기간별 주가
-        XA_DATASETLib.XAQuery t8430Query;           // 주식종목조회
-        XA_DATASETLib.XAQuery cspat00600Query;      // 정상주문
-        XA_DATASETLib.XAQuery cspat00700Query;      // 정정주문
-        XA_DATASETLib.XAQuery cspat00800Query;      // 취소주문
-        XA_DATASETLib.XAQuery currQuery;            // 현재 Query를 받아서 처리
-        XA_DATASETLib.XAQuery cspaq12200Query;      // 계좌 예수금/주문가능금액 등
+        XA_SESSIONLib.XASession xas;                // Login 용
 
         XA_DATASETLib.XAReal queryRealPI;         // 코스피 실시간 시세
         XA_DATASETLib.XAReal queryRealDAK;         // 코스닥 실시간 시세
+
+        // 특정 % 이상 올라 가는 애들 로그 남겨 놓음
+        List<string> lstOver5 = new List<string>();
+        List<string> lstOver10 = new List<string>();
+        List<string> lstOver15 = new List<string>();
+        List<string> lstOver20 = new List<string>();
 
         enum INTER_COL
         {
@@ -146,59 +124,24 @@ namespace eb
 
         private void frmInterList_Load(object sender, EventArgs e)
         {
+            // Config 값들 전역변수로 설정
             Common.SetConfig();
 
-            kindList.Add("계좌 거래내역");
-            kindList.Add("현재가 호가조회");
-            kindList.Add("현재가 시세조회");
-            kindList.Add("시간대별 체결 조회");
-            kindList.Add("주식분별 주가조회");
-            kindList.Add("현물 정상주문");
-            kindList.Add("현물 정정주문");
-            kindList.Add("현물 취소주문");
-            kindList.Add("기간별 주가");
-            kindList.Add("계좌조회");
-            kindList.Add("주식종목조회");
+            hQueryKind.Add("계좌 거래내역", new Query("계좌 거래내역", "CDPCQ04700", false));
+            hQueryKind.Add("현재가 호가조회", new Query("현재가 호가조회", "t1101", false));
+            hQueryKind.Add("현재가 시세조회", new Query("현재가 시세조회", "t1102", false));
+            hQueryKind.Add("시간대별 체결 조회", new Query("시간대별 체결 조회", "t1301", false));
+            hQueryKind.Add("주식분별 주가조회", new Query("주식분별 주가조회", "t1302", false));
+            hQueryKind.Add("기간별 주가", new Query("기간별 주가", "t1305", true));
+            hQueryKind.Add("현물 정상주문", new Query("현물 정상주문", "CSPAT00600", false));
+            hQueryKind.Add("현물 정정주문", new Query("현물 정정주문", "CSPAT00700", false));
+            hQueryKind.Add("현물 취소주문", new Query("현물 취소주문", "CSPAT00800", false));
+            hQueryKind.Add("계좌조회", new Query("계좌조회", "CSPAQ12200", false));
+            hQueryKind.Add("주식종목조회", new Query("주식종목조회", "t8430", false));
 
-            hQueryKind.Add("계좌 거래내역", "CDPCQ04700");
-            hQueryKind.Add("현재가 호가조회", "t1101");
-            hQueryKind.Add("현재가 시세조회", "t1102");
-            hQueryKind.Add("시간대별 체결 조회", "t1301");
-            hQueryKind.Add("주식분별 주가조회", "t1302");
-            hQueryKind.Add("기간별 주가", "t1305");
-            hQueryKind.Add("현물 정상주문", "CSPAT00600");
-            hQueryKind.Add("현물 정정주문", "CSPAT00700");
-            hQueryKind.Add("현물 취소주문", "CSPAT00800");
-            hQueryKind.Add("계좌조회", "CSPAQ12200");
-            hQueryKind.Add("주식종목조회", "t8430");
-
-            hContinueMap.Add("계좌 거래내역", false);
-            hContinueMap.Add("현재가 호가조회", false);
-            hContinueMap.Add("현재가 시세조회", false);
-            hContinueMap.Add("시간대별 체결 조회", false);
-            hContinueMap.Add("주식분별 주가조회", false);
-            hContinueMap.Add("기간별 주가", true);
-            hContinueMap.Add("현물 정상주문", false);
-            hContinueMap.Add("현물 정정주문", false);
-            hContinueMap.Add("현물 취소주문", false);
-            hContinueMap.Add("계좌조회", false);
-            hContinueMap.Add("주식종목조회", false);
-
-            hKindKeyMap.Add("CDPCQ04700", cdpcq04700Query);
-            hKindKeyMap.Add("t1101", t1101Query);
-            hKindKeyMap.Add("t1102", t1102Query);
-            hKindKeyMap.Add("t1301", t1301Query);
-            hKindKeyMap.Add("t1302", t1302Query);
-            hKindKeyMap.Add("t1305", t1305Query);
-            hKindKeyMap.Add("t8430", t8430Query);
-            hKindKeyMap.Add("CSPAT00600", cspat00600Query);
-            hKindKeyMap.Add("CSPAT00700", cspat00700Query);
-            hKindKeyMap.Add("CSPAT00800", cspat00800Query);
-            hKindKeyMap.Add("CSPAQ12200", cspaq12200Query);
-
-            for (int i = 0; i < kindList.Count; i++)
+            foreach (string key in hQueryKind.Keys)
             {
-                cmbQueryKind.Items.Add(kindList[i]);
+                cmbQueryKind.Items.Add(key);
             }
 
             setRealQueryPI();
@@ -215,6 +158,10 @@ namespace eb
 
             // 예수금 설정
             setMoney();
+
+            // Login Session
+            //xas = new XA_SESSIONLib.XASession("XA_Session.XASession");
+            //((XA_SESSIONLib._IXASessionEvents_Event)xas).Login += xingSession_Login;
         }
 
         private void SetItemList()
@@ -300,21 +247,22 @@ namespace eb
 
         private XA_DATASETLib.XAQuery getCurrQuery(string query)
         {
-            string kind = (string)hQueryKind[query];
+            string kind = ((Query)hQueryKind[query]).key;
             if (kind == null || kind.Equals(""))
             {
                 MessageBox.Show("선택한 값이 등록되어 있지 않습니다.");
                 return null;
             }
 
-            XA_DATASETLib.XAQuery queryCls = (XA_DATASETLib.XAQuery)hKindKeyMap[kind];
+            Query qry = (Query)hQueryKind[query];
+            XA_DATASETLib.XAQuery queryCls = qry.query;
             
             if (queryCls == null)
             {
                 queryCls = new XA_DATASETLib.XAQuery(Program.cont.getQuery);
                 queryCls.ResFileName = Program.cont.getResPath + kind + Program.cont.getResTag;
                 setEventListener(query, queryCls);
-                hKindKeyMap[kind] = queryCls;
+                qry.query = queryCls;
             }
 
             return queryCls;
@@ -397,13 +345,13 @@ namespace eb
             writeLogFile(fileName, lstLog);
         }
 
-        private void writeLogFile(string fileName, List<string> logData)
+        private void writeLogFile(string fileName, string logData)
         {
             try
             {
                 //FileInfo fileInfo = new FileInfo(fileName);
                 file = new StreamWriter(fileName, true);
-                file.WriteLine(getLogFormat(logData));
+                file.WriteLine(logData);
             }
             catch (Exception e)
             {
@@ -414,6 +362,11 @@ namespace eb
             {
                 file.Close();
             }
+        }
+
+        private void writeLogFile(string fileName, List<string> logData)
+        {
+            writeLogFile(fileName, getLogFormat(logData));
         }
 
         private void setItemLog(ClsRealChe realCls)
@@ -457,6 +410,80 @@ namespace eb
             ClsRealChe cls = setRealDataClass(query);
             chkOrderLogic(cls);
             writeLog(cls);
+            highRateLog(cls);
+        }
+
+        // 많이 오른 애들 따로 로그 남겨 놓는 로직
+        private void highRateLog(ClsRealChe cls)
+        {
+            if(cls.Drate.Length < 1) return;
+            DateTime dt = DateTime.Now;
+
+            try{
+                if (Common.getDoubleValue(cls.Drate) >= 20.0d)
+                {
+                    if (!lstOver20.Contains(cls.Shcode))
+                    {
+                        lstOver20.Add(cls.Shcode);
+                        string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_20(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+                        writeLogFile(fileName, cls.Shcode);
+                    }
+                }
+                else if (Common.getDoubleValue(cls.Drate) >= 15.0d)
+                {
+                    if (!lstOver15.Contains(cls.Shcode))
+                    {
+                        lstOver15.Add(cls.Shcode);
+                        string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_15(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+                        writeLogFile(fileName, cls.Shcode);
+                    }
+                }
+                else if (Common.getDoubleValue(cls.Drate) >= 10.0d)
+                {
+                    if (!lstOver10.Contains(cls.Shcode))
+                    {
+                        lstOver10.Add(cls.Shcode);
+                        string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_10(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+                        writeLogFile(fileName, cls.Shcode);
+                    }
+                }
+                else if (Common.getDoubleValue(cls.Drate) >= 5.0d)
+                {
+                    if (!lstOver5.Contains(cls.Shcode))
+                    {
+                        lstOver5.Add(cls.Shcode);
+                        string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_5(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+                        writeLogFile(fileName, cls.Shcode);
+                    }
+                }
+            }catch(Exception e){
+
+            }
+
+            //string fileName = Program.cont.getInterlistFilename;
+            //StreamWriter sw = null;
+
+            //try
+            //{
+            //    sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getInterlistPath + Program.cont.getInterlistFilename);
+            //    for (int i = 0; i < spsInterest.RowCount; i++)
+            //    {
+            //        string gubun = spsInterest.Cells[i, (int)INTER_COL.GUBUN].Text;
+            //        string code = spsInterest.Cells[i, (int)INTER_COL.CODE].Text;
+            //        string name = spsInterest.Cells[i, (int)INTER_COL.NAME].Text;
+            //        string use = spsInterest.Cells[i, (int)INTER_COL.USE].Text;
+            //        string rate = spsInterest.Cells[i, (int)INTER_COL.RATE].Text;
+            //        sw.WriteLine(gubun + "/" + code + "/" + name + "/" + use + "/" + rate);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+            //finally
+            //{
+            //    sw.Close();
+            //}
         }
 
         private void BuyProcess(Item item, ClsRealChe cls)
@@ -723,7 +750,8 @@ namespace eb
         private void cspaq12200Query_ReceiveData(string szTrCode)
         {
             Console.WriteLine(szTrCode);
-            string ableAmt = ((XA_DATASETLib.XAQuery)hKindKeyMap["CSPAQ12200"]).GetFieldData("CSPAQ12200OutBlock2", "MgnRat100pctOrdAbleAmt", 0);     //==> 주문가능 계좌금액 
+            Query qry = (Query)hQueryKind["계좌조회"];
+            string ableAmt = qry.query.GetFieldData("CSPAQ12200OutBlock2", "MgnRat100pctOrdAbleAmt", 0);     //==> 주문가능 계좌금액 
             Console.WriteLine(ableAmt);
             money = Common.getLongValue(ableAmt);
             if (initMoney == 0)
@@ -742,11 +770,14 @@ namespace eb
         private void t1101Query_ReceiveData(string szTrCode)
         {
             Console.WriteLine(szTrCode);
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1101"]).GetFieldData("t1101OutBlock", "hname", 0));
-            Console.WriteLine(Common.getSign(((XA_DATASETLib.XAQuery)hKindKeyMap["t1101"]).GetFieldData("t1101OutBlock", "price", 0)));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1101"]).GetFieldData("t1101OutBlock", "change", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1101"]).GetFieldData("t1101OutBlock", "diff", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1101"]).GetFieldData("t1101OutBlock", "volume", 0));
+            Query qry = (Query)hQueryKind["현재가 호가조회"];
+            XAQuery query = qry.query;
+            Console.WriteLine(szTrCode);
+            Console.WriteLine(query.GetFieldData("t1101OutBlock", "hname", 0));
+            Console.WriteLine(Common.getSign(query.GetFieldData("t1101OutBlock", "price", 0)));
+            Console.WriteLine(query.GetFieldData("t1101OutBlock", "change", 0));
+            Console.WriteLine(query.GetFieldData("t1101OutBlock", "diff", 0));
+            Console.WriteLine(query.GetFieldData("t1101OutBlock", "volume", 0));
         }
 
         private void t1102Query_ReceiveMessage(bool bIsSystemError, string nMessageCode, string szMessage)
@@ -759,7 +790,8 @@ namespace eb
         private void t1102Query_ReceiveData(string szTrCode)
         {
             Console.WriteLine(szTrCode);
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1102"]).GetFieldData("t1102OutBlock", "hname", 0));
+            Query qry = (Query)hQueryKind["현재가 시세조회"];
+            Console.WriteLine(qry.query.GetFieldData("t1102OutBlock", "hname", 0));
         }
 
         private void cspat00600Query_ReceiveMessage(bool bIsSystemError, string nMessageCode, string szMessage)
@@ -772,7 +804,8 @@ namespace eb
         private void cspat00600Query_ReceiveData(string szTrCode)
         {
             Console.WriteLine(szTrCode);
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["CSPAT00600"]).GetFieldData("CSPAT00600OutBlock2", "OrdNo", 0));
+            Query qry = (Query)hQueryKind["현물 정상주문"];
+            Console.WriteLine(qry.query.GetFieldData("CSPAT00600OutBlock2", "OrdNo", 0));
             setMoney();
         }
 
@@ -785,31 +818,32 @@ namespace eb
 
         private void t1302Query_ReceiveData(string szTrCode)
         {
+            XAQuery query = ((Query)hQueryKind["주식분별 주가조회"]).query;
             Console.WriteLine(szTrCode);
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock", "cts_time", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "chetime", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "close", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "sign", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "change", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "diff", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "chdegree", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mdvolume", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "msvolume", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "revolume", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mdchecnt", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mschecnt", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "rechecnt", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "volume", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "open", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "high", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "low", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "cvolume", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mdchecnttm", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mschecnttm", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "totofferrem", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "totbidrem", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "mdvolumetm", 0));
-            Console.WriteLine(((XA_DATASETLib.XAQuery)hKindKeyMap["t1302"]).GetFieldData("t1302OutBlock1", "msvolumetm", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock", "cts_time", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "chetime", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "close", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "sign", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "change", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "diff", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "chdegree", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mdvolume", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "msvolume", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "revolume", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mdchecnt", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mschecnt", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "rechecnt", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "volume", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "open", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "high", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "low", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "cvolume", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mdchecnttm", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mschecnttm", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "totofferrem", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "totbidrem", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "mdvolumetm", 0));
+            Console.WriteLine(query.GetFieldData("t1302OutBlock1", "msvolumetm", 0));
         }
 
         private void t1305Query_ReceiveMessage(bool bIsSystemError, string nMessageCode, string szMessage)
@@ -821,43 +855,45 @@ namespace eb
 
         private void t1305Query_ReceiveData(string szTrCode)
         {
+            Query qry = (Query)hQueryKind["기간별 주가"];
+            XAQuery query = qry.query;
             Console.WriteLine(szTrCode);
             T1305 cls = new T1305();
-            cls.Date = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "date", 0);
-            cls.Open = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "open", 0);
-            cls.High = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "high", 0);
-            cls.Low = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "low", 0);
-            cls.Close = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "close", 0);
-            cls.Sign = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "sign", 0);
-            cls.Change = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "change", 0);
-            cls.Diff = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "diff", 0);
-            cls.Volume = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "volume", 0);
-            cls.Diff_vol = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "diff_vol", 0);
-            cls.Chdegree = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "chdegree", 0);
-            cls.Sojinrate = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "sojinrate", 0);
-            cls.Changerate = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "changerate", 0);
-            cls.Fpvolume = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "fpvolume", 0);
-            cls.Covolume = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "covolume", 0);
-            cls.Shcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "shcode", 0);
-            cls.Value = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "value", 0);
-            cls.Ppvolume = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "ppvolume", 0);
-            cls.O_sign = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "o_sign", 0);
-            cls.O_change = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "o_change", 0);
-            cls.O_diff = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "o_diff", 0);
-            cls.H_sign = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "h_sign", 0);
-            cls.H_change = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "h_change", 0);
-            cls.H_diff = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "h_diff", 0);
-            cls.L_sign = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "l_sign", 0);
-            cls.L_change = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "l_change", 0);
-            cls.L_diff = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "l_diff", 0);
-            cls.Marketcap = ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock1", "marketcap", 0);
+            cls.Date = query.GetFieldData("t1305OutBlock1", "date", 0);
+            cls.Open = query.GetFieldData("t1305OutBlock1", "open", 0);
+            cls.High = query.GetFieldData("t1305OutBlock1", "high", 0);
+            cls.Low = query.GetFieldData("t1305OutBlock1", "low", 0);
+            cls.Close = query.GetFieldData("t1305OutBlock1", "close", 0);
+            cls.Sign = query.GetFieldData("t1305OutBlock1", "sign", 0);
+            cls.Change = query.GetFieldData("t1305OutBlock1", "change", 0);
+            cls.Diff = query.GetFieldData("t1305OutBlock1", "diff", 0);
+            cls.Volume = query.GetFieldData("t1305OutBlock1", "volume", 0);
+            cls.Diff_vol = query.GetFieldData("t1305OutBlock1", "diff_vol", 0);
+            cls.Chdegree = query.GetFieldData("t1305OutBlock1", "chdegree", 0);
+            cls.Sojinrate = query.GetFieldData("t1305OutBlock1", "sojinrate", 0);
+            cls.Changerate = query.GetFieldData("t1305OutBlock1", "changerate", 0);
+            cls.Fpvolume = query.GetFieldData("t1305OutBlock1", "fpvolume", 0);
+            cls.Covolume = query.GetFieldData("t1305OutBlock1", "covolume", 0);
+            cls.Shcode = query.GetFieldData("t1305OutBlock1", "shcode", 0);
+            cls.Value = query.GetFieldData("t1305OutBlock1", "value", 0);
+            cls.Ppvolume = query.GetFieldData("t1305OutBlock1", "ppvolume", 0);
+            cls.O_sign = query.GetFieldData("t1305OutBlock1", "o_sign", 0);
+            cls.O_change = query.GetFieldData("t1305OutBlock1", "o_change", 0);
+            cls.O_diff = query.GetFieldData("t1305OutBlock1", "o_diff", 0);
+            cls.H_sign = query.GetFieldData("t1305OutBlock1", "h_sign", 0);
+            cls.H_change = query.GetFieldData("t1305OutBlock1", "h_change", 0);
+            cls.H_diff = query.GetFieldData("t1305OutBlock1", "h_diff", 0);
+            cls.L_sign = query.GetFieldData("t1305OutBlock1", "l_sign", 0);
+            cls.L_change = query.GetFieldData("t1305OutBlock1", "l_change", 0);
+            cls.L_diff = query.GetFieldData("t1305OutBlock1", "l_diff", 0);
+            cls.Marketcap = query.GetFieldData("t1305OutBlock1", "marketcap", 0);
             lstT1305.Add(cls);
 
-            if ((bool)hContinueMap["기간별 주가"])
+            if (qry.isContinue)
             {
                 if (lstT1305.Count >= Program.cont.VolumeHistoryCnt)
                 {
-                    Console.WriteLine(cls.Shcode + "(" + ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "date", 0) + "):" + cls.Volume);
+                    Console.WriteLine(cls.Shcode + "(" + query.GetFieldData("t1305OutBlock", "date", 0) + "):" + cls.Volume);
 
                     setAvgVolume(lstT1305);
 
@@ -876,13 +912,13 @@ namespace eb
                 }
                 else
                 {
-                    XA_DATASETLib.XAQuery query = getCurrQuery("기간별 주가");
-                    query.SetFieldData("t1305InBlock", "idx", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "idx", 0));
-                    query.SetFieldData("t1305InBlock", "cnt", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "cnt", 0));
-                    query.SetFieldData("t1305InBlock", "date", 0, ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "date", 0));
+                    XA_DATASETLib.XAQuery xaquery = getCurrQuery("기간별 주가");
+                    xaquery.SetFieldData("t1305InBlock", "idx", 0, query.GetFieldData("t1305OutBlock", "idx", 0));
+                    xaquery.SetFieldData("t1305InBlock", "cnt", 0, query.GetFieldData("t1305OutBlock", "cnt", 0));
+                    xaquery.SetFieldData("t1305InBlock", "date", 0, query.GetFieldData("t1305OutBlock", "date", 0));
                     Thread.Sleep(1010);
-                    Console.WriteLine(cls.Shcode + "(" + ((XA_DATASETLib.XAQuery)hKindKeyMap["t1305"]).GetFieldData("t1305OutBlock", "date", 0) + "):" + cls.Volume);
-                    doQuery(query, true);
+                    Console.WriteLine(cls.Shcode + "(" + query.GetFieldData("t1305OutBlock", "date", 0) + "):" + cls.Volume);
+                    doQuery(xaquery, true);
                 }
             }
         }
@@ -896,6 +932,9 @@ namespace eb
 
         private void t8430Query_ReceiveData(string szTrCode)
         {
+            spsInterest.RowCount = 0;
+            Query qry = (Query)hQueryKind["주식종목조회"];
+            XAQuery query = qry.query;
             Console.WriteLine(szTrCode);
             T8430 cls = new T8430();
             int cnt = 5000;
@@ -904,22 +943,22 @@ namespace eb
             {
                 for (int i = 0; i < cnt; i++)
                 {
-                    string shcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "shcode", i);
-                    string etfgubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "etfgubun", i);
+                    string shcode = query.GetFieldData("t8430OutBlock", "shcode", i);
+                    string etfgubun = query.GetFieldData("t8430OutBlock", "etfgubun", i);
 
                     if (shcode.Length < 1) break;
-                    if (etfgubun == "1") continue;      // ETF는 뭐... 펀드 같은계좌 같네??
+                    if (etfgubun == "1") continue;      // ETF는 뭐... 펀드 같은계좌 같네??, ETF는 버리자..
+
                     cls.shcode = shcode;
                     cls.etfgubun = etfgubun;
-                    cls.hname = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "hname", i);
-                    cls.expcode = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "expcode", i);
-                    cls.uplmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "uplmtprice", i);
-                    cls.dnlmtprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "dnlmtprice", i);
-                    cls.jnilclose = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "jnilclose", i);
-                    cls.memedan = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "memedan", i);
-                    cls.recprice = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "recprice", i);
-                    cls.gubun = ((XA_DATASETLib.XAQuery)hKindKeyMap["t8430"]).GetFieldData("t8430OutBlock", "gubun", i);
-                    lstT8430.Add(cls);
+                    cls.hname = query.GetFieldData("t8430OutBlock", "hname", i);
+                    cls.expcode = query.GetFieldData("t8430OutBlock", "expcode", i);
+                    cls.uplmtprice = query.GetFieldData("t8430OutBlock", "uplmtprice", i);
+                    cls.dnlmtprice = query.GetFieldData("t8430OutBlock", "dnlmtprice", i);
+                    cls.jnilclose = query.GetFieldData("t8430OutBlock", "jnilclose", i);
+                    cls.memedan = query.GetFieldData("t8430OutBlock", "memedan", i);
+                    cls.recprice = query.GetFieldData("t8430OutBlock", "recprice", i);
+                    cls.gubun = query.GetFieldData("t8430OutBlock", "gubun", i);
 
                     spsInterest.RowCount++;
                     spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.GUBUN].Text = cls.gubun == "1" ? "P" : "Q";
@@ -928,6 +967,22 @@ namespace eb
                     spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.USE].Text = "Y";
                     spsInterest.Cells[spsInterest.RowCount - 1, (int)INTER_COL.RATE].Text = "20";
                 }
+
+                // 일단 다 받아봐야 총량을 알 수 있으므로... 프로그램별 할당량 남기고 나머지 삭제
+                int ttlRow = spsInterest.RowCount;
+                int pageNum = Program.cont.AllCodePageNum;
+                int quantity = (int)(ttlRow / Program.cont.AllCodeTtlPage);
+
+                int beginIdx = (pageNum - 1) * quantity;
+                int lastIdx = pageNum * quantity;
+
+                // 뒷부분 먼저 자르고..(단 마지막 페이지는 나머지들 다 가져감)
+                if(Program.cont.AllCodePageNum != Program.cont.AllCodeTtlPage)
+                    spsInterest.RemoveRows(lastIdx, ttlRow - lastIdx);
+
+                // 앞부분 잘라내고
+                if(beginIdx > 0)
+                    spsInterest.RemoveRows(0, beginIdx);
             }
             catch (Exception e)
             {
@@ -1217,7 +1272,21 @@ namespace eb
             TimeSpan t3 = t2 - t1;
 
             if (Program.cont.LogTerm <= t3.TotalSeconds)
+            {
+                // Memory에서 하는게 아니라면, FromTimeIdx 이전 Item은 초기화 해버려서 메모리 정리하자... 
+                // 아예 삭제하면 Index를 다시 맞춰야 하니.... 일단 이전것 null로 만들어보자..
+                // 실제 로그 받는 프로그램이나, File로 하는 Simulation 시에 적용
+                if (!chkSimulateMemory.Checked)
+                {
+                    item.toRemoveIdx = item.FromTimeIdx > 0 ? item.FromTimeIdx - 1 : 0;
+                    for (int i = item.fromRemoveIdx; i < item.toRemoveIdx; i++)
+                    {
+                        item.Logs[i] = null;
+                    }
+                    item.fromRemoveIdx = item.toRemoveIdx;
+                }
                 return true;
+            }
             
             return false;
         }
@@ -1228,9 +1297,10 @@ namespace eb
             return TimeSpan.Parse(time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4, 2));
         }
 
-        private void simulationProcess(ClsRealChe list)
+        private void simulationProcess(ClsRealChe cls)
         {
-            chkOrderLogic(list);
+            chkOrderLogic(cls);
+            //highRateLog(cls);
         }
 
         private void setSpread(ClsRealChe strList)
@@ -1649,6 +1719,7 @@ namespace eb
             //ResetItemTable();
 
             string folderPath = Common.GetDialogFolder();
+            if (folderPath.Length < 1) return;
 
             // 프로세스 실행시간 측정
             Stopwatch sw = new Stopwatch();
@@ -1784,6 +1855,20 @@ namespace eb
                                     finally
                                     {
                                         sw.Close();
+                                    }
+
+                                    if (chkStopSimulation.Checked)
+                                    {
+                                        DialogResult result = MessageBox.Show("시뮬레이션을 중단하겠습니까?", "Queation", MessageBoxButtons.YesNo);
+
+                                        if (DialogResult.Yes == result)
+                                        {
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            chkStopSimulation.Checked = false;
+                                        }
                                     }
                                 }
                             }
@@ -1941,8 +2026,17 @@ namespace eb
             if (time.Hour == 8 && time.Minute >= 31 && time.Minute < 36)
             {
                 ResetItemTable();
+                ResetListOverNum();
                 DoRecording();
             }
+        }
+
+        private void ResetListOverNum()
+        {
+            lstOver5 = new List<string>();
+            lstOver10 = new List<string>();
+            lstOver15 = new List<string>();
+            lstOver20 = new List<string>();
         }
 
         private void btnExportExcel_Click(object sender, EventArgs e)
@@ -1967,7 +2061,7 @@ namespace eb
             }
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void btnMergeLog_Click(object sender, EventArgs e)
         {
             string summary = Common.getDialogFile();
             string itemlist = Common.getDialogFile();
@@ -2024,6 +2118,56 @@ namespace eb
             {
                 srSummary.Close();
                 sw.Close();
+            }
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = true;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = false;
+        }
+
+        private void btnDoLogin_Click(object sender, EventArgs e)
+        {
+            DoLogin();
+        }
+
+        private void DoLogin()
+        {
+            xas = new XA_SESSIONLib.XASession("XA_Session.XASession");
+            ((XA_SESSIONLib._IXASessionEvents_Event)xas).Login += xingSession_Login;
+
+            xas.DisconnectServer();
+
+            bool chk = xas.ConnectServer(cmbServer.Text, 20001);
+
+            if (chk)
+            {
+                bool chk1 = ((XA_SESSIONLib.IXASession)xas).Login(txtID.Text, txtPass.Text, txtKey.Text, 0, false);
+                
+            }
+            else
+            {
+                MessageBox.Show("커넥션 실패");
+            }
+        }
+
+        public void xingSession_Login(string code, string msg)
+        {
+            if (code.Equals("0000"))
+            {
+                txtMsg.Text = msg;
+                Program.LoggedIn = true;
+                btnDoLog.Enabled = true;
+                btnSelectQuery.Enabled = true;
+            }
+            else
+            {
+                txtMsg.Text = msg;
             }
         }
     }

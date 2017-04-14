@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,13 +15,14 @@ namespace eb
 {
     public partial class frmConfig : Form
     {
-        private int txtCnt = 0;
-
         public frmConfig()
         {
             InitializeComponent();
-            SetTextBoxCnt();
+            //SetTextBoxCnt();
         }
+
+        [DllImport("kernel32")]
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
@@ -42,17 +44,8 @@ namespace eb
             txtSatisfyProfit.Text = Program.cont.SatisfyProfit.ToString();
             txtCutOffHour.Text = Program.cont.CutOffHour.ToString();
             txtCutOffMin.Text = Program.cont.CutOffMinute.ToString();
-        }
-
-        private void SetTextBoxCnt()
-        {
-            txtCnt = 0;
-
-            for (int i = 0; i < this.Controls.Count; i++)
-            {
-                if (this.Controls[i] is TextBox)
-                    txtCnt++;
-            }
+            txtAllCodePageNum.Text = Program.cont.AllCodePageNum.ToString();
+            txtAllCodeTtlPage.Text = Program.cont.AllCodeTtlPage.ToString();
         }
 
         private bool ChkNullText()
@@ -68,79 +61,6 @@ namespace eb
             }
 
             return false;
-        }
-
-        private string GetConfigString()
-        {
-            string retString = "";
-
-            for (int i = 0; i < txtCnt; i++)
-            {
-                if (i > 0)
-                {
-                    retString += "/";
-                }
-
-                switch (i)
-                {
-                    case (int)Common.CONFIG_IDX.VOLUME_HISTORY_CNT:
-                        retString += txtDays.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.CUT_OFF_PERCENT:
-                        retString += txtCutoff.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.PROFIT_CUT_OFF_PERCENT:
-                        retString += txtProfitCutOff.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.POWER_LOW_LIMIT:
-                        retString += txtPowerLowLimit.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.POWER_HIGH_LIMIT:
-                        retString += txtPowerHighLimit.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.IGNORE_CHE_CNT:
-                        retString += txtIgnoreCheCnt.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.PIERCE_HO_CNT:
-                        retString += txtPierceHoCnt.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.LOG_TERM:
-                        retString += txtTermLog.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.MS_MD_RATE:
-                        retString += txtMsMdRate.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.LOG_TERM_VOLUME_OVER:
-                        retString += txtAvgVolumeOverRate.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.ORDER_SIGN_CNT:
-                        retString += txtContinueOrderCnt.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.SELL_SIGN_CNT:
-                        retString += txtContinueSellCnt.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.MS_CUT_LINE:
-                        retString += txtMsCutLine.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.MD_CUT_LINE:
-                        retString += txtMdCutLine.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.DIFFERENCE_CHEPOWER:
-                        retString += txtDifferenceChePower.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.SATISFY_PROFIT:
-                        retString += txtSatisfyProfit.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.CUT_OFF_HOUR:
-                        retString += txtCutOffHour.Text;
-                        break;
-                    case (int)Common.CONFIG_IDX.CUT_OFF_MIN:
-                        retString += txtCutOffMin.Text;
-                        break;
-                }
-            }
-
-            return retString;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -159,9 +79,32 @@ namespace eb
 
             try
             {
-                StreamWriter sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
-                sw.WriteLine(GetConfigString());
-                sw.Close();
+                string section = Program.cont.getINISection;
+                string filename = Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName;
+                //StreamWriter sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getConfigPath + Program.cont.getConfigFileName);
+                // 설정을 일렬로 나눠서 저장하는건 나중에 알아보기 힘듦으로 설명을 붙여서 다시 저장하자.
+                //sw.WriteLine(GetConfigString());
+
+                WritePrivateProfileString(section, "VOLUME_HISTORY_CNT", txtDays.Text, filename);
+                WritePrivateProfileString(section, "CUT_OFF_PERCENT", txtCutoff.Text, filename);
+                WritePrivateProfileString(section, "PROFIT_CUT_OFF_PERCENT", txtProfitCutOff.Text, filename);
+                WritePrivateProfileString(section, "POWER_LOW_LIMIT", txtPowerLowLimit.Text, filename);
+                WritePrivateProfileString(section, "POWER_HIGH_LIMIT", txtPowerHighLimit.Text, filename);
+                WritePrivateProfileString(section, "IGNORE_CHE_CNT", txtIgnoreCheCnt.Text, filename);
+                WritePrivateProfileString(section, "PIERCE_HO_CNT", txtPierceHoCnt.Text, filename);
+                WritePrivateProfileString(section, "LOG_TERM", txtTermLog.Text, filename);
+                WritePrivateProfileString(section, "MS_MD_RATE", txtMsMdRate.Text, filename);
+                WritePrivateProfileString(section, "LOG_TERM_VOLUME_OVER", txtAvgVolumeOverRate.Text, filename);
+                WritePrivateProfileString(section, "ORDER_SIGN_CNT", txtContinueOrderCnt.Text, filename);
+                WritePrivateProfileString(section, "SELL_SIGN_CNT", txtContinueSellCnt.Text, filename);
+                WritePrivateProfileString(section, "MS_CUT_LINE", txtMsCutLine.Text, filename);
+                WritePrivateProfileString(section, "MD_CUT_LINE", txtMdCutLine.Text, filename);
+                WritePrivateProfileString(section, "DIFFERENCE_CHEPOWER", txtDifferenceChePower.Text, filename);
+                WritePrivateProfileString(section, "SATISFY_PROFIT", txtSatisfyProfit.Text, filename);
+                WritePrivateProfileString(section, "CUT_OFF_HOUR", txtCutOffHour.Text, filename);
+                WritePrivateProfileString(section, "CUT_OFF_MIN", txtCutOffMin.Text, filename);
+                WritePrivateProfileString(section, "ALL_CODE_PAGE_NUM", txtAllCodePageNum.Text, filename);
+                WritePrivateProfileString(section, "ALL_CODE_TTL_PAGE", txtAllCodeTtlPage.Text, filename);
             }
             catch (Exception ex)
             {

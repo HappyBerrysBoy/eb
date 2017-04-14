@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMDIForm));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnManager = new System.Windows.Forms.ToolStripButton();
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
+            this.btnManager = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +46,17 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // btnLogin
+            // 
+            this.btnLogin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnLogin.Image = ((System.Drawing.Image)(resources.GetObject("btnLogin.Image")));
+            this.btnLogin.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(45, 22);
+            this.btnLogin.Text = "Log In";
+            this.btnLogin.Visible = false;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
             // btnManager
             // 
             this.btnManager.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -55,16 +66,6 @@
             this.btnManager.Size = new System.Drawing.Size(23, 22);
             this.btnManager.Text = "Open Manager";
             this.btnManager.Click += new System.EventHandler(this.btnManager_Click);
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnLogin.Image = ((System.Drawing.Image)(resources.GetObject("btnLogin.Image")));
-            this.btnLogin.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(45, 22);
-            this.btnLogin.Text = "Log In";
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // frmMDIForm
             // 

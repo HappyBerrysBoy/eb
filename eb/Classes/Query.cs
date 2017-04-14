@@ -8,9 +8,17 @@ namespace eb.Classes
 {
     class Query
     {
-        XA_DATASETLib.XAQuery query;
-        string name;
-        string key;
-        bool isContinue;
+        public XA_DATASETLib.XAQuery query { get; set; }
+        public string name { get; set; }
+        public string key { get; set; }
+        public bool isContinue { get; set; }
+
+        public Query(string _name, string _key, bool _continue)
+        {
+            name = _name;
+            key = _key;
+            isContinue = _continue;
+            query = null;
+        }
     }
 }
