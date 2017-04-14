@@ -30,15 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType21 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType22 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType23 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType24 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType25 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType4 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType5 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
             this.btnConfig = new System.Windows.Forms.ToolStripButton();
+            this.btnShowWriteLine = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.btnSelectQuery = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -66,6 +67,9 @@
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnGetAvgVolume = new System.Windows.Forms.ToolStripButton();
             this.btnMergeLog = new System.Windows.Forms.ToolStripButton();
+            this.pnlLog = new System.Windows.Forms.Panel();
+            this.txtSystemLog = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.pnlSimulationOptions = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.txtProfitSimulCurr = new System.Windows.Forms.TextBox();
@@ -130,6 +134,8 @@
             this.chkExportExcel = new System.Windows.Forms.CheckBox();
             this.chkAvgVolume = new System.Windows.Forms.CheckBox();
             this.chkStopSimulation = new System.Windows.Forms.CheckBox();
+            this.tmrLogin = new System.Windows.Forms.Timer(this.components);
+            this.tmrGetCode = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -139,6 +145,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spdInterest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).BeginInit();
             this.toolStrip3.SuspendLayout();
+            this.pnlLog.SuspendLayout();
             this.pnlSimulationOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spsLongTermSimulation)).BeginInit();
@@ -154,6 +161,7 @@
             this.btnLogin,
             this.btnDoLog,
             this.btnConfig,
+            this.btnShowWriteLine,
             this.toolStripLabel1,
             this.btnSelectQuery});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -193,6 +201,16 @@
             this.btnConfig.Text = "Setting Config";
             this.btnConfig.Click += new System.EventHandler(this.btnConfig_Click);
             // 
+            // btnShowWriteLine
+            // 
+            this.btnShowWriteLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnShowWriteLine.Image = ((System.Drawing.Image)(resources.GetObject("btnShowWriteLine.Image")));
+            this.btnShowWriteLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowWriteLine.Name = "btnShowWriteLine";
+            this.btnShowWriteLine.Size = new System.Drawing.Size(23, 22);
+            this.btnShowWriteLine.Text = "Show System Log";
+            this.btnShowWriteLine.Click += new System.EventHandler(this.btnShowWriteLine_Click);
+            // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
@@ -226,6 +244,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.pnlLog);
             this.splitContainer1.Panel2.Controls.Add(this.pnlSimulationOptions);
             this.splitContainer1.Panel2.Controls.Add(this.spdLongTermSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
@@ -414,15 +433,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType21;
+            this.spsInterest.Columns.Get(5).CellType = textCellType1;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType22;
+            this.spsInterest.DefaultStyle.CellType = textCellType2;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType22;
+            this.spsInterest.DefaultStyle.Renderer = textCellType2;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -508,6 +527,36 @@
             this.btnMergeLog.Size = new System.Drawing.Size(23, 22);
             this.btnMergeLog.Text = "Log 합성";
             this.btnMergeLog.Click += new System.EventHandler(this.btnMergeLog_Click);
+            // 
+            // pnlLog
+            // 
+            this.pnlLog.Controls.Add(this.txtSystemLog);
+            this.pnlLog.Controls.Add(this.label18);
+            this.pnlLog.Location = new System.Drawing.Point(772, 114);
+            this.pnlLog.Name = "pnlLog";
+            this.pnlLog.Size = new System.Drawing.Size(238, 381);
+            this.pnlLog.TabIndex = 11;
+            // 
+            // txtSystemLog
+            // 
+            this.txtSystemLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSystemLog.Location = new System.Drawing.Point(3, 27);
+            this.txtSystemLog.Multiline = true;
+            this.txtSystemLog.Name = "txtSystemLog";
+            this.txtSystemLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtSystemLog.Size = new System.Drawing.Size(232, 351);
+            this.txtSystemLog.TabIndex = 1;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(11, 9);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(73, 12);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "System Log";
             // 
             // pnlSimulationOptions
             // 
@@ -901,7 +950,7 @@
             this.spsLongTermSimulation.Columns.Get(3).Width = 70F;
             this.spsLongTermSimulation.Columns.Get(4).Label = "비율";
             this.spsLongTermSimulation.Columns.Get(4).Width = 44F;
-            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType23;
+            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType3;
             this.spsLongTermSimulation.Columns.Get(5).Label = "체결강도";
             this.spsLongTermSimulation.Columns.Get(5).Locked = true;
             this.spsLongTermSimulation.Columns.Get(5).Width = 55F;
@@ -919,11 +968,11 @@
             this.spsLongTermSimulation.Columns.Get(13).Width = 86F;
             this.spsLongTermSimulation.Columns.Get(14).Label = "이익/손해금액";
             this.spsLongTermSimulation.Columns.Get(14).Width = 85F;
-            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType24;
+            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType4;
             this.spsLongTermSimulation.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsLongTermSimulation.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLongTermSimulation.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType24;
+            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType4;
             this.spsLongTermSimulation.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsLongTermSimulation.RowHeader.Columns.Default.Resizable = false;
             this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -1033,10 +1082,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType25;
+            this.spsLog.DefaultStyle.CellType = textCellType5;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType25;
+            this.spsLog.DefaultStyle.Renderer = textCellType5;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -1175,7 +1224,7 @@
             // cmbQueryKind
             // 
             this.cmbQueryKind.FormattingEnabled = true;
-            this.cmbQueryKind.Location = new System.Drawing.Point(149, 3);
+            this.cmbQueryKind.Location = new System.Drawing.Point(171, 3);
             this.cmbQueryKind.Name = "cmbQueryKind";
             this.cmbQueryKind.Size = new System.Drawing.Size(118, 20);
             this.cmbQueryKind.TabIndex = 7;
@@ -1183,7 +1232,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(90, 6);
+            this.label2.Location = new System.Drawing.Point(112, 6);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 6;
@@ -1201,7 +1250,7 @@
             // 
             // tmrRecord
             // 
-            this.tmrRecord.Interval = 300000;
+            this.tmrRecord.Interval = 120000;
             this.tmrRecord.Tick += new System.EventHandler(this.tmrRecord_Tick);
             // 
             // chkAutoRecording
@@ -1259,6 +1308,16 @@
             this.chkStopSimulation.Text = "시뮬레이션 중단";
             this.chkStopSimulation.UseVisualStyleBackColor = true;
             // 
+            // tmrLogin
+            // 
+            this.tmrLogin.Interval = 120000;
+            this.tmrLogin.Tick += new System.EventHandler(this.tmrLogin_Tick);
+            // 
+            // tmrGetCode
+            // 
+            this.tmrGetCode.Interval = 120000;
+            this.tmrGetCode.Tick += new System.EventHandler(this.tmrGetCode_Tick);
+            // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -1293,6 +1352,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spsInterest)).EndInit();
             this.toolStrip3.ResumeLayout(false);
             this.toolStrip3.PerformLayout();
+            this.pnlLog.ResumeLayout(false);
+            this.pnlLog.PerformLayout();
             this.pnlSimulationOptions.ResumeLayout(false);
             this.pnlSimulationOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spdLongTermSimulation)).EndInit();
@@ -1405,5 +1466,11 @@
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Button btnDoLogin;
+        private System.Windows.Forms.Timer tmrLogin;
+        private System.Windows.Forms.Timer tmrGetCode;
+        private System.Windows.Forms.ToolStripButton btnShowWriteLine;
+        private System.Windows.Forms.Panel pnlLog;
+        private System.Windows.Forms.TextBox txtSystemLog;
+        private System.Windows.Forms.Label label18;
     }
 }

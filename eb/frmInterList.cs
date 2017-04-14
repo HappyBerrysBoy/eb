@@ -2012,22 +2012,14 @@ namespace eb
             if (chkAutoRecording.Checked)
             {
                 tmrRecord.Enabled = true;
+                tmrLogin.Enabled = true;
+                tmrGetCode.Enabled = true;
             }
             else
             {
                 tmrRecord.Enabled = false;
-            }
-        }
-
-        private void tmrRecord_Tick(object sender, EventArgs e)
-        {
-            DateTime time = DateTime.Now;
-
-            if (time.Hour == 8 && time.Minute >= 31 && time.Minute < 36)
-            {
-                ResetItemTable();
-                ResetListOverNum();
-                DoRecording();
+                tmrLogin.Enabled = false;
+                tmrGetCode.Enabled = false;
             }
         }
 
@@ -2148,7 +2140,6 @@ namespace eb
             if (chk)
             {
                 bool chk1 = ((XA_SESSIONLib.IXASession)xas).Login(txtID.Text, txtPass.Text, txtKey.Text, 0, false);
-                
             }
             else
             {
@@ -2164,10 +2155,71 @@ namespace eb
                 Program.LoggedIn = true;
                 btnDoLog.Enabled = true;
                 btnSelectQuery.Enabled = true;
+                pnlLogin.Visible = false;
             }
             else
             {
                 txtMsg.Text = msg;
+            }
+        }
+
+        private string getDateTime(DateTime time)
+        {
+            return time.Month + "/" + time.Day + " " + time.Hour + ":" + time.Minute + ":" + time.Second;
+        }
+
+        private void tmrLogin_Tick(object sender, EventArgs e)
+        {
+            DateTime time = DateTime.Now;
+
+            if (time.Hour == 8 && time.Minute >= 30 && time.Minute < 32)
+            //if (time.Hour == 1 && time.Minute >= 34 && time.Minute < 35)
+            {
+                DoLogin();
+                Console.WriteLine("Do Login...!!");
+                txtSystemLog.Text += getDateTime(time) + " ==> Do login..... \r\n";
+            }
+        }
+
+
+        private void tmrGetCode_Tick(object sender, EventArgs e)
+        {
+            DateTime time = DateTime.Now;
+
+            if (time.Hour == 8 && time.Minute >= 33 && time.Minute < 35)
+            //if (time.Hour == 1 && time.Minute >= 36 && time.Minute < 37)
+            {
+                setDoQuery("주식종목조회", "");
+                Console.WriteLine("Get Code List...!!");
+                txtSystemLog.Text += getDateTime(time) + " ==> Get Code List...!! \r\n";
+            }
+        }
+
+        private void tmrRecord_Tick(object sender, EventArgs e)
+        {
+            DateTime time = DateTime.Now;
+
+            if (time.Hour == 8 && time.Minute >= 36 && time.Minute < 38)
+            //if (time.Hour == 1 && time.Minute >= 38 && time.Minute < 39)
+            {
+                //DoLogin();
+                ResetItemTable();
+                ResetListOverNum();
+                DoRecording();
+                Console.WriteLine("Do Recording.....!!");
+                txtSystemLog.Text += getDateTime(time) + " ==> Do Recording.....!! \r\n";
+            }
+        }
+
+        private void btnShowWriteLine_Click(object sender, EventArgs e)
+        {
+            if (pnlLog.Visible)
+            {
+                pnlLog.Visible = false;
+            }
+            else
+            {
+                pnlLog.Visible = true;
             }
         }
     }
