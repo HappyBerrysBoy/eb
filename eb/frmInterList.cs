@@ -412,7 +412,7 @@ namespace eb
             writeLog(cls);
             highRateLog(cls);
             // 가비지콜렉터로 메모리 정리되나 한번 보자...
-            System.GC.Collect();
+            //System.GC.Collect();
         }
 
         // 많이 오른 애들 따로 로그 남겨 놓는 로직
@@ -2210,6 +2210,11 @@ namespace eb
                 DoRecording();
                 Console.WriteLine("Do Recording.....!!");
                 txtSystemLog.Text += getDateTime(time) + " ==> Do Recording.....!! \r\n";
+            }
+            else if (time.Hour == 8 && time.Minute >= 38 && time.Minute < 40)
+            {
+                System.GC.Collect();
+                txtSystemLog.Text += getDateTime(time) + " ==> GC Collect.....!! \r\n";
             }
         }
 
