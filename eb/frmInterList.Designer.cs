@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmInterList));
-            FarPoint.Win.Spread.CellType.TextCellType textCellType1 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType2 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType3 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType4 = new FarPoint.Win.Spread.CellType.TextCellType();
-            FarPoint.Win.Spread.CellType.TextCellType textCellType5 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType21 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType22 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType23 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType24 = new FarPoint.Win.Spread.CellType.TextCellType();
+            FarPoint.Win.Spread.CellType.TextCellType textCellType25 = new FarPoint.Win.Spread.CellType.TextCellType();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnLogin = new System.Windows.Forms.ToolStripButton();
             this.btnDoLog = new System.Windows.Forms.ToolStripButton();
@@ -120,22 +120,24 @@
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.txtInputMoney = new System.Windows.Forms.ToolStripTextBox();
             this.btnSimulationConfig = new System.Windows.Forms.ToolStripButton();
-            this.chkSimulateAllItem = new System.Windows.Forms.CheckBox();
             this.stsBar = new System.Windows.Forms.StatusStrip();
             this.lblSTS = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSum = new System.Windows.Forms.ToolStripStatusLabel();
             this.cmbQueryKind = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.chkReal = new System.Windows.Forms.CheckBox();
             this.tmrRecord = new System.Windows.Forms.Timer(this.components);
+            this.btnShowOptions = new System.Windows.Forms.ToolStripButton();
+            this.pnlOptions = new System.Windows.Forms.Panel();
+            this.chkReal = new System.Windows.Forms.CheckBox();
             this.chkAutoRecording = new System.Windows.Forms.CheckBox();
+            this.chkSimulateAllItem = new System.Windows.Forms.CheckBox();
             this.chkSimulateMemory = new System.Windows.Forms.CheckBox();
             this.chkExportExcel = new System.Windows.Forms.CheckBox();
             this.chkAvgVolume = new System.Windows.Forms.CheckBox();
             this.chkStopSimulation = new System.Windows.Forms.CheckBox();
-            this.tmrLogin = new System.Windows.Forms.Timer(this.components);
-            this.tmrGetCode = new System.Windows.Forms.Timer(this.components);
+            this.chkLogOnly = new System.Windows.Forms.CheckBox();
+            this.chkUseThread = new System.Windows.Forms.CheckBox();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -153,6 +155,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spsLog)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.stsBar.SuspendLayout();
+            this.pnlOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -162,11 +165,12 @@
             this.btnDoLog,
             this.btnConfig,
             this.btnShowWriteLine,
+            this.btnShowOptions,
             this.toolStripLabel1,
             this.btnSelectQuery});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1406, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1504, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -238,6 +242,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.pnlOptions);
             this.splitContainer1.Panel1.Controls.Add(this.pnlLogin);
             this.splitContainer1.Panel1.Controls.Add(this.spdInterest);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip3);
@@ -249,8 +254,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.spdLongTermSimulation);
             this.splitContainer1.Panel2.Controls.Add(this.spdLog);
             this.splitContainer1.Panel2.Controls.Add(this.toolStrip2);
-            this.splitContainer1.Size = new System.Drawing.Size(1406, 514);
-            this.splitContainer1.SplitterDistance = 376;
+            this.splitContainer1.Size = new System.Drawing.Size(1504, 514);
+            this.splitContainer1.SplitterDistance = 402;
             this.splitContainer1.TabIndex = 7;
             // 
             // pnlLogin
@@ -406,7 +411,7 @@
             this.spdInterest.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdInterest.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsInterest});
-            this.spdInterest.Size = new System.Drawing.Size(376, 489);
+            this.spdInterest.Size = new System.Drawing.Size(402, 489);
             this.spdInterest.TabIndex = 0;
             this.spdInterest.EditModeOff += new System.EventHandler(this.spdInterest_EditModeOff);
             // 
@@ -433,15 +438,15 @@
             this.spsInterest.Columns.Get(3).Width = 33F;
             this.spsInterest.Columns.Get(4).Label = "비율";
             this.spsInterest.Columns.Get(4).Width = 34F;
-            this.spsInterest.Columns.Get(5).CellType = textCellType1;
+            this.spsInterest.Columns.Get(5).CellType = textCellType21;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
             this.spsInterest.Columns.Get(5).Locked = true;
             this.spsInterest.Columns.Get(5).Width = 69F;
-            this.spsInterest.DefaultStyle.CellType = textCellType2;
+            this.spsInterest.DefaultStyle.CellType = textCellType22;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsInterest.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsInterest.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsInterest.DefaultStyle.Renderer = textCellType2;
+            this.spsInterest.DefaultStyle.Renderer = textCellType22;
             this.spsInterest.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsInterest.RowHeader.Columns.Default.Resizable = false;
             this.spsInterest.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -459,7 +464,7 @@
             this.btnMergeLog});
             this.toolStrip3.Location = new System.Drawing.Point(0, 0);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(376, 25);
+            this.toolStrip3.Size = new System.Drawing.Size(402, 25);
             this.toolStrip3.TabIndex = 1;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -914,7 +919,7 @@
             this.spdLongTermSimulation.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLongTermSimulation.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLongTermSimulation});
-            this.spdLongTermSimulation.Size = new System.Drawing.Size(1026, 489);
+            this.spdLongTermSimulation.Size = new System.Drawing.Size(1098, 489);
             this.spdLongTermSimulation.TabIndex = 9;
             this.spdLongTermSimulation.Visible = false;
             // 
@@ -950,7 +955,7 @@
             this.spsLongTermSimulation.Columns.Get(3).Width = 70F;
             this.spsLongTermSimulation.Columns.Get(4).Label = "비율";
             this.spsLongTermSimulation.Columns.Get(4).Width = 44F;
-            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType3;
+            this.spsLongTermSimulation.Columns.Get(5).CellType = textCellType23;
             this.spsLongTermSimulation.Columns.Get(5).Label = "체결강도";
             this.spsLongTermSimulation.Columns.Get(5).Locked = true;
             this.spsLongTermSimulation.Columns.Get(5).Width = 55F;
@@ -968,11 +973,11 @@
             this.spsLongTermSimulation.Columns.Get(13).Width = 86F;
             this.spsLongTermSimulation.Columns.Get(14).Label = "이익/손해금액";
             this.spsLongTermSimulation.Columns.Get(14).Width = 85F;
-            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType4;
+            this.spsLongTermSimulation.DefaultStyle.CellType = textCellType24;
             this.spsLongTermSimulation.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;
             this.spsLongTermSimulation.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLongTermSimulation.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType4;
+            this.spsLongTermSimulation.DefaultStyle.Renderer = textCellType24;
             this.spsLongTermSimulation.DefaultStyle.VerticalAlignment = FarPoint.Win.Spread.CellVerticalAlignment.Center;
             this.spsLongTermSimulation.RowHeader.Columns.Default.Resizable = false;
             this.spsLongTermSimulation.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
@@ -989,7 +994,7 @@
             this.spdLog.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.spdLog.Sheets.AddRange(new FarPoint.Win.Spread.SheetView[] {
             this.spsLog});
-            this.spdLog.Size = new System.Drawing.Size(1026, 489);
+            this.spdLog.Size = new System.Drawing.Size(1098, 489);
             this.spdLog.TabIndex = 7;
             this.spdLog.MouseUp += new System.Windows.Forms.MouseEventHandler(this.spdLog_MouseUp);
             // 
@@ -1082,10 +1087,10 @@
             this.spsLog.Columns.Get(26).Locked = true;
             this.spsLog.Columns.Get(27).Label = "세금";
             this.spsLog.Columns.Get(27).Locked = true;
-            this.spsLog.DefaultStyle.CellType = textCellType5;
+            this.spsLog.DefaultStyle.CellType = textCellType25;
             this.spsLog.DefaultStyle.NoteIndicatorColor = System.Drawing.Color.Red;
             this.spsLog.DefaultStyle.Parent = "DataAreaDefault";
-            this.spsLog.DefaultStyle.Renderer = textCellType5;
+            this.spsLog.DefaultStyle.Renderer = textCellType25;
             this.spsLog.RowHeader.Columns.Default.Resizable = false;
             this.spsLog.ReferenceStyle = FarPoint.Win.Spread.Model.ReferenceStyle.A1;
             this.spdLog.SetActiveViewport(0, -1, 0);
@@ -1103,7 +1108,7 @@
             this.btnSimulationConfig});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(1026, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(1098, 25);
             this.toolStrip2.TabIndex = 8;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -1179,18 +1184,6 @@
             this.btnSimulationConfig.Text = "Simulation Config";
             this.btnSimulationConfig.Click += new System.EventHandler(this.btnSimulationConfig_Click);
             // 
-            // chkSimulateAllItem
-            // 
-            this.chkSimulateAllItem.AutoSize = true;
-            this.chkSimulateAllItem.Checked = true;
-            this.chkSimulateAllItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSimulateAllItem.Location = new System.Drawing.Point(512, 5);
-            this.chkSimulateAllItem.Name = "chkSimulateAllItem";
-            this.chkSimulateAllItem.Size = new System.Drawing.Size(119, 16);
-            this.chkSimulateAllItem.TabIndex = 11;
-            this.chkSimulateAllItem.Text = "Simulate All Item";
-            this.chkSimulateAllItem.UseVisualStyleBackColor = true;
-            // 
             // stsBar
             // 
             this.stsBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1199,7 +1192,7 @@
             this.lblSum});
             this.stsBar.Location = new System.Drawing.Point(0, 542);
             this.stsBar.Name = "stsBar";
-            this.stsBar.Size = new System.Drawing.Size(1406, 22);
+            this.stsBar.Size = new System.Drawing.Size(1504, 22);
             this.stsBar.TabIndex = 8;
             this.stsBar.Text = "statusStrip1";
             // 
@@ -1224,7 +1217,7 @@
             // cmbQueryKind
             // 
             this.cmbQueryKind.FormattingEnabled = true;
-            this.cmbQueryKind.Location = new System.Drawing.Point(171, 3);
+            this.cmbQueryKind.Location = new System.Drawing.Point(198, 3);
             this.cmbQueryKind.Name = "cmbQueryKind";
             this.cmbQueryKind.Size = new System.Drawing.Size(118, 20);
             this.cmbQueryKind.TabIndex = 7;
@@ -1232,47 +1225,84 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(112, 6);
+            this.label2.Location = new System.Drawing.Point(138, 7);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 6;
             this.label2.Text = "조회종류";
-            // 
-            // chkReal
-            // 
-            this.chkReal.AutoSize = true;
-            this.chkReal.Location = new System.Drawing.Point(330, 5);
-            this.chkReal.Name = "chkReal";
-            this.chkReal.Size = new System.Drawing.Size(60, 16);
-            this.chkReal.TabIndex = 9;
-            this.chkReal.Text = "실거래";
-            this.chkReal.UseVisualStyleBackColor = true;
             // 
             // tmrRecord
             // 
             this.tmrRecord.Interval = 120000;
             this.tmrRecord.Tick += new System.EventHandler(this.tmrRecord_Tick);
             // 
+            // btnShowOptions
+            // 
+            this.btnShowOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnShowOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnShowOptions.Image")));
+            this.btnShowOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnShowOptions.Name = "btnShowOptions";
+            this.btnShowOptions.Size = new System.Drawing.Size(23, 22);
+            this.btnShowOptions.Text = "Options";
+            this.btnShowOptions.Click += new System.EventHandler(this.btnShowOptions_Click);
+            // 
+            // pnlOptions
+            // 
+            this.pnlOptions.Controls.Add(this.chkUseThread);
+            this.pnlOptions.Controls.Add(this.chkLogOnly);
+            this.pnlOptions.Controls.Add(this.chkStopSimulation);
+            this.pnlOptions.Controls.Add(this.chkAvgVolume);
+            this.pnlOptions.Controls.Add(this.chkExportExcel);
+            this.pnlOptions.Controls.Add(this.chkSimulateMemory);
+            this.pnlOptions.Controls.Add(this.chkAutoRecording);
+            this.pnlOptions.Controls.Add(this.chkSimulateAllItem);
+            this.pnlOptions.Controls.Add(this.chkReal);
+            this.pnlOptions.Location = new System.Drawing.Point(99, 0);
+            this.pnlOptions.Name = "pnlOptions";
+            this.pnlOptions.Size = new System.Drawing.Size(243, 229);
+            this.pnlOptions.TabIndex = 12;
+            // 
+            // chkReal
+            // 
+            this.chkReal.AutoSize = true;
+            this.chkReal.Location = new System.Drawing.Point(14, 18);
+            this.chkReal.Name = "chkReal";
+            this.chkReal.Size = new System.Drawing.Size(60, 16);
+            this.chkReal.TabIndex = 10;
+            this.chkReal.Text = "실거래";
+            this.chkReal.UseVisualStyleBackColor = true;
+            // 
             // chkAutoRecording
             // 
             this.chkAutoRecording.AutoSize = true;
-            this.chkAutoRecording.Location = new System.Drawing.Point(396, 5);
+            this.chkAutoRecording.Location = new System.Drawing.Point(14, 40);
             this.chkAutoRecording.Name = "chkAutoRecording";
             this.chkAutoRecording.Size = new System.Drawing.Size(110, 16);
-            this.chkAutoRecording.TabIndex = 10;
+            this.chkAutoRecording.TabIndex = 12;
             this.chkAutoRecording.Text = "Auto Recording";
             this.chkAutoRecording.UseVisualStyleBackColor = true;
-            this.chkAutoRecording.CheckedChanged += new System.EventHandler(this.chkAutoRecording_CheckedChanged);
+            // 
+            // chkSimulateAllItem
+            // 
+            this.chkSimulateAllItem.AutoSize = true;
+            this.chkSimulateAllItem.Checked = true;
+            this.chkSimulateAllItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSimulateAllItem.Location = new System.Drawing.Point(14, 63);
+            this.chkSimulateAllItem.Name = "chkSimulateAllItem";
+            this.chkSimulateAllItem.Size = new System.Drawing.Size(119, 16);
+            this.chkSimulateAllItem.TabIndex = 13;
+            this.chkSimulateAllItem.Text = "Simulate All Item";
+            this.chkSimulateAllItem.UseVisualStyleBackColor = true;
             // 
             // chkSimulateMemory
             // 
             this.chkSimulateMemory.AutoSize = true;
             this.chkSimulateMemory.Checked = true;
             this.chkSimulateMemory.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSimulateMemory.Location = new System.Drawing.Point(637, 5);
+            this.chkSimulateMemory.Location = new System.Drawing.Point(14, 85);
             this.chkSimulateMemory.Name = "chkSimulateMemory";
             this.chkSimulateMemory.Size = new System.Drawing.Size(138, 16);
-            this.chkSimulateMemory.TabIndex = 12;
+            this.chkSimulateMemory.TabIndex = 14;
             this.chkSimulateMemory.Text = "Simulate in Memory";
             this.chkSimulateMemory.UseVisualStyleBackColor = true;
             // 
@@ -1281,55 +1311,62 @@
             this.chkExportExcel.AutoSize = true;
             this.chkExportExcel.Checked = true;
             this.chkExportExcel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkExportExcel.Location = new System.Drawing.Point(778, 6);
+            this.chkExportExcel.Location = new System.Drawing.Point(14, 107);
             this.chkExportExcel.Name = "chkExportExcel";
             this.chkExportExcel.Size = new System.Drawing.Size(150, 16);
-            this.chkExportExcel.TabIndex = 12;
+            this.chkExportExcel.TabIndex = 15;
             this.chkExportExcel.Text = "결과를엑셀로저장할래?";
             this.chkExportExcel.UseVisualStyleBackColor = true;
             // 
             // chkAvgVolume
             // 
             this.chkAvgVolume.AutoSize = true;
-            this.chkAvgVolume.Location = new System.Drawing.Point(928, 5);
+            this.chkAvgVolume.Location = new System.Drawing.Point(14, 128);
             this.chkAvgVolume.Name = "chkAvgVolume";
             this.chkAvgVolume.Size = new System.Drawing.Size(218, 16);
-            this.chkAvgVolume.TabIndex = 13;
+            this.chkAvgVolume.TabIndex = 16;
             this.chkAvgVolume.Text = "로그쌓을때 평균거래량 가져올꺼임?";
             this.chkAvgVolume.UseVisualStyleBackColor = true;
             // 
             // chkStopSimulation
             // 
             this.chkStopSimulation.AutoSize = true;
-            this.chkStopSimulation.Location = new System.Drawing.Point(1152, 5);
+            this.chkStopSimulation.Location = new System.Drawing.Point(14, 150);
             this.chkStopSimulation.Name = "chkStopSimulation";
             this.chkStopSimulation.Size = new System.Drawing.Size(112, 16);
-            this.chkStopSimulation.TabIndex = 14;
+            this.chkStopSimulation.TabIndex = 17;
             this.chkStopSimulation.Text = "시뮬레이션 중단";
             this.chkStopSimulation.UseVisualStyleBackColor = true;
             // 
-            // tmrLogin
+            // chkLogOnly
             // 
-            this.tmrLogin.Interval = 120000;
-            this.tmrLogin.Tick += new System.EventHandler(this.tmrLogin_Tick);
+            this.chkLogOnly.AutoSize = true;
+            this.chkLogOnly.Checked = true;
+            this.chkLogOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLogOnly.Location = new System.Drawing.Point(14, 172);
+            this.chkLogOnly.Name = "chkLogOnly";
+            this.chkLogOnly.Size = new System.Drawing.Size(154, 16);
+            this.chkLogOnly.TabIndex = 18;
+            this.chkLogOnly.Text = "로그수집전용(거래없음)";
+            this.chkLogOnly.UseVisualStyleBackColor = true;
             // 
-            // tmrGetCode
+            // chkUseThread
             // 
-            this.tmrGetCode.Interval = 120000;
-            this.tmrGetCode.Tick += new System.EventHandler(this.tmrGetCode_Tick);
+            this.chkUseThread.AutoSize = true;
+            this.chkUseThread.Checked = true;
+            this.chkUseThread.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseThread.Location = new System.Drawing.Point(14, 194);
+            this.chkUseThread.Name = "chkUseThread";
+            this.chkUseThread.Size = new System.Drawing.Size(172, 16);
+            this.chkUseThread.TabIndex = 19;
+            this.chkUseThread.Text = "로그수집시 쓰레드사용여부";
+            this.chkUseThread.UseVisualStyleBackColor = true;
             // 
             // frmInterList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1406, 564);
-            this.Controls.Add(this.chkStopSimulation);
-            this.Controls.Add(this.chkAvgVolume);
-            this.Controls.Add(this.chkExportExcel);
-            this.Controls.Add(this.chkSimulateMemory);
-            this.Controls.Add(this.chkSimulateAllItem);
-            this.Controls.Add(this.chkAutoRecording);
-            this.Controls.Add(this.chkReal);
+            this.ClientSize = new System.Drawing.Size(1504, 564);
             this.Controls.Add(this.cmbQueryKind);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.stsBar);
@@ -1364,6 +1401,8 @@
             this.toolStrip2.PerformLayout();
             this.stsBar.ResumeLayout(false);
             this.stsBar.PerformLayout();
+            this.pnlOptions.ResumeLayout(false);
+            this.pnlOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1398,15 +1437,12 @@
         private System.Windows.Forms.ToolStripStatusLabel lblSum;
         private System.Windows.Forms.ToolStripButton btnSimulation;
         private System.Windows.Forms.ToolStripButton btnGetAvgVolume;
-        private System.Windows.Forms.CheckBox chkReal;
         private System.Windows.Forms.ToolStripButton btnLongTermSimulation;
         private FarPoint.Win.Spread.FpSpread spdLongTermSimulation;
         private FarPoint.Win.Spread.SheetView spsLongTermSimulation;
         private System.Windows.Forms.Timer tmrRecord;
-        private System.Windows.Forms.CheckBox chkAutoRecording;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripTextBox txtInputMoney;
-        private System.Windows.Forms.CheckBox chkSimulateAllItem;
         private System.Windows.Forms.ToolStripButton btnExportExcel;
         private System.Windows.Forms.Panel pnlSimulationOptions;
         private System.Windows.Forms.ToolStripButton btnSimulationConfig;
@@ -1447,10 +1483,6 @@
         private System.Windows.Forms.TextBox txtAvgSimulCurr;
         private System.Windows.Forms.TextBox txtLogSimulCurr;
         private System.Windows.Forms.ToolStripButton btnMergeLog;
-        private System.Windows.Forms.CheckBox chkSimulateMemory;
-        private System.Windows.Forms.CheckBox chkExportExcel;
-        private System.Windows.Forms.CheckBox chkAvgVolume;
-        private System.Windows.Forms.CheckBox chkStopSimulation;
         private System.Windows.Forms.ToolStripButton btnLogin;
         private System.Windows.Forms.Panel pnlLogin;
         private System.Windows.Forms.TextBox txtMsg;
@@ -1466,11 +1498,20 @@
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Button btnDoLogin;
-        private System.Windows.Forms.Timer tmrLogin;
-        private System.Windows.Forms.Timer tmrGetCode;
         private System.Windows.Forms.ToolStripButton btnShowWriteLine;
         private System.Windows.Forms.Panel pnlLog;
         private System.Windows.Forms.TextBox txtSystemLog;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ToolStripButton btnShowOptions;
+        private System.Windows.Forms.Panel pnlOptions;
+        private System.Windows.Forms.CheckBox chkUseThread;
+        private System.Windows.Forms.CheckBox chkLogOnly;
+        private System.Windows.Forms.CheckBox chkStopSimulation;
+        private System.Windows.Forms.CheckBox chkAvgVolume;
+        private System.Windows.Forms.CheckBox chkExportExcel;
+        private System.Windows.Forms.CheckBox chkSimulateMemory;
+        private System.Windows.Forms.CheckBox chkAutoRecording;
+        private System.Windows.Forms.CheckBox chkSimulateAllItem;
+        private System.Windows.Forms.CheckBox chkReal;
     }
 }

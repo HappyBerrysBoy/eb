@@ -45,6 +45,8 @@ namespace eb
 
         private Color SUBTOTAL_COLOR = Color.LightGreen;
 
+        private object threadObj = new object();    // Thread Lock을 위한 변수
+
         XA_SESSIONLib.XASession xas;                // Login 용
 
         XA_DATASETLib.XAReal queryRealPI;         // 코스피 실시간 시세
@@ -307,6 +309,36 @@ namespace eb
             return realCls;
         }
 
+        private string GetLogData(XA_DATASETLib.XAReal query)
+        {
+            string data = "";
+            string shcode = query.GetFieldData("OutBlock", "shcode");
+            data += shcode + "/";
+            data += query.GetFieldData("OutBlock", "chetime") + "/";
+            data += query.GetFieldData("OutBlock", "sign") + "/";
+            data += query.GetFieldData("OutBlock", "change") + "/";
+            data += query.GetFieldData("OutBlock", "drate") + "/";
+            data += query.GetFieldData("OutBlock", "price") + "/";
+            data += query.GetFieldData("OutBlock", "open") + "/";
+            data += query.GetFieldData("OutBlock", "high") + "/";
+            data += query.GetFieldData("OutBlock", "low") + "/";
+            data += query.GetFieldData("OutBlock", "cgubun") + "/";
+            data += query.GetFieldData("OutBlock", "cvolume") + "/";
+            data += query.GetFieldData("OutBlock", "volume") + "/";
+            data += query.GetFieldData("OutBlock", "value") + "/";
+            data += query.GetFieldData("OutBlock", "mdvolume") + "/";
+            data += query.GetFieldData("OutBlock", "mdchecnt") + "/";
+            data += query.GetFieldData("OutBlock", "msvolume") + "/";
+            data += query.GetFieldData("OutBlock", "mschecnt") + "/";
+            data += query.GetFieldData("OutBlock", "cpower") + "/";
+            data += query.GetFieldData("OutBlock", "offerho") + "/";
+            data += query.GetFieldData("OutBlock", "bidho") + "/";
+            data += query.GetFieldData("OutBlock", "status") + "/";
+            data += query.GetFieldData("OutBlock", "jnilvolume") + "//////";
+
+            return data;
+        }
+
         private void writeLog(ClsRealChe realCls)
         {
             List<string> lstLog = new List<string>();
@@ -407,12 +439,83 @@ namespace eb
 
         private void realdataProcess(XA_DATASETLib.XAReal query)
         {
-            ClsRealChe cls = setRealDataClass(query);
-            chkOrderLogic(cls);
-            writeLog(cls);
-            highRateLog(cls);
+            if (!chkLogOnly.Checked)
+            {
+                ClsRealChe cls = setRealDataClass(query);
+                chkOrderLogic(cls);
+                writeLog(cls);
+                highRateLog(cls);
+            }
+            else
+            {
+                // 로그만 쌓는 경우는 ClsRealChe로 변환도 하지 말고 그냥 바로 로그만 쌓아 버리자...
+                // File Open write close 등에 시간이 걸릴 수 있으므로, 쓰레드로 던져버리고 XAReal 클래스는 다시 재활용시키자...
+                // 혹 쓰레드가 순서대로 실행 되지 않아.. log chetime이 역전되는 경우... 그냥 동기화로 다 코딩하는수 밖에.. ㅠㅠ
+                string logData = GetLogData(query);
+
+                if (chkUseThread.Checked)
+                {
+                    ThreadTask workItem = new ThreadTask(query.GetFieldData("OutBlock", "shcode"), logData);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(LogThreadWork), workItem);
+                }
+                else
+                {
+                    string shcode = query.GetFieldData("OutBlock", "shcode");
+
+                    DateTime dt = DateTime.Now;
+                    string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/" + shcode + "(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+                    
+                    try
+                    {
+                        file = new StreamWriter(fileName, true);
+                        file.WriteLine(logData);
+                    }
+                    catch (Exception e)
+                    {
+                        // Thread로 처리하다보니.... 혹시 같은 파일을 두번 열개 되는 경우가 발생하지 않을런지..???
+                        // 그럴수도 있다면.... 으흠.... StreamWriter을 항상 열어 놓으믄.... 그것도 안되려나... 일단 이렇게 해보자...
+                        file = new StreamWriter(fileName, true);
+                        file.WriteLine(e.Message);
+                    }
+                    finally
+                    {
+                        file.Close();
+                    }
+                }
+            }
+            
             // 가비지콜렉터로 메모리 정리되나 한번 보자...
+            // 되긴한데 로그 중간중간에 날려먹음;;;
             //System.GC.Collect();
+        }
+
+        private void LogThreadWork(Object logData)
+        {
+            ThreadTask task = (ThreadTask)logData;
+
+            DateTime dt = DateTime.Now;
+            string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/" + task.shcode + "(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
+            StreamWriter logfile = null;
+
+            lock (threadObj)
+            {
+                try
+                {
+                    logfile = new StreamWriter(fileName, true);
+                    logfile.WriteLine(task.data);
+                }
+                catch (Exception e)
+                {
+                    // Thread로 처리하다보니.... 혹시 같은 파일을 두번 열개 되는 경우가 발생하지 않을런지..???
+                    // 그럴수도 있다면.... 으흠.... StreamWriter을 항상 열어 놓으믄.... 그것도 안되려나... 일단 이렇게 해보자...
+                    logfile = new StreamWriter(fileName, true);
+                    logfile.WriteLine(e.Message);
+                }
+                finally
+                {
+                    logfile.Close();
+                }
+            }
         }
 
         // 많이 오른 애들 따로 로그 남겨 놓는 로직
@@ -461,31 +564,6 @@ namespace eb
             }catch(Exception e){
 
             }
-
-            //string fileName = Program.cont.getInterlistFilename;
-            //StreamWriter sw = null;
-
-            //try
-            //{
-            //    sw = new StreamWriter(Program.cont.getApplicationPath + Program.cont.getInterlistPath + Program.cont.getInterlistFilename);
-            //    for (int i = 0; i < spsInterest.RowCount; i++)
-            //    {
-            //        string gubun = spsInterest.Cells[i, (int)INTER_COL.GUBUN].Text;
-            //        string code = spsInterest.Cells[i, (int)INTER_COL.CODE].Text;
-            //        string name = spsInterest.Cells[i, (int)INTER_COL.NAME].Text;
-            //        string use = spsInterest.Cells[i, (int)INTER_COL.USE].Text;
-            //        string rate = spsInterest.Cells[i, (int)INTER_COL.RATE].Text;
-            //        sw.WriteLine(gubun + "/" + code + "/" + name + "/" + use + "/" + rate);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
-            //finally
-            //{
-            //    sw.Close();
-            //}
         }
 
         private void BuyProcess(Item item, ClsRealChe cls)
@@ -2014,14 +2092,10 @@ namespace eb
             if (chkAutoRecording.Checked)
             {
                 tmrRecord.Enabled = true;
-                tmrLogin.Enabled = true;
-                tmrGetCode.Enabled = true;
             }
             else
             {
                 tmrRecord.Enabled = false;
-                tmrLogin.Enabled = false;
-                tmrGetCode.Enabled = false;
             }
         }
 
@@ -2174,13 +2248,7 @@ namespace eb
         {
             DateTime time = DateTime.Now;
 
-            if (time.Hour == 8 && time.Minute >= 30 && time.Minute < 32)
-            //if (time.Hour == 1 && time.Minute >= 34 && time.Minute < 35)
-            {
-                DoLogin();
-                Console.WriteLine("Do Login...!!");
-                txtSystemLog.Text += getDateTime(time) + " ==> Do login..... \r\n";
-            }
+            
         }
 
 
@@ -2188,21 +2256,26 @@ namespace eb
         {
             DateTime time = DateTime.Now;
 
-            if (time.Hour == 8 && time.Minute >= 33 && time.Minute < 35)
-            //if (time.Hour == 1 && time.Minute >= 36 && time.Minute < 37)
-            {
-                setDoQuery("주식종목조회", "");
-                Console.WriteLine("Get Code List...!!");
-                txtSystemLog.Text += getDateTime(time) + " ==> Get Code List...!! \r\n";
-            }
+            
         }
 
         private void tmrRecord_Tick(object sender, EventArgs e)
         {
             DateTime time = DateTime.Now;
 
-            if (time.Hour == 8 && time.Minute >= 36 && time.Minute < 38)
-            //if (time.Hour == 1 && time.Minute >= 38 && time.Minute < 39)
+            if (time.Hour == 8 && time.Minute >= 30 && time.Minute < 32)
+            {
+                DoLogin();
+                Console.WriteLine("Do Login...!!");
+                txtSystemLog.Text += getDateTime(time) + " ==> Do login..... \r\n";
+            }
+            else if (time.Hour == 8 && time.Minute >= 33 && time.Minute < 35)
+            {
+                setDoQuery("주식종목조회", "");
+                Console.WriteLine("Get Code List...!!");
+                txtSystemLog.Text += getDateTime(time) + " ==> Get Code List...!! \r\n";
+            }
+            else if (time.Hour == 8 && time.Minute >= 36 && time.Minute < 38)
             {
                 //DoLogin();
                 ResetItemTable();
@@ -2211,7 +2284,7 @@ namespace eb
                 Console.WriteLine("Do Recording.....!!");
                 txtSystemLog.Text += getDateTime(time) + " ==> Do Recording.....!! \r\n";
             }
-            else if (time.Hour == 8 && time.Minute >= 38 && time.Minute < 40)
+            else if (time.Hour == 8 && time.Minute >= 39 && time.Minute < 41)
             {
                 System.GC.Collect();
                 txtSystemLog.Text += getDateTime(time) + " ==> GC Collect.....!! \r\n";
@@ -2227,6 +2300,18 @@ namespace eb
             else
             {
                 pnlLog.Visible = true;
+            }
+        }
+
+        private void btnShowOptions_Click(object sender, EventArgs e)
+        {
+            if (pnlOptions.Visible)
+            {
+                pnlOptions.Visible = false;
+            }
+            else
+            {
+                pnlOptions.Visible = true;
             }
         }
     }

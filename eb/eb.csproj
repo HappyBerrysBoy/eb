@@ -62,6 +62,7 @@
     <Compile Include="Classes\RealQuery.cs" />
     <Compile Include="Classes\T1305.cs" />
     <Compile Include="Classes\T8430.cs" />
+    <Compile Include="Classes\ThreadTask.cs" />
     <Compile Include="Classes\XAQuerys.cs" />
     <Compile Include="Classes\XAReals.cs" />
     <Compile Include="common\Constants.cs" />
