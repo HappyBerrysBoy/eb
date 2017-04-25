@@ -2191,7 +2191,14 @@ namespace eb
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            pnlLogin.Visible = true;
+            if (pnlLogin.Visible){
+                pnlLogin.Visible = false;
+            }
+            else
+            {
+                pnlLogin.Visible = true;
+                pnlLogin.BringToFront();
+            }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -2300,6 +2307,7 @@ namespace eb
             else
             {
                 pnlLog.Visible = true;
+                pnlLog.BringToFront();
             }
         }
 
@@ -2312,6 +2320,7 @@ namespace eb
             else
             {
                 pnlOptions.Visible = true;
+                pnlOptions.BringToFront();
             }
         }
     }
