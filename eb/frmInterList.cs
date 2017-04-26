@@ -2126,6 +2126,7 @@ namespace eb
             else
             {
                 pnlSimulationOptions.Visible = true;
+                pnlSimulationOptions.BringToFront();
             }
         }
 
