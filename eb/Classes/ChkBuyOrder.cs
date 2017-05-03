@@ -27,6 +27,12 @@ namespace eb.Classes
             if (chkMsCutLine(realCls))
                 return "222";
 
+            // 전날 거래량이 어느정도 이상 거래되어야만 거래 진행
+            if (chkMinVolume(realCls))
+                return "2222";
+
+            string chkDontAllowBuyThisTime = ChkDontAllowBuyThisTime(realCls);
+
             // 1분정도 로그보고 졸라 많이 들어오면 Ok
             // 3분정도 로그보고 꾸준히 들어와도 Ok 일단 위아래 둘중에 어떤게 나은지 모니터링 해보자..
             // 일정기간 매수량이 매도량를 압도
@@ -44,6 +50,37 @@ namespace eb.Classes
             string orderSignCnt = chkOrderSignCnt(msVolumeDueTime + overVolume + pierce + initTime);
 
             return msVolumeDueTime + overVolume + pierce + chePower + initTime + orderSignCnt;
+        }
+
+        // 매수 후 일정시간내에 또 재매수 하는것 금지(너무 자주 구매하는것 금지)
+        private string ChkDontAllowBuyThisTime(ClsRealChe realCls)
+        {
+            TimeSpan mstime = Common.getTime(item.MsTime);
+            TimeSpan currtime = Common.getTime(realCls.Chetime);
+            TimeSpan t3 = currtime - mstime;
+
+            if (Program.cont.DontAllowBuyInThisTime <= t3.TotalSeconds)
+            {
+                return "1";
+            }
+            else
+            {
+                return "2T";
+            }
+        }
+
+        // 전날 거래량이 어느정도 이상 거래되어야만 거래 진행
+        // 몇몇 우량주나 이런건.. 전날 거래량이 몇천주 밖에 안되서 그냥 100주만 사도 거래대상에 포함되어 버림
+        private bool chkMinVolume(ClsRealChe realCls)
+        {
+            if (item.AvgVolumeFewDays > Program.cont.MinVolume)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         // Rule 0. 너무 높은 가격에서는 매수하지 않는다.. 매수 최대 % 설정

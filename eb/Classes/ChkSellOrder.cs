@@ -29,6 +29,9 @@ namespace eb.Classes
             }
             else
             {
+                // 매수 후 기준시간이내에는 매도 금지(사자마자 파는부분 금지)
+                string chkDontAllowSellThisTime = ChkDontAllowSellThisTime(realCls);
+
                 // 기준 %이상 오르면 무조건 팔아버리자..(앞 조건들 무시..)
                 if (ChkMdSatisfy(item.PurchasedRate, currRate, item.HighRate))
                     return "기준%이상오름";
@@ -46,7 +49,23 @@ namespace eb.Classes
                 // 거래량을 동반한 매도총량이 어느정도 기준을 넘어서는 경우
                 // 체결강도가 어느정도 이상 떨어진다던지..
 
-                return cutoff + sellSignCnt;
+                return chkDontAllowSellThisTime + cutoff + sellSignCnt;
+            }
+        }
+
+        private string ChkDontAllowSellThisTime(ClsRealChe realCls)
+        {
+            TimeSpan mstime = Common.getTime(item.MsTime);
+            TimeSpan currtime = Common.getTime(realCls.Chetime);
+            TimeSpan t3 = currtime - mstime;
+
+            if (Program.cont.DontAllowSellInThisTime <= t3.TotalSeconds)
+            {
+                return "1";
+            }
+            else
+            {
+                return "2T";
             }
         }
 
@@ -72,7 +91,7 @@ namespace eb.Classes
         {
             if (purchasedRate - Program.cont.CutoffPercent >= currRate)
                 return "1";
-            else if (highRate - Program.cont.ProfitCutoffPercent >= currRate)
+            else if (Program.cont.ProfitCutoffPercent > 0 && highRate - Program.cont.ProfitCutoffPercent >= currRate)
                 return "3";
             else
                 return "2";

@@ -85,6 +85,12 @@ namespace eb.common
                 Program.cont.AllCodePageNum = Common.getIntValue(temp.ToString());
                 GetPrivateProfileString(section, "ALL_CODE_TTL_PAGE", "", temp, 255, filename);
                 Program.cont.AllCodeTtlPage = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "MIN_VOLUME", "", temp, 255, filename);
+                Program.cont.MinVolume = Common.getDoubleValue(temp.ToString());
+                GetPrivateProfileString(section, "DONT_ALLOW_BUY_THIS_TIME", "", temp, 255, filename);
+                Program.cont.DontAllowBuyInThisTime = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "DONT_ALLOW_SELL_THIS_TIME", "", temp, 255, filename);
+                Program.cont.DontAllowSellInThisTime = Common.getIntValue(temp.ToString());
             }
             catch (Exception ex)
             {
@@ -184,6 +190,12 @@ namespace eb.common
         public static long GetTax(long price)
         {
             return (long)Math.Truncate(price * Program.cont.getTax);
+        }
+
+        public static TimeSpan getTime(string time)
+        {
+            if (time.Length != 6) return new TimeSpan();
+            return TimeSpan.Parse(time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4, 2));
         }
 
         // 구매가능 수량 계산

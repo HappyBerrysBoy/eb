@@ -23,6 +23,7 @@ namespace eb.Classes
         private double totalOrderRate;      // 전체 구매된 %(예수금 대비)
         private double purchasedRate;       // 몇%에서 구매 되었는가
         private double highRate;            // 구매 이후 최고 Rate
+        private string msTime;              // 매수 시간
         private int orderSignCnt;           // 근접한 매수 신호 횟수(설정된 값 이상으로 신호가 오면 매수한다.)
         private int sellSignCnt;            // 근접한 매도 신호 횟수(설정된 값 이상으로 신호가 오면 매도한다.)
 
@@ -48,6 +49,13 @@ namespace eb.Classes
             sellSignCnt = 0;
             fromRemoveIdx = 0;
             toRemoveIdx = 0;
+            msTime = "";
+        }
+
+        public string MsTime
+        {
+            get { return msTime; }
+            set { msTime = value; }
         }
 
         public int SellSignCnt

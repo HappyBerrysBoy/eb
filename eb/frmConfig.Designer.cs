@@ -36,9 +36,25 @@
             this.txtMdCutLine = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtAllCodeTtlPage = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.txtAllCodePageNum = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtIgnoreCheCnt = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtDays = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtContinueOrderCnt = new System.Windows.Forms.TextBox();
+            this.txtPierceHoCnt = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtPowerHighLimit = new System.Windows.Forms.TextBox();
+            this.txtPowerLowLimit = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtMsCutLine = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.txtDifferenceChePower = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.txtMsMdRate = new System.Windows.Forms.TextBox();
@@ -47,35 +63,25 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtAvgVolumeOverRate = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.txtMsCutLine = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtIgnoreCheCnt = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtPowerHighLimit = new System.Windows.Forms.TextBox();
-            this.txtPowerLowLimit = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.txtCutOffMin = new System.Windows.Forms.TextBox();
-            this.txtCutOffHour = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.txtContinueOrderCnt = new System.Windows.Forms.TextBox();
-            this.txtPierceHoCnt = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.txtContinueSellCnt = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtSatisfyProfit = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.txtProfitCutOff = new System.Windows.Forms.TextBox();
             this.txtCutoff = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtSatisfyProfit = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtContinueSellCnt = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtAllCodePageNum = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.txtAllCodeTtlPage = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
+            this.txtCutOffMin = new System.Windows.Forms.TextBox();
+            this.txtCutOffHour = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.txtMinVolume = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.txtDontAllowBuyInThisTime = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtDontAllowSellThisTime = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -156,6 +162,57 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "일반 옵션";
             // 
+            // txtAllCodeTtlPage
+            // 
+            this.txtAllCodeTtlPage.Location = new System.Drawing.Point(184, 99);
+            this.txtAllCodeTtlPage.MaxLength = 7;
+            this.txtAllCodeTtlPage.Name = "txtAllCodeTtlPage";
+            this.txtAllCodeTtlPage.Size = new System.Drawing.Size(51, 21);
+            this.txtAllCodeTtlPage.TabIndex = 13;
+            // 
+            // label22
+            // 
+            this.label22.Location = new System.Drawing.Point(11, 106);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(167, 12);
+            this.label22.TabIndex = 12;
+            this.label22.Text = "전체종목 가져올때 몇등분";
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtAllCodePageNum
+            // 
+            this.txtAllCodePageNum.Location = new System.Drawing.Point(184, 72);
+            this.txtAllCodePageNum.MaxLength = 7;
+            this.txtAllCodePageNum.Name = "txtAllCodePageNum";
+            this.txtAllCodePageNum.Size = new System.Drawing.Size(51, 21);
+            this.txtAllCodePageNum.TabIndex = 11;
+            // 
+            // label21
+            // 
+            this.label21.Location = new System.Drawing.Point(11, 78);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(167, 12);
+            this.label21.TabIndex = 10;
+            this.label21.Text = "전체종목 가져올때 몇번째";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtIgnoreCheCnt
+            // 
+            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(184, 46);
+            this.txtIgnoreCheCnt.MaxLength = 7;
+            this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
+            this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtIgnoreCheCnt.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(11, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(167, 12);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "장시작 후 최초 몇거래 무시";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // txtDays
             // 
             this.txtDays.Location = new System.Drawing.Point(184, 19);
@@ -175,7 +232,11 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtDontAllowBuyInThisTime);
+            this.groupBox2.Controls.Add(this.txtMinVolume);
+            this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.txtContinueOrderCnt);
+            this.groupBox2.Controls.Add(this.label23);
             this.groupBox2.Controls.Add(this.txtPierceHoCnt);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label7);
@@ -199,6 +260,91 @@
             this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "매수관련 설정";
+            // 
+            // txtContinueOrderCnt
+            // 
+            this.txtContinueOrderCnt.Location = new System.Drawing.Point(184, 235);
+            this.txtContinueOrderCnt.MaxLength = 7;
+            this.txtContinueOrderCnt.Name = "txtContinueOrderCnt";
+            this.txtContinueOrderCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtContinueOrderCnt.TabIndex = 32;
+            // 
+            // txtPierceHoCnt
+            // 
+            this.txtPierceHoCnt.Location = new System.Drawing.Point(184, 207);
+            this.txtPierceHoCnt.MaxLength = 7;
+            this.txtPierceHoCnt.Name = "txtPierceHoCnt";
+            this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtPierceHoCnt.TabIndex = 31;
+            // 
+            // label12
+            // 
+            this.label12.Location = new System.Drawing.Point(11, 238);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(167, 12);
+            this.label12.TabIndex = 29;
+            this.label12.Text = "매수신호 연속 몇번";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(11, 210);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(167, 12);
+            this.label7.TabIndex = 30;
+            this.label7.Text = "몇호가 뚫으면 구매 할건지";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtPowerHighLimit
+            // 
+            this.txtPowerHighLimit.Location = new System.Drawing.Point(184, 180);
+            this.txtPowerHighLimit.MaxLength = 7;
+            this.txtPowerHighLimit.Name = "txtPowerHighLimit";
+            this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
+            this.txtPowerHighLimit.TabIndex = 28;
+            // 
+            // txtPowerLowLimit
+            // 
+            this.txtPowerLowLimit.Location = new System.Drawing.Point(184, 153);
+            this.txtPowerLowLimit.MaxLength = 7;
+            this.txtPowerLowLimit.Name = "txtPowerLowLimit";
+            this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
+            this.txtPowerLowLimit.TabIndex = 27;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(11, 183);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(167, 12);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "체경강도 최대 Limit";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(11, 156);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(167, 12);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "체결강도 최저 Limit";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtMsCutLine
+            // 
+            this.txtMsCutLine.Location = new System.Drawing.Point(184, 126);
+            this.txtMsCutLine.MaxLength = 7;
+            this.txtMsCutLine.Name = "txtMsCutLine";
+            this.txtMsCutLine.Size = new System.Drawing.Size(51, 21);
+            this.txtMsCutLine.TabIndex = 24;
+            // 
+            // label14
+            // 
+            this.label14.Location = new System.Drawing.Point(11, 129);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(167, 23);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "몇% 이상이면 매수안함";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtDifferenceChePower
             // 
@@ -268,76 +414,10 @@
             this.label10.Text = "평균거래량의 몇% 넘겨야";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtMsCutLine
-            // 
-            this.txtMsCutLine.Location = new System.Drawing.Point(184, 126);
-            this.txtMsCutLine.MaxLength = 7;
-            this.txtMsCutLine.Name = "txtMsCutLine";
-            this.txtMsCutLine.Size = new System.Drawing.Size(51, 21);
-            this.txtMsCutLine.TabIndex = 24;
-            // 
-            // label14
-            // 
-            this.label14.Location = new System.Drawing.Point(11, 129);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(167, 23);
-            this.label14.TabIndex = 23;
-            this.label14.Text = "몇% 이상이면 매수안함";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtIgnoreCheCnt
-            // 
-            this.txtIgnoreCheCnt.Location = new System.Drawing.Point(184, 46);
-            this.txtIgnoreCheCnt.MaxLength = 7;
-            this.txtIgnoreCheCnt.Name = "txtIgnoreCheCnt";
-            this.txtIgnoreCheCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtIgnoreCheCnt.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.Location = new System.Drawing.Point(11, 49);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(167, 12);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "장시작 후 최초 몇거래 무시";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtPowerHighLimit
-            // 
-            this.txtPowerHighLimit.Location = new System.Drawing.Point(184, 180);
-            this.txtPowerHighLimit.MaxLength = 7;
-            this.txtPowerHighLimit.Name = "txtPowerHighLimit";
-            this.txtPowerHighLimit.Size = new System.Drawing.Size(51, 21);
-            this.txtPowerHighLimit.TabIndex = 28;
-            // 
-            // txtPowerLowLimit
-            // 
-            this.txtPowerLowLimit.Location = new System.Drawing.Point(184, 153);
-            this.txtPowerLowLimit.MaxLength = 7;
-            this.txtPowerLowLimit.Name = "txtPowerLowLimit";
-            this.txtPowerLowLimit.Size = new System.Drawing.Size(51, 21);
-            this.txtPowerLowLimit.TabIndex = 27;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(11, 183);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(167, 12);
-            this.label5.TabIndex = 25;
-            this.label5.Text = "체경강도 최대 Limit";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(11, 156);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(167, 12);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "체결강도 최저 Limit";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.txtDontAllowSellThisTime);
+            this.groupBox3.Controls.Add(this.label25);
             this.groupBox3.Controls.Add(this.txtContinueSellCnt);
             this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.txtSatisfyProfit);
@@ -359,73 +439,39 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "매도관련 설정";
             // 
-            // txtCutOffMin
+            // txtContinueSellCnt
             // 
-            this.txtCutOffMin.Location = new System.Drawing.Point(181, 72);
-            this.txtCutOffMin.MaxLength = 7;
-            this.txtCutOffMin.Name = "txtCutOffMin";
-            this.txtCutOffMin.Size = new System.Drawing.Size(51, 21);
-            this.txtCutOffMin.TabIndex = 10;
+            this.txtContinueSellCnt.Location = new System.Drawing.Point(181, 179);
+            this.txtContinueSellCnt.MaxLength = 7;
+            this.txtContinueSellCnt.Name = "txtContinueSellCnt";
+            this.txtContinueSellCnt.Size = new System.Drawing.Size(51, 21);
+            this.txtContinueSellCnt.TabIndex = 18;
             // 
-            // txtCutOffHour
+            // label13
             // 
-            this.txtCutOffHour.Location = new System.Drawing.Point(181, 45);
-            this.txtCutOffHour.MaxLength = 7;
-            this.txtCutOffHour.Name = "txtCutOffHour";
-            this.txtCutOffHour.Size = new System.Drawing.Size(51, 21);
-            this.txtCutOffHour.TabIndex = 9;
+            this.label13.Location = new System.Drawing.Point(8, 182);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(167, 12);
+            this.label13.TabIndex = 17;
+            this.label13.Text = "매도신호 연속 몇번";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label20
+            // txtSatisfyProfit
             // 
-            this.label20.Location = new System.Drawing.Point(8, 75);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(167, 12);
-            this.label20.TabIndex = 7;
-            this.label20.Text = "장마감전 무조건파는 분";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txtSatisfyProfit.Location = new System.Drawing.Point(181, 152);
+            this.txtSatisfyProfit.MaxLength = 7;
+            this.txtSatisfyProfit.Name = "txtSatisfyProfit";
+            this.txtSatisfyProfit.Size = new System.Drawing.Size(51, 21);
+            this.txtSatisfyProfit.TabIndex = 16;
             // 
-            // label19
+            // label18
             // 
-            this.label19.Location = new System.Drawing.Point(8, 50);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(167, 12);
-            this.label19.TabIndex = 8;
-            this.label19.Text = "장마감전 무조건파는 시간";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtContinueOrderCnt
-            // 
-            this.txtContinueOrderCnt.Location = new System.Drawing.Point(184, 235);
-            this.txtContinueOrderCnt.MaxLength = 7;
-            this.txtContinueOrderCnt.Name = "txtContinueOrderCnt";
-            this.txtContinueOrderCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtContinueOrderCnt.TabIndex = 32;
-            // 
-            // txtPierceHoCnt
-            // 
-            this.txtPierceHoCnt.Location = new System.Drawing.Point(184, 207);
-            this.txtPierceHoCnt.MaxLength = 7;
-            this.txtPierceHoCnt.Name = "txtPierceHoCnt";
-            this.txtPierceHoCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtPierceHoCnt.TabIndex = 31;
-            // 
-            // label12
-            // 
-            this.label12.Location = new System.Drawing.Point(11, 238);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(167, 12);
-            this.label12.TabIndex = 29;
-            this.label12.Text = "매수신호 연속 몇번";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label7
-            // 
-            this.label7.Location = new System.Drawing.Point(11, 210);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(167, 12);
-            this.label7.TabIndex = 30;
-            this.label7.Text = "몇호가 뚫으면 구매 할건지";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label18.Location = new System.Drawing.Point(8, 155);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(167, 12);
+            this.label18.TabIndex = 15;
+            this.label18.Text = "구매후 몇% 수익이면 매도";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtProfitCutOff
             // 
@@ -461,73 +507,90 @@
             this.label2.Text = "손절 %";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtSatisfyProfit
+            // txtCutOffMin
             // 
-            this.txtSatisfyProfit.Location = new System.Drawing.Point(181, 152);
-            this.txtSatisfyProfit.MaxLength = 7;
-            this.txtSatisfyProfit.Name = "txtSatisfyProfit";
-            this.txtSatisfyProfit.Size = new System.Drawing.Size(51, 21);
-            this.txtSatisfyProfit.TabIndex = 16;
+            this.txtCutOffMin.Location = new System.Drawing.Point(181, 72);
+            this.txtCutOffMin.MaxLength = 7;
+            this.txtCutOffMin.Name = "txtCutOffMin";
+            this.txtCutOffMin.Size = new System.Drawing.Size(51, 21);
+            this.txtCutOffMin.TabIndex = 10;
             // 
-            // label18
+            // txtCutOffHour
             // 
-            this.label18.Location = new System.Drawing.Point(8, 155);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(167, 12);
-            this.label18.TabIndex = 15;
-            this.label18.Text = "구매후 몇% 수익이면 매도";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txtCutOffHour.Location = new System.Drawing.Point(181, 45);
+            this.txtCutOffHour.MaxLength = 7;
+            this.txtCutOffHour.Name = "txtCutOffHour";
+            this.txtCutOffHour.Size = new System.Drawing.Size(51, 21);
+            this.txtCutOffHour.TabIndex = 9;
             // 
-            // txtContinueSellCnt
+            // label20
             // 
-            this.txtContinueSellCnt.Location = new System.Drawing.Point(181, 179);
-            this.txtContinueSellCnt.MaxLength = 7;
-            this.txtContinueSellCnt.Name = "txtContinueSellCnt";
-            this.txtContinueSellCnt.Size = new System.Drawing.Size(51, 21);
-            this.txtContinueSellCnt.TabIndex = 18;
+            this.label20.Location = new System.Drawing.Point(8, 75);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(167, 12);
+            this.label20.TabIndex = 7;
+            this.label20.Text = "장마감전 무조건파는 분";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label13
+            // label19
             // 
-            this.label13.Location = new System.Drawing.Point(8, 182);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(167, 12);
-            this.label13.TabIndex = 17;
-            this.label13.Text = "매도신호 연속 몇번";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label19.Location = new System.Drawing.Point(8, 50);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(167, 12);
+            this.label19.TabIndex = 8;
+            this.label19.Text = "장마감전 무조건파는 시간";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtAllCodePageNum
+            // label23
             // 
-            this.txtAllCodePageNum.Location = new System.Drawing.Point(184, 72);
-            this.txtAllCodePageNum.MaxLength = 7;
-            this.txtAllCodePageNum.Name = "txtAllCodePageNum";
-            this.txtAllCodePageNum.Size = new System.Drawing.Size(51, 21);
-            this.txtAllCodePageNum.TabIndex = 11;
+            this.label23.Location = new System.Drawing.Point(11, 265);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(167, 12);
+            this.label23.TabIndex = 29;
+            this.label23.Text = "전날거래량 얼마이상";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label21
+            // txtMinVolume
             // 
-            this.label21.Location = new System.Drawing.Point(11, 78);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(167, 12);
-            this.label21.TabIndex = 10;
-            this.label21.Text = "전체종목 가져올때 몇번째";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txtMinVolume.Location = new System.Drawing.Point(184, 262);
+            this.txtMinVolume.MaxLength = 7;
+            this.txtMinVolume.Name = "txtMinVolume";
+            this.txtMinVolume.Size = new System.Drawing.Size(51, 21);
+            this.txtMinVolume.TabIndex = 32;
             // 
-            // txtAllCodeTtlPage
+            // label24
             // 
-            this.txtAllCodeTtlPage.Location = new System.Drawing.Point(184, 99);
-            this.txtAllCodeTtlPage.MaxLength = 7;
-            this.txtAllCodeTtlPage.Name = "txtAllCodeTtlPage";
-            this.txtAllCodeTtlPage.Size = new System.Drawing.Size(51, 21);
-            this.txtAllCodeTtlPage.TabIndex = 13;
+            this.label24.Location = new System.Drawing.Point(11, 292);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(167, 12);
+            this.label24.TabIndex = 29;
+            this.label24.Text = "설정값 이내시간(sec) 재매수금지";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label22
+            // txtDontAllowBuyInThisTime
             // 
-            this.label22.Location = new System.Drawing.Point(11, 106);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(167, 12);
-            this.label22.TabIndex = 12;
-            this.label22.Text = "전체종목 가져올때 몇등분";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txtDontAllowBuyInThisTime.Location = new System.Drawing.Point(184, 289);
+            this.txtDontAllowBuyInThisTime.MaxLength = 7;
+            this.txtDontAllowBuyInThisTime.Name = "txtDontAllowBuyInThisTime";
+            this.txtDontAllowBuyInThisTime.Size = new System.Drawing.Size(51, 21);
+            this.txtDontAllowBuyInThisTime.TabIndex = 32;
+            // 
+            // label25
+            // 
+            this.label25.Location = new System.Drawing.Point(8, 209);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(167, 12);
+            this.label25.TabIndex = 17;
+            this.label25.Text = "매수후 설정값(sec) 매도금지";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtDontAllowSellThisTime
+            // 
+            this.txtDontAllowSellThisTime.Location = new System.Drawing.Point(181, 206);
+            this.txtDontAllowSellThisTime.MaxLength = 7;
+            this.txtDontAllowSellThisTime.Name = "txtDontAllowSellThisTime";
+            this.txtDontAllowSellThisTime.Size = new System.Drawing.Size(51, 21);
+            this.txtDontAllowSellThisTime.TabIndex = 18;
             // 
             // frmConfig
             // 
@@ -605,5 +668,11 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.TextBox txtAllCodePageNum;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox txtMinVolume;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox txtDontAllowBuyInThisTime;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtDontAllowSellThisTime;
+        private System.Windows.Forms.Label label25;
     }
 }

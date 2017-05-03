@@ -46,6 +46,9 @@ namespace eb
             txtCutOffMin.Text = Program.cont.CutOffMinute.ToString();
             txtAllCodePageNum.Text = Program.cont.AllCodePageNum.ToString();
             txtAllCodeTtlPage.Text = Program.cont.AllCodeTtlPage.ToString();
+            txtMinVolume.Text = Program.cont.MinVolume.ToString();
+            txtDontAllowBuyInThisTime.Text = Program.cont.DontAllowBuyInThisTime.ToString();
+            txtDontAllowSellThisTime.Text = Program.cont.DontAllowSellInThisTime.ToString();
         }
 
         private bool ChkNullText()
@@ -105,6 +108,9 @@ namespace eb
                 WritePrivateProfileString(section, "CUT_OFF_MIN", txtCutOffMin.Text, filename);
                 WritePrivateProfileString(section, "ALL_CODE_PAGE_NUM", txtAllCodePageNum.Text, filename);
                 WritePrivateProfileString(section, "ALL_CODE_TTL_PAGE", txtAllCodeTtlPage.Text, filename);
+                WritePrivateProfileString(section, "MIN_VOLUME", txtMinVolume.Text, filename);
+                WritePrivateProfileString(section, "DONT_ALLOW_BUY_THIS_TIME", txtDontAllowBuyInThisTime.Text, filename);
+                WritePrivateProfileString(section, "DONT_ALLOW_SELL_THIS_TIME", txtDontAllowSellThisTime.Text, filename);
             }
             catch (Exception ex)
             {

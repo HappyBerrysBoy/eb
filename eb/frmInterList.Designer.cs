@@ -281,7 +281,7 @@
             this.pnlOptions.Controls.Add(this.chkReal);
             this.pnlOptions.Location = new System.Drawing.Point(99, 0);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(243, 229);
+            this.pnlOptions.Size = new System.Drawing.Size(243, 219);
             this.pnlOptions.TabIndex = 12;
             // 
             // chkUseThread
@@ -567,7 +567,7 @@
             this.spsInterest.Columns.Get(4).Width = 34F;
             this.spsInterest.Columns.Get(5).CellType = textCellType1;
             this.spsInterest.Columns.Get(5).Label = "평균거래량";
-            this.spsInterest.Columns.Get(5).Locked = true;
+            this.spsInterest.Columns.Get(5).Locked = false;
             this.spsInterest.Columns.Get(5).Width = 69F;
             this.spsInterest.DefaultStyle.CellType = textCellType2;
             this.spsInterest.DefaultStyle.HorizontalAlignment = FarPoint.Win.Spread.CellHorizontalAlignment.Left;

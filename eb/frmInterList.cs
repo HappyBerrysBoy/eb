@@ -607,6 +607,7 @@ namespace eb
             item.IsPurchased = true;        // 사게 되면..
             item.PurchasedRate = Common.getDoubleValue(cls.Drate);
             item.HighRate = Common.getDoubleValue(cls.Drate);
+            item.MsTime = cls.Chetime;
         }
 
         private void WriteSimulationData(Item item, ClsRealChe cls, bool isBuy)
@@ -625,6 +626,14 @@ namespace eb
                 int msVolume = Common.SimpleChkCanBuyVolume(initMoneyForSimulation, price);
                 long msAmount = price * msVolume;
                 long fee = Common.GetFee(price * msVolume);
+
+                if (msAmount + fee > initMoneyForSimulation)
+                {
+                    if(msVolume > 0)
+                        msVolume--;
+                    msAmount = price * msVolume;
+                    fee = Common.GetFee(price * msVolume);
+                }
                 initMoneyForSimulation = initMoneyForSimulation - (msAmount + fee);
 
                 spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD_VOLUME].Text = Convert.ToString(msVolume);
@@ -1332,11 +1341,11 @@ namespace eb
 
         private int getFromIdx(Item item)
         {
-            TimeSpan toTime = getTime(item.Logs[item.ToTimeIdx].Chetime);
+            TimeSpan toTime = Common.getTime(item.Logs[item.ToTimeIdx].Chetime);
 
             for (int i = item.FromTimeIdx; i < item.Logs.Count; i++)
             {
-                TimeSpan fromTime = getTime(item.Logs[i].Chetime);
+                TimeSpan fromTime = Common.getTime(item.Logs[i].Chetime);
                 TimeSpan gap = toTime - fromTime;
                 if (gap.TotalSeconds <= Program.cont.LogTerm)
                     return i;
@@ -1347,8 +1356,8 @@ namespace eb
 
         private bool chkTimeInterval(Item item)
         {
-            TimeSpan t1 = getTime(item.Logs[item.FromTimeIdx].Chetime);
-            TimeSpan t2 = getTime(item.Logs[item.ToTimeIdx].Chetime);
+            TimeSpan t1 = Common.getTime(item.Logs[item.FromTimeIdx].Chetime);
+            TimeSpan t2 = Common.getTime(item.Logs[item.ToTimeIdx].Chetime);
             TimeSpan t3 = t2 - t1;
 
             if (Program.cont.LogTerm <= t3.TotalSeconds)
@@ -1369,12 +1378,6 @@ namespace eb
             }
             
             return false;
-        }
-
-        private TimeSpan getTime(string time)
-        {
-            if (time.Length != 6) return new TimeSpan();
-            return TimeSpan.Parse(time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4, 2));
         }
 
         private void simulationProcess(ClsRealChe cls)
@@ -1510,6 +1513,23 @@ namespace eb
             return lstData;
         }
 
+        private void delOnlyMSData(string shcode)
+        {
+            // 이전 로그가 매수에서 끝나버린 경우 매수 데이터는 지워버린다.. 
+            // 매도 조건에 맞는 경우가 없어, 매수로만 끝나면 Balance가 턱없이 작아서, 전체 결과를 망쳐버림
+            if (spsLongTermSimulation.RowCount > 0 && spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.MSMD].Text == "매수")
+            {
+                spsLongTermSimulation.RowCount--;
+                Item item = (Item)hItemLogs[shcode];
+                item.IsPurchased = false;
+
+                long msAmount = item.Price * item.MsVolume;
+                long fee = Common.GetFee(item.Price * item.MsVolume);
+
+                initMoneyForSimulation += msAmount + fee;
+            }
+        }
+
         // 파일데이터 로드된 List를 이용하여 실제 시뮬레이션
         private void simulateLogData(bool isSimulations, List<ClsRealChe> lstData)
         {
@@ -1519,14 +1539,15 @@ namespace eb
             {
                 spsLog.RowCount = 0;
                 bool isFirst = true;
-                string shcode = "";
+                string shcode = lstData[0].Shcode;
+                delOnlyMSData(shcode);
 
                 Cursor.Current = Cursors.WaitCursor;
                 foreach (ClsRealChe data in lstData)
                 {
                     shcode = data.Shcode;
                     doSimulation(data.Shcode, data, isFirst);
-
+                    Application.DoEvents();
                     isFirst = false;
                 }
 
@@ -1996,6 +2017,9 @@ namespace eb
 
         private void WriteSubTotalSummary(string code)
         {
+            // 마지막 데이터가 "매수"에서 끝난경우 삭제해버림
+            delOnlyMSData(code);
+
             spsLongTermSimulation.RowCount++;
             spsLongTermSimulation.Rows[spsLongTermSimulation.RowCount - 1].BackColor = SUBTOTAL_COLOR;
 

@@ -42,12 +42,15 @@ namespace eb.common
         private int logTerm = 0;                    // 일정기간(일정 시점) 얼마 동안 로그로 구매 여부 판단할건지 설정
         private double logTermVolumeOver = 0;       // 일정기간(일정 시점) 로그의 양이 최근 며칠 전체 평균거래량의 몇% 넘으면 구매할건지 설정
         private double msmdRate = 0;                // 매도/매수 비율
+        private double minVolume = 0;               // 전날 최소 거래량(전날 기준으로 이 기준 거래량이상 나와야 다음날 매수 고민을한다.. 우량주들 거래량이 쓰레기라 자꾸 걸림)
         private int orderSignCnt = 0;               // 근접한 매수 신호가 몇번이나 있었는가?
         private int sellSignCnt = 0;                // 근접한 매도 신호가 몇번이나 있었는가?
         private int msCutLine = 0;                  // 몇% 이상이면 매수하지 않는다.. ex)20% or 25%
         private int mdCutLine = 0;                  // 몇% 이상이면 매도해버린다. ex)25% or 27%
         private double differenceChePower = 0;      // 일정기간(일정 시점) 로그의 기간동안 설정된 체결강도의 %를 넘어 서면 구매할건지 설정
         private double satisfyProfit = 0;           // 매수 후 여기에 설정된 %만큼 오르면 무조건 매도 해서 수익을 취한다..
+        private int dontAllowBuyInThisTime = 0;     // 한번 매수 후 여기 설정된 값 이내 시간안에는 재매수 금지(너무 자주 사는것 방지)
+        private int dontAllowSellInThisTime = 0;    // 한번 매수 후 여기 설정된 값 이내 시간안에 매도 금지(사자마자 잠깐 흔드는것에 판매하는것 금지)
 
         public int AllCodePageNum { get; set; }     // 전체 종목 조회 할 경우에, 현재 실행된 프로그램은 몇번째 프로그램인가
         public int AllCodeTtlPage { get; set; }     // 전체 종목 조회 할 경우에, 전체 종목을 몇개의 프로그램으로 나눌 것인가..
@@ -155,7 +158,11 @@ namespace eb.common
             get { return msmdRate; }
             set { msmdRate = value; }
         }
-
+        public double MinVolume
+        {
+            get { return minVolume; }
+            set { minVolume = value; }
+        }
         public int LogTerm
         {
             get { return logTerm; }
@@ -291,6 +298,17 @@ namespace eb.common
         {
             get { return satisfyProfit; }
             set { satisfyProfit = value; }
+        }
+
+        public int DontAllowBuyInThisTime
+        {
+            get { return dontAllowBuyInThisTime; }
+            set { dontAllowBuyInThisTime = value; }
+        }
+        public int DontAllowSellInThisTime
+        {
+            get { return dontAllowSellInThisTime; }
+            set { dontAllowSellInThisTime = value; }
         }
     }
 }
