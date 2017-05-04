@@ -26,6 +26,7 @@ namespace eb.Classes
         private string msTime;              // 매수 시간
         private int orderSignCnt;           // 근접한 매수 신호 횟수(설정된 값 이상으로 신호가 오면 매수한다.)
         private int sellSignCnt;            // 근접한 매도 신호 횟수(설정된 값 이상으로 신호가 오면 매도한다.)
+        private bool msOverOne;             // 한번이라도 매수 한적 있는가?(하루에 한번만 매수하도록 하는 로직 추가 해보려고함..)
 
         public int fromRemoveIdx { get; set; }     // 메모리 확보를 위하여.. Log삭제시 from이 되는 index
         public int toRemoveIdx { get; set; }       // 메모리 확보를 위하여.. Log삭제시 to가 되는 index
@@ -50,6 +51,7 @@ namespace eb.Classes
             fromRemoveIdx = 0;
             toRemoveIdx = 0;
             msTime = "";
+            msOverOne = false;
         }
 
         public string MsTime
@@ -158,6 +160,12 @@ namespace eb.Classes
         {
             get { return price; }
             set { price = value; }
+        }
+
+        public bool MsOverOne
+        {
+            get { return msOverOne; }
+            set { msOverOne = value; }
         }
     }
 }

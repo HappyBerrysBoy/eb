@@ -452,16 +452,16 @@ namespace eb
                 // File Open write close 등에 시간이 걸릴 수 있으므로, 쓰레드로 던져버리고 XAReal 클래스는 다시 재활용시키자...
                 // 혹 쓰레드가 순서대로 실행 되지 않아.. log chetime이 역전되는 경우... 그냥 동기화로 다 코딩하는수 밖에.. ㅠㅠ
                 string logData = GetLogData(query);
+                string shcode = query.GetFieldData("OutBlock", "shcode");
+                string drate = query.GetFieldData("OutBlock", "drate");
 
                 if (chkUseThread.Checked)
                 {
-                    ThreadTask workItem = new ThreadTask(query.GetFieldData("OutBlock", "shcode"), logData);
+                    ThreadTask workItem = new ThreadTask(shcode, logData);
                     ThreadPool.QueueUserWorkItem(new WaitCallback(LogThreadWork), workItem);
                 }
                 else
                 {
-                    string shcode = query.GetFieldData("OutBlock", "shcode");
-
                     DateTime dt = DateTime.Now;
                     string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/" + shcode + "(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
                     
@@ -482,6 +482,8 @@ namespace eb
                         file.Close();
                     }
                 }
+
+                highRateLog(shcode, drate);
             }
             
             // 가비지콜렉터로 메모리 정리되나 한번 보자...
@@ -522,46 +524,56 @@ namespace eb
         private void highRateLog(ClsRealChe cls)
         {
             if(cls.Drate.Length < 1) return;
+            highRateLog(cls.Shcode, cls.Drate);
+        }
+
+        // 많이 오른 애들 따로 로그 남겨 놓는 로직
+        private void highRateLog(string shcode, string rate)
+        {
+            if (rate.Length < 1) return;
             DateTime dt = DateTime.Now;
 
-            try{
-                if (Common.getDoubleValue(cls.Drate) >= 20.0d)
+            try
+            {
+                if (Common.getDoubleValue(rate) >= 20.0d)
                 {
-                    if (!lstOver20.Contains(cls.Shcode))
+                    if (!lstOver20.Contains(shcode))
                     {
-                        lstOver20.Add(cls.Shcode);
+                        lstOver20.Add(shcode);
                         string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_20(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
-                        writeLogFile(fileName, cls.Shcode);
+                        writeLogFile(fileName, shcode);
                     }
                 }
-                else if (Common.getDoubleValue(cls.Drate) >= 15.0d)
+                else if (Common.getDoubleValue(rate) >= 15.0d)
                 {
-                    if (!lstOver15.Contains(cls.Shcode))
+                    if (!lstOver15.Contains(shcode))
                     {
-                        lstOver15.Add(cls.Shcode);
+                        lstOver15.Add(shcode);
                         string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_15(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
-                        writeLogFile(fileName, cls.Shcode);
+                        writeLogFile(fileName, shcode);
                     }
                 }
-                else if (Common.getDoubleValue(cls.Drate) >= 10.0d)
+                else if (Common.getDoubleValue(rate) >= 10.0d)
                 {
-                    if (!lstOver10.Contains(cls.Shcode))
+                    if (!lstOver10.Contains(shcode))
                     {
-                        lstOver10.Add(cls.Shcode);
+                        lstOver10.Add(shcode);
                         string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_10(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
-                        writeLogFile(fileName, cls.Shcode);
+                        writeLogFile(fileName, shcode);
                     }
                 }
-                else if (Common.getDoubleValue(cls.Drate) >= 5.0d)
+                else if (Common.getDoubleValue(rate) >= 5.0d)
                 {
-                    if (!lstOver5.Contains(cls.Shcode))
+                    if (!lstOver5.Contains(shcode))
                     {
-                        lstOver5.Add(cls.Shcode);
+                        lstOver5.Add(shcode);
                         string fileName = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "/" + Program.cont.LOG_PATH + "/OVER_5(" + dt.ToShortDateString() + ")." + Program.cont.EXTENSION;
-                        writeLogFile(fileName, cls.Shcode);
+                        writeLogFile(fileName, shcode);
                     }
                 }
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
 
             }
         }
@@ -582,19 +594,27 @@ namespace eb
 
             // 장 마감 근처인 경우 안삼..
             if (Common.chkCutOffTime(cls, chkSimulation)) return;
-            
+
+            int msVolume = 0;
+
             if (!chkSimulation)
             {
                 // 실제로 매수 주문 보내는 로직
                 if (chkReal.Checked)
-                    buyStock(item, cls);
+                {
+                    msVolume = calcBuyVolume(item, cls);
+                    buyStock(item, cls, msVolume);
+                }
+                    
             }
             else
             {
+                msVolume = Common.SimpleChkCanBuyVolume(initMoneyForSimulation, Convert.ToInt64(cls.Price));
+
                 if (chkLongTermSimulation)
                 {
                     spsLongTermSimulation.RowCount++;
-                    WriteSimulationData(item, cls, true);
+                    WriteSimulationData(item, cls, true, msVolume);
                 }
                 else
                 {
@@ -603,14 +623,18 @@ namespace eb
                 }
             }
 
-            cls.Order = "매수";
-            item.IsPurchased = true;        // 사게 되면..
-            item.PurchasedRate = Common.getDoubleValue(cls.Drate);
-            item.HighRate = Common.getDoubleValue(cls.Drate);
-            item.MsTime = cls.Chetime;
+            if (msVolume > 0)
+            {
+                cls.Order = "매수";
+                item.IsPurchased = true;        // 사게 되면..
+                item.PurchasedRate = Common.getDoubleValue(cls.Drate);
+                item.HighRate = Common.getDoubleValue(cls.Drate);
+                item.MsTime = cls.Chetime;
+                item.MsOverOne = true;
+            }
         }
 
-        private void WriteSimulationData(Item item, ClsRealChe cls, bool isBuy)
+        private void WriteSimulationData(Item item, ClsRealChe cls, bool isBuy, int msVolume)
         {
             spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.DATE].Text = currFileName;
             spsLongTermSimulation.Cells[spsLongTermSimulation.RowCount - 1, (int)LONG_SIMUL_COL.TIME].Text = cls.Chetime;
@@ -623,7 +647,7 @@ namespace eb
 
             if (isBuy)
             {
-                int msVolume = Common.SimpleChkCanBuyVolume(initMoneyForSimulation, price);
+                //int msVolume = Common.SimpleChkCanBuyVolume(initMoneyForSimulation, price);
                 long msAmount = price * msVolume;
                 long fee = Common.GetFee(price * msVolume);
 
@@ -695,7 +719,7 @@ namespace eb
                 if (chkLongTermSimulation)
                 {
                     spsLongTermSimulation.RowCount++;
-                    WriteSimulationData(item, cls, false);
+                    WriteSimulationData(item, cls, false, 0);
                 }
                 else
                 {
@@ -740,9 +764,9 @@ namespace eb
             return Common.ChkCanBuyVolume(money, availMoney, Common.getLongValue(cls.Price), true);
         }
 
-        private void buyStock(Item item, ClsRealChe cls)
+        private void buyStock(Item item, ClsRealChe cls, int volume)
         {
-            int volume = calcBuyVolume(item, cls);
+            //int volume = calcBuyVolume(item, cls);
             if (volume < 1) return;
 
             hBuyVolume[cls.Shcode] = volume;
@@ -2347,6 +2371,11 @@ namespace eb
                 pnlOptions.Visible = true;
                 pnlOptions.BringToFront();
             }
+        }
+
+        private void btnGetLatestVolume_Click(object sender, EventArgs e)
+        {
+            string folderPath = Common.GetDialogFolder();
         }
     }
 }

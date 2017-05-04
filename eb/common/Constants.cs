@@ -51,6 +51,8 @@ namespace eb.common
         private double satisfyProfit = 0;           // 매수 후 여기에 설정된 %만큼 오르면 무조건 매도 해서 수익을 취한다..
         private int dontAllowBuyInThisTime = 0;     // 한번 매수 후 여기 설정된 값 이내 시간안에는 재매수 금지(너무 자주 사는것 방지)
         private int dontAllowSellInThisTime = 0;    // 한번 매수 후 여기 설정된 값 이내 시간안에 매도 금지(사자마자 잠깐 흔드는것에 판매하는것 금지)
+        private bool msOnlyOnce = false;            // 하루에 한번만 매수 할 것인가?
+        private int minCheCntBetweenGap = 0;        // 거래량 없는 종목이 갑자기 그냥 한번에 많은 양이 거래되고 그뒤로 뜸한데.. 그 하나 때문에 거래조건 만족되는걸 방지하기 위해서.. 기간 간격 사이에 최소 거래횟수
 
         public int AllCodePageNum { get; set; }     // 전체 종목 조회 할 경우에, 현재 실행된 프로그램은 몇번째 프로그램인가
         public int AllCodeTtlPage { get; set; }     // 전체 종목 조회 할 경우에, 전체 종목을 몇개의 프로그램으로 나눌 것인가..
@@ -309,6 +311,18 @@ namespace eb.common
         {
             get { return dontAllowSellInThisTime; }
             set { dontAllowSellInThisTime = value; }
+        }
+
+        public bool MsOnlyOnce
+        {
+            get { return msOnlyOnce; }
+            set { msOnlyOnce = value; }
+        }
+
+        public int MinCheCntBetweenGap
+        {
+            get { return minCheCntBetweenGap; }
+            set { minCheCntBetweenGap = value; }
         }
     }
 }

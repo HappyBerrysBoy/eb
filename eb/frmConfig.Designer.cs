@@ -45,7 +45,11 @@
             this.txtDays = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtDontAllowBuyInThisTime = new System.Windows.Forms.TextBox();
+            this.txtMinVolume = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.txtContinueOrderCnt = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.txtPierceHoCnt = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -64,6 +68,8 @@
             this.txtAvgVolumeOverRate = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.txtDontAllowSellThisTime = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.txtContinueSellCnt = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txtSatisfyProfit = new System.Windows.Forms.TextBox();
@@ -76,12 +82,10 @@
             this.txtCutOffHour = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.txtMinVolume = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.txtDontAllowBuyInThisTime = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtDontAllowSellThisTime = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.chkMsOnlyOnce = new System.Windows.Forms.CheckBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.txtMinCheBetweenGap = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -157,7 +161,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 51);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(250, 366);
+            this.groupBox1.Size = new System.Drawing.Size(250, 412);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "일반 옵션";
@@ -232,7 +236,11 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chkMsOnlyOnce);
+            this.groupBox2.Controls.Add(this.txtMinCheBetweenGap);
             this.groupBox2.Controls.Add(this.txtDontAllowBuyInThisTime);
+            this.groupBox2.Controls.Add(this.label26);
+            this.groupBox2.Controls.Add(this.label27);
             this.groupBox2.Controls.Add(this.txtMinVolume);
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.txtContinueOrderCnt);
@@ -256,10 +264,35 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Location = new System.Drawing.Point(269, 52);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(244, 365);
+            this.groupBox2.Size = new System.Drawing.Size(244, 411);
             this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "매수관련 설정";
+            // 
+            // txtDontAllowBuyInThisTime
+            // 
+            this.txtDontAllowBuyInThisTime.Location = new System.Drawing.Point(184, 289);
+            this.txtDontAllowBuyInThisTime.MaxLength = 7;
+            this.txtDontAllowBuyInThisTime.Name = "txtDontAllowBuyInThisTime";
+            this.txtDontAllowBuyInThisTime.Size = new System.Drawing.Size(51, 21);
+            this.txtDontAllowBuyInThisTime.TabIndex = 32;
+            // 
+            // txtMinVolume
+            // 
+            this.txtMinVolume.Location = new System.Drawing.Point(184, 262);
+            this.txtMinVolume.MaxLength = 7;
+            this.txtMinVolume.Name = "txtMinVolume";
+            this.txtMinVolume.Size = new System.Drawing.Size(51, 21);
+            this.txtMinVolume.TabIndex = 32;
+            // 
+            // label24
+            // 
+            this.label24.Location = new System.Drawing.Point(11, 292);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(167, 12);
+            this.label24.TabIndex = 29;
+            this.label24.Text = "설정값 이내시간(sec) 재매수금지";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtContinueOrderCnt
             // 
@@ -268,6 +301,15 @@
             this.txtContinueOrderCnt.Name = "txtContinueOrderCnt";
             this.txtContinueOrderCnt.Size = new System.Drawing.Size(51, 21);
             this.txtContinueOrderCnt.TabIndex = 32;
+            // 
+            // label23
+            // 
+            this.label23.Location = new System.Drawing.Point(11, 265);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(167, 12);
+            this.label23.TabIndex = 29;
+            this.label23.Text = "전날거래량 얼마이상";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtPierceHoCnt
             // 
@@ -434,10 +476,27 @@
             this.groupBox3.Controls.Add(this.label15);
             this.groupBox3.Location = new System.Drawing.Point(519, 51);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(245, 366);
+            this.groupBox3.Size = new System.Drawing.Size(245, 412);
             this.groupBox3.TabIndex = 18;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "매도관련 설정";
+            // 
+            // txtDontAllowSellThisTime
+            // 
+            this.txtDontAllowSellThisTime.Location = new System.Drawing.Point(181, 206);
+            this.txtDontAllowSellThisTime.MaxLength = 7;
+            this.txtDontAllowSellThisTime.Name = "txtDontAllowSellThisTime";
+            this.txtDontAllowSellThisTime.Size = new System.Drawing.Size(51, 21);
+            this.txtDontAllowSellThisTime.TabIndex = 18;
+            // 
+            // label25
+            // 
+            this.label25.Location = new System.Drawing.Point(8, 209);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(167, 12);
+            this.label25.TabIndex = 17;
+            this.label25.Text = "매수후 설정값(sec) 매도금지";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtContinueSellCnt
             // 
@@ -541,62 +600,46 @@
             this.label19.Text = "장마감전 무조건파는 시간";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label23
+            // label26
             // 
-            this.label23.Location = new System.Drawing.Point(11, 265);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(167, 12);
-            this.label23.TabIndex = 29;
-            this.label23.Text = "전날거래량 얼마이상";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label26.Location = new System.Drawing.Point(11, 344);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(167, 12);
+            this.label26.TabIndex = 29;
+            this.label26.Text = "하루에 한번만 매수";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtMinVolume
+            // chkMsOnlyOnce
             // 
-            this.txtMinVolume.Location = new System.Drawing.Point(184, 262);
-            this.txtMinVolume.MaxLength = 7;
-            this.txtMinVolume.Name = "txtMinVolume";
-            this.txtMinVolume.Size = new System.Drawing.Size(51, 21);
-            this.txtMinVolume.TabIndex = 32;
+            this.chkMsOnlyOnce.AutoSize = true;
+            this.chkMsOnlyOnce.Location = new System.Drawing.Point(184, 343);
+            this.chkMsOnlyOnce.Name = "chkMsOnlyOnce";
+            this.chkMsOnlyOnce.Size = new System.Drawing.Size(15, 14);
+            this.chkMsOnlyOnce.TabIndex = 33;
+            this.chkMsOnlyOnce.UseVisualStyleBackColor = true;
             // 
-            // label24
+            // label27
             // 
-            this.label24.Location = new System.Drawing.Point(11, 292);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(167, 12);
-            this.label24.TabIndex = 29;
-            this.label24.Text = "설정값 이내시간(sec) 재매수금지";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label27.Location = new System.Drawing.Point(11, 319);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(167, 12);
+            this.label27.TabIndex = 29;
+            this.label27.Text = "로그기간내에 최소 거래횟수";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // txtDontAllowBuyInThisTime
+            // txtMinCheBetweenGap
             // 
-            this.txtDontAllowBuyInThisTime.Location = new System.Drawing.Point(184, 289);
-            this.txtDontAllowBuyInThisTime.MaxLength = 7;
-            this.txtDontAllowBuyInThisTime.Name = "txtDontAllowBuyInThisTime";
-            this.txtDontAllowBuyInThisTime.Size = new System.Drawing.Size(51, 21);
-            this.txtDontAllowBuyInThisTime.TabIndex = 32;
-            // 
-            // label25
-            // 
-            this.label25.Location = new System.Drawing.Point(8, 209);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(167, 12);
-            this.label25.TabIndex = 17;
-            this.label25.Text = "매수후 설정값(sec) 매도금지";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtDontAllowSellThisTime
-            // 
-            this.txtDontAllowSellThisTime.Location = new System.Drawing.Point(181, 206);
-            this.txtDontAllowSellThisTime.MaxLength = 7;
-            this.txtDontAllowSellThisTime.Name = "txtDontAllowSellThisTime";
-            this.txtDontAllowSellThisTime.Size = new System.Drawing.Size(51, 21);
-            this.txtDontAllowSellThisTime.TabIndex = 18;
+            this.txtMinCheBetweenGap.Location = new System.Drawing.Point(184, 316);
+            this.txtMinCheBetweenGap.MaxLength = 7;
+            this.txtMinCheBetweenGap.Name = "txtMinCheBetweenGap";
+            this.txtMinCheBetweenGap.Size = new System.Drawing.Size(51, 21);
+            this.txtMinCheBetweenGap.TabIndex = 32;
             // 
             // frmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1233, 429);
+            this.ClientSize = new System.Drawing.Size(1233, 507);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -604,7 +647,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label11);
             this.Name = "frmConfig";
-            this.Text = "frmConfig";
+            this.Text = "  거래 설정";
             this.Load += new System.EventHandler(this.frmConfig_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -674,5 +717,9 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TextBox txtDontAllowSellThisTime;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.CheckBox chkMsOnlyOnce;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox txtMinCheBetweenGap;
+        private System.Windows.Forms.Label label27;
     }
 }

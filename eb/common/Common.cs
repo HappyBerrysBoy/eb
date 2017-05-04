@@ -15,28 +15,6 @@ namespace eb.common
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-        // config.ini 설정 내용들..
-        //VOLUME_HISTORY_CNT,
-        //CUT_OFF_PERCENT,
-        //PROFIT_CUT_OFF_PERCENT,
-        //POWER_LOW_LIMIT,
-        //POWER_HIGH_LIMIT,
-        //IGNORE_CHE_CNT,
-        //PIERCE_HO_CNT,
-        //LOG_TERM,
-        //MS_MD_RATE,
-        //LOG_TERM_VOLUME_OVER,
-        //ORDER_SIGN_CNT,
-        //SELL_SIGN_CNT,
-        //MS_CUT_LINE,
-        //MD_CUT_LINE,
-        //DIFFERENCE_CHEPOWER,
-        //SATISFY_PROFIT,
-        //CUT_OFF_HOUR,
-        //CUT_OFF_MIN,
-        //ALL_CODE_PAGE_NUM,
-        //ALL_CODE_TTL_PAGE
-
         public static void SetConfig()
         {
             try
@@ -91,6 +69,10 @@ namespace eb.common
                 Program.cont.DontAllowBuyInThisTime = Common.getIntValue(temp.ToString());
                 GetPrivateProfileString(section, "DONT_ALLOW_SELL_THIS_TIME", "", temp, 255, filename);
                 Program.cont.DontAllowSellInThisTime = Common.getIntValue(temp.ToString());
+                GetPrivateProfileString(section, "MS_ONLY_ONCE", "", temp, 255, filename);
+                Program.cont.MsOnlyOnce = temp.ToString() == "Y" ? true : false;
+                GetPrivateProfileString(section, "MIN_CHE_CNT_BETWEEN_GAP", "", temp, 255, filename);
+                Program.cont.MinCheCntBetweenGap = Common.getIntValue(temp.ToString());
             }
             catch (Exception ex)
             {

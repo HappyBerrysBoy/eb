@@ -49,6 +49,8 @@ namespace eb
             txtMinVolume.Text = Program.cont.MinVolume.ToString();
             txtDontAllowBuyInThisTime.Text = Program.cont.DontAllowBuyInThisTime.ToString();
             txtDontAllowSellThisTime.Text = Program.cont.DontAllowSellInThisTime.ToString();
+            chkMsOnlyOnce.Checked = Program.cont.MsOnlyOnce;
+            txtMinCheBetweenGap.Text = Program.cont.MinCheCntBetweenGap.ToString();
         }
 
         private bool ChkNullText()
@@ -111,6 +113,8 @@ namespace eb
                 WritePrivateProfileString(section, "MIN_VOLUME", txtMinVolume.Text, filename);
                 WritePrivateProfileString(section, "DONT_ALLOW_BUY_THIS_TIME", txtDontAllowBuyInThisTime.Text, filename);
                 WritePrivateProfileString(section, "DONT_ALLOW_SELL_THIS_TIME", txtDontAllowSellThisTime.Text, filename);
+                WritePrivateProfileString(section, "MS_ONLY_ONCE", chkMsOnlyOnce.Checked ? "Y" : "N", filename);
+                WritePrivateProfileString(section, "MIN_CHE_CNT_BETWEEN_GAP", txtMinCheBetweenGap.Text, filename);
             }
             catch (Exception ex)
             {

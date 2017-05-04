@@ -23,6 +23,15 @@ namespace eb.Classes
 
             ClsRealChe realCls = item.Logs[item.Logs.Count - 1];
 
+            if (Program.cont.MsOnlyOnce)
+            {
+                if (item.MsOverOne)
+                {
+                    // 하루에 한번 이상은 거래 안함..
+                    return "22222";
+                }
+            }
+
             // 너무 높은 %에서는 구매하지 말자.. 20% 이상이라던지..(앞에 조건들 무시하고 안삼..)
             if (chkMsCutLine(realCls))
                 return "222";
@@ -31,7 +40,10 @@ namespace eb.Classes
             if (chkMinVolume(realCls))
                 return "2222";
 
+            // 매수 후 일정시간내에 또 재매수 하는것 금지(너무 자주 구매하는것 금지)
             string chkDontAllowBuyThisTime = ChkDontAllowBuyThisTime(realCls);
+
+            string chkCheCntBetweenGap = ChkCheCntBetweenGap(realCls);
 
             // 1분정도 로그보고 졸라 많이 들어오면 Ok
             // 3분정도 로그보고 꾸준히 들어와도 Ok 일단 위아래 둘중에 어떤게 나은지 모니터링 해보자..
@@ -49,7 +61,20 @@ namespace eb.Classes
             // 구매신호가 설정된 값 이상 연속으로 왔는가..
             string orderSignCnt = chkOrderSignCnt(msVolumeDueTime + overVolume + pierce + initTime);
 
-            return msVolumeDueTime + overVolume + pierce + chePower + initTime + orderSignCnt;
+            return msVolumeDueTime + overVolume + pierce + chePower + initTime + orderSignCnt + chkCheCntBetweenGap;
+        }
+
+        // 로그기간 동안 거래 횟수가 최소 설정된 값을 넘어서는가..
+        private string ChkCheCntBetweenGap(ClsRealChe realCls)
+        {
+            if (item.ToTimeIdx - item.FromTimeIdx >= Program.cont.MinCheCntBetweenGap)
+            {
+                return "1";
+            }
+            else
+            {
+                return "2";
+            }
         }
 
         // 매수 후 일정시간내에 또 재매수 하는것 금지(너무 자주 구매하는것 금지)
