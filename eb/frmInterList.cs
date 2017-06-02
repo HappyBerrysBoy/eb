@@ -1918,6 +1918,10 @@ namespace eb
             double profitFrom = Common.getDoubleValue(txtProfitSimulFrom.Text);
             double profitTo = Common.getDoubleValue(txtProfitSimulTo.Text);
             double profitInter = Common.getDoubleValue(txtProfitSimulInter.Text);
+            int minCheCntFrom = Common.getIntValue(txtMinCheCntFrom.Text);
+            int minCheCntTo = Common.getIntValue(txtMinCheCntTo.Text);
+            int minCheCntInter = Common.getIntValue(txtMinCheCntInterval.Text);
+
 
             string filename = Program.cont.getApplicationPath + Program.cont.getSimulationPath + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + ".txt";
             string filenameSummary = Program.cont.getApplicationPath + Program.cont.getSimulationPath + DateTime.Now.ToShortDateString().Replace("-", "") + Convert.ToString(DateTime.Now.Hour).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Minute).PadLeft(2, '0') + Convert.ToString(DateTime.Now.Second).PadLeft(2, '0') + "_summary.txt";
@@ -1953,46 +1957,54 @@ namespace eb
                                 Program.cont.ProfitCutoffPercent = proCut;
                                 txtProCutSimulCurr.Text = Convert.ToString(Program.cont.ProfitCutoffPercent);
 
-                                // 몇%일때 무조건 수익 내도록 하는 로직
-                                for (double profit = profitFrom; profit < profitTo; profit += profitInter)
+                                // 일정기간내에 최소 거래 횟수
+                                for (int minChe = minCheCntFrom; minChe < minCheCntTo; minChe += minCheCntInter)
                                 {
-                                    Program.cont.SatisfyProfit = profit;
-                                    txtProfitSimulCurr.Text = Convert.ToString(Program.cont.SatisfyProfit);
-                                    SimulateLongTerm(folderPath);
-                                    string condition = "" + log + "_" + avg + "_" + rate + "_" + cut + "_" + proCut + "_" + profit;
-                                    if (chkExportExcel.Checked)
-                                    {
-                                        ExportExcel(condition);
-                                    }
-                                    string ttlSummaryStr = ("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.BALANCE].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.TAX].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.FEE].Text).Replace("%", "");
-                                    WriteSummaryList(filenameSummary, ttlSummaryStr);
-                                    try
-                                    {
-                                        sw = new StreamWriter(filename, true);
-                                        sw.WriteLine(ttlSummaryStr);
-                                        //sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        sw = new StreamWriter(filename, true);
-                                        sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + "로그 기록 실패");
-                                    }
-                                    finally
-                                    {
-                                        sw.Close();
-                                    }
+                                    Program.cont.MinCheCntBetweenGap = minChe;
+                                    txtMinCheCntCurr.Text = Convert.ToString(Program.cont.MinCheCntBetweenGap);
 
-                                    if (chkStopSimulation.Checked)
+                                    // 몇%일때 무조건 수익 내도록 하는 로직
+                                    for (double profit = profitFrom; profit < profitTo; profit += profitInter)
                                     {
-                                        DialogResult result = MessageBox.Show("시뮬레이션을 중단하겠습니까?", "Queation", MessageBoxButtons.YesNo);
+                                        Program.cont.SatisfyProfit = profit;
+                                        txtProfitSimulCurr.Text = Convert.ToString(Program.cont.SatisfyProfit);
 
-                                        if (DialogResult.Yes == result)
+                                        SimulateLongTerm(folderPath);
+                                        string condition = "" + log + "_" + avg + "_" + rate + "_" + cut + "_" + proCut + "_" + profit + "_" + minChe;
+                                        if (chkExportExcel.Checked)
                                         {
-                                            return;
+                                            ExportExcel(condition);
                                         }
-                                        else
+                                        string ttlSummaryStr = ("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.BALANCE].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.TAX].Text + " " + spsLongTermSimulation.Cells[2, (int)LONG_SIMUL_COL.FEE].Text).Replace("%", "");
+                                        WriteSummaryList(filenameSummary, ttlSummaryStr);
+                                        try
                                         {
-                                            chkStopSimulation.Checked = false;
+                                            sw = new StreamWriter(filename, true);
+                                            sw.WriteLine(ttlSummaryStr);
+                                            //sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            sw = new StreamWriter(filename, true);
+                                            sw.WriteLine("" + log + " " + avg + " " + rate + " " + cut + " " + proCut + " " + profit + " " + "로그 기록 실패");
+                                        }
+                                        finally
+                                        {
+                                            sw.Close();
+                                        }
+
+                                        if (chkStopSimulation.Checked)
+                                        {
+                                            DialogResult result = MessageBox.Show("시뮬레이션을 중단하겠습니까?", "Queation", MessageBoxButtons.YesNo);
+
+                                            if (DialogResult.Yes == result)
+                                            {
+                                                return;
+                                            }
+                                            else
+                                            {
+                                                chkStopSimulation.Checked = false;
+                                            }
                                         }
                                     }
                                 }
